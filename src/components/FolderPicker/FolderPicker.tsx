@@ -14,9 +14,9 @@ export default function FolderPicker({
   if (!isOpen) return null;
 
   const pickDirectory = async () => {
-    if (!(window as any).showDirectoryPicker) return;
+    if (!window.showDirectoryPicker) return;
     try {
-      const handle = await (window as any).showDirectoryPicker();
+      const handle = await window.showDirectoryPicker();
       if (handle) onSelect(handle);
     } catch (e) {
       // user aborted or error; do nothing
@@ -52,7 +52,7 @@ export default function FolderPicker({
             </button>
           )}
         </div>
-        {!(window as any).showDirectoryPicker && (
+        {!window.showDirectoryPicker && (
           <p className="mt-4 text-xs text-red-500">
             このブラウザはディレクトリピッカーをサポートしていません。
           </p>
