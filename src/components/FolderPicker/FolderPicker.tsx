@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
-import {
-  loadLastUsedFolderAsync,
-  saveLastUsedFolderAsync,
-} from "./lastUsedFolder";
 import { pickLocalFolder } from "./pickLocalFolder";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { useLastUsed } from "./useLastUsed";
 
 type Props = {
   open: boolean;
@@ -12,40 +8,38 @@ type Props = {
 };
 
 export function FolderPicker({ open, onSelect }: Props) {
-  // マウント時に、前回使用されたフォルダをIndexedDBから読み込む
-  const [lastUsed, setLastUsed] = useState<FileSystemDirectoryHandle | null>(
-    null,
-  );
-  useEffect(() => {
-    (async () => {
-      setLastUsed(await loadLastUsedFolderAsync());
-    })();
-  }, []);
+  const { lastUsedFolder, handleSelectAsync } = useLastUsed(onSelect);
 
-  const handleSelect = async (handle: FileSystemDirectoryHandle | null) => {
-    if (!handle) return;
-    onSelect(handle);
-    await saveLastUsedFolderAsync(handle);
-  };
+  const pickFolder = async () =>
+    await handleSelectAsync(await pickLocalFolder());
 
-  const pickFolder = async () => await handleSelect(await pickLocalFolder());
-  const pickLastUsed = async () => await handleSelect(lastUsed);
+  const pickLastUsed = async () => await handleSelectAsync(lastUsedFolder);
 
   if (!open) return null;
   return (
     <Dialog open={open}>
-      <DialogTitle>フォルダーを選択してください</DialogTitle>
+      <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>
       <DialogContent>
-        <Button onClick={pickFolder} variant="contained">
-          選択
+        <Button
+          onClick={pickFolder}
+          variant="contained"
+          sx={{ mr: 2 }}
+          className="mr-50"
+        >
+          フォルダーを
+          <br />
+          選択する
         </Button>
-        <h2 className="text-lg font-semibold my-4">前回使用されたフォルダー</h2>
-        {lastUsed ? (
-          <Button onClick={pickLastUsed} sx={{ textTransform: "none" }}>
-            {lastUsed.name}
+        {lastUsedFolder && (
+          <Button
+            onClick={pickLastUsed}
+            variant="outlined"
+            sx={{ textTransform: "none" }}
+          >
+            前回のフォルダー
+            <br />
+            {lastUsedFolder.name}
           </Button>
-        ) : (
-          "なし"
         )}
       </DialogContent>
     </Dialog>
