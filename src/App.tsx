@@ -1,17 +1,14 @@
 import { useState } from "react";
-import FolderPicker from "./components/FolderPicker/FolderPicker";
+import { FolderPicker } from "./components/FolderPicker/FolderPicker";
 import "./App.css";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <>
-      <FolderPicker
-        isOpen={true}
-        onSelect={() => {}}
-        lastUsedFolder={undefined}
-      />
+      <FolderPicker isOpen={isOpen} onSelect={() => setIsOpen(false)} />
       <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
