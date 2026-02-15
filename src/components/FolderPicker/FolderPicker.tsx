@@ -4,13 +4,14 @@ import {
   saveLastUsedFolderAsync,
 } from "./lastUsedFolder";
 import { pickLocalFolder } from "./pickLocalFolder";
+import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 type Props = {
-  isOpen: boolean;
+  open: boolean;
   onSelect: (handle: FileSystemDirectoryHandle) => void;
 };
 
-export function FolderPicker({ isOpen, onSelect }: Props) {
+export function FolderPicker({ open, onSelect }: Props) {
   // マウント時に、前回使用されたフォルダをIndexedDBから読み込む
   const [lastUsed, setLastUsed] = useState<FileSystemDirectoryHandle | null>(
     null,
@@ -30,30 +31,23 @@ export function FolderPicker({ isOpen, onSelect }: Props) {
   const pickFolder = async () => await handleSelect(await pickLocalFolder());
   const pickLastUsed = async () => await handleSelect(lastUsed);
 
-  if (!isOpen) return null;
+  if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" />
-      <div className="relative bg-white text-gray-900 rounded-lg shadow-lg w-11/12 max-w-md p-6 z-10">
-        <h2 className="text-lg font-semibold mb-4">フォルダーを選択</h2>
-        <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          onClick={pickFolder}
-        >
-          フォルダーを選択
-        </button>
+    <Dialog open={open}>
+      <DialogTitle>フォルダーを選択してください</DialogTitle>
+      <DialogContent>
+        <Button onClick={pickFolder} variant="contained">
+          選択
+        </Button>
         <h2 className="text-lg font-semibold my-4">前回使用されたフォルダー</h2>
         {lastUsed ? (
-          <button
-            className="px-4 py-2 bg-transparent dark:bg-gray-700 text-blue-600 rounded-md hover:bg-gray-100"
-            onClick={pickLastUsed}
-          >
+          <Button onClick={pickLastUsed} sx={{ textTransform: "none" }}>
             {lastUsed.name}
-          </button>
+          </Button>
         ) : (
           "なし"
         )}
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

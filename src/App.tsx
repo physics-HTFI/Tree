@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <FolderPicker isOpen={isOpen} onSelect={() => setIsOpen(false)} />
+      <FolderPicker open={isOpen} onSelect={() => setIsOpen(false)} />
       <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
