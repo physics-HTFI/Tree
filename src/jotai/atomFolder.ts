@@ -17,6 +17,8 @@ export const atomSetFolder = atom(
       const fileHandle = await folder.getFileHandle(SETTINGS_FILE_NAME);
       const file = await fileHandle.getFile();
       settings = JSON.parse(await file.text()) as Settings;
+    } catch {
+      console.log(`Failed to load "${SETTINGS_FILE_NAME}"`);
     } finally {
       set(_atomSettings, settings);
     }

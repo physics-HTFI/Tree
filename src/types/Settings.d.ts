@@ -11,6 +11,6 @@ interface Settings {
 interface Tier {
   label?: string;
   checked?: boolean;
-  color?: "red" | "green" | "blue" | "black" | "gray";
+  color?: string;
   underline?: boolean;
 }

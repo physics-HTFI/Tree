@@ -1,26 +1,23 @@
 import { useState } from "react";
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
 import "./App.css";
+import { useSetAtom } from "jotai";
+import { atomSetFolder } from "./jotai/atomFolder";
+import { Settings } from "./components/Settings/Settings";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [isOpen, setIsOpen] = useState(true);
+  const setFolder = useSetAtom(atomSetFolder);
+  const handleSelect = async (handle: FileSystemDirectoryHandle) => {
+    await setFolder(handle);
+    setIsOpen(false);
+  };
 
   return (
     <>
-      <FolderPicker open={isOpen} onSelect={() => setIsOpen(false)} />
+      <FolderPicker open={isOpen} onSelect={handleSelect} />
+      <Settings />
       <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
