@@ -1,18 +1,24 @@
 type TreeNode =
   | (FolderNode & {
+      type: "folder";
+      nodeId: string;
       title?: string;
       handle?: FileSystemDirectoryHandle;
       children?: TreeNode[];
     })
-  | FileNode;
+  | (FileNode & {
+      type: "file";
+      nodeId: string;
+      serial?: number;
+    });
 
-interface FolderNode {
-  id?: string;
-}
+type FolderNode = {
+  path?: string;
+};
 
-interface FileNode {
+type FileNode = {
   title?: string;
-  id?: string;
+  path?: string;
   time?: number;
   start?: number;
   ticks?: number;
@@ -20,4 +26,4 @@ interface FileNode {
   tier?: number;
   selected?: boolean;
   notes?: string;
-}
+};

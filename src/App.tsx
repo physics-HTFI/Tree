@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
-import "./App.css";
 import { useSetAtom } from "jotai";
 import { atomSetFolder } from "./jotai/atomSetFolder";
 import { Settings } from "./components/Settings/Settings";
 import { FileNodeEdit } from "./components/FileNodeEdit/FileNodeEdit";
+import Grid from "@mui/material/Grid";
+import { Tree } from "./components/Tree/Tree";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
@@ -16,10 +17,15 @@ function App() {
 
   return (
     <>
+      <Grid container spacing={2}>
+        <Grid>
+          <Tree />
+        </Grid>
+        <Grid size="grow">bbb</Grid>
+      </Grid>
       <FolderPicker open={isOpen} onSelect={handleSelect} />
       <Settings />
       <FileNodeEdit />
-      <h1>Vite + React</h1>
     </>
   );
 }
