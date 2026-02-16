@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
 import "./App.css";
 import { useSetAtom } from "jotai";
-import { atomSetFolder } from "./jotai/atomFolder";
+import { atomSetFolder } from "./jotai/atomSetFolder";
 import { Settings } from "./components/Settings/Settings";
 import { FileNodeEdit } from "./components/FileNodeEdit/FileNodeEdit";
 
