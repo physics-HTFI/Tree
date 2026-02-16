@@ -1,11 +1,13 @@
 type TreeNode =
-  | ({ type: "folder" } & FolderNode)
-  | ({ type: "file" } & FileNode);
+  | (FolderNode & {
+      title?: string;
+      handle?: FileSystemDirectoryHandle;
+      children?: TreeNode[];
+    })
+  | FileNode;
 
 interface FolderNode {
-  title?: string;
   id?: string;
-  children?: TreeFile[];
 }
 
 interface FileNode {
