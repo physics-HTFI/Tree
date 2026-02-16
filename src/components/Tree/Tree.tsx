@@ -1,9 +1,9 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import { useTreeItems } from "./useTreeItems";
-import { useSettingsValue } from "./useSettingsValue";
+import { useTreeItemsValue } from "./_useTreeItemsValue";
+import { useSettingsValue } from "./_useSettingsValue";
 
 export function Tree() {
-  const tree = useTreeItems();
+  const tree = useTreeItemsValue();
   const settings = useSettingsValue();
 
   const getItemId = (item: TreeNode) => item.nodeId;

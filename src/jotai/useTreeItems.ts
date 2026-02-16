@@ -1,6 +1,6 @@
-import { atom } from "jotai";
+import { atom, useAtomValue } from "jotai";
 
-export const atomGetTreeItems = atom<TreeNode[]>(() => {
+const atomGetTreeItems = atom<TreeNode[]>(() => {
   return [
     {
       type: "folder",
@@ -44,3 +44,5 @@ export const atomGetTreeItems = atom<TreeNode[]>(() => {
     },
   ];
 });
+
+export const useTreeItemsValue = () => useAtomValue(atomGetTreeItems);

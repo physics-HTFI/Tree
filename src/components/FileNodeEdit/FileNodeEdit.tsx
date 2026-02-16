@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useSettingsValue } from "./useSettingsValue";
+import { useSettingsValue } from "./_useSettingsValue";
 import { getTimeString } from "./getTimeString";
 
 export function FileNodeEdit() {

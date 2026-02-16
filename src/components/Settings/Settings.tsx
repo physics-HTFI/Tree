@@ -5,7 +5,7 @@ import {
   FormGroup,
   Typography,
 } from "@mui/material";
-import { useSettings } from "./useSettings";
+import { useSettings } from "./_useSettings";
 
 export function Settings() {
   const [settings, setSettings] = useSettings();
