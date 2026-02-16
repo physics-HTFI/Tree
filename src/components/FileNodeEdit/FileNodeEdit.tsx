@@ -15,7 +15,7 @@ export function FileNodeEdit() {
 
   const labels: Record<keyof FileNode, string> = {
     title: "Title",
-    id: "ID",
+    path: "Path",
     time: "Time",
     start: "Start",
     ticks: "Ticks",
@@ -28,7 +28,7 @@ export function FileNodeEdit() {
 
   const node: FileNode = {
     title: "Example File",
-    id: "example-file",
+    path: "example-file",
     time: 300,
     start: 0,
     ticks: 100,
@@ -61,10 +61,10 @@ export function FileNodeEdit() {
 
       {/* id */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.id}</Typography>
+        <Typography variant="body1">{labels.path}</Typography>
       </Grid>
       <Grid size={9}>
-        <TextField value={node.id} variant="standard" fullWidth />
+        <TextField value={node.path} variant="standard" fullWidth />
       </Grid>
 
       {/* time */}
