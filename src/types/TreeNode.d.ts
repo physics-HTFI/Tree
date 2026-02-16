@@ -11,7 +11,7 @@ interface FolderNode {
 interface FileNode {
   title?: string;
   id?: string;
-  time?: string;
+  time?: number;
   start?: number;
   ticks?: number;
   key?: number;
