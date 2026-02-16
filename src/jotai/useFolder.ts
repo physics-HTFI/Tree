@@ -1,10 +1,10 @@
-import { atom } from "jotai";
+import { atom, useSetAtom } from "jotai";
 import { _atomFolder } from "./share/_atomFolder";
-import { _atomSettings as _atomSettings } from "./share/_atomSettings";
+import { _atomSettings } from "./share/_atomSettings";
 import { SETTINGS_FILE_NAME } from "./share/SETTINGS_FILE_NAME";
 import { fileSystem } from "./share/fileSystem";
 
-export const atomSetFolder = atom(
+const atomSetFolder = atom(
   null,
   async (_, set, folder: FileSystemDirectoryHandle | null) => {
     set(_atomFolder, folder);
@@ -17,3 +17,5 @@ export const atomSetFolder = atom(
     set(_atomSettings, settings ?? {});
   },
 );
+
+export const useSetFolder = () => useSetAtom(atomSetFolder);
