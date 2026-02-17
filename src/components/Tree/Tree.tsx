@@ -9,6 +9,7 @@ export function Tree() {
 
   const getItemId = (item: TreeNode) => item.nodeId;
   const getItemLabel = (item: TreeNode) => item.title ?? "---";
+  const isItemSelectionDisabled = (item: TreeNode) => item.type === "folder";
   const getItemChildren = (item: TreeNode) => {
     if (item.type === "file") return;
     return item.children?.filter((child) => {
@@ -29,6 +30,16 @@ export function Tree() {
       getItemId={getItemId}
       getItemLabel={getItemLabel}
       getItemChildren={getItemChildren}
+      isItemSelectionDisabled={isItemSelectionDisabled}
+      onItemSelectionToggle={(
+        _event: React.SyntheticEvent | null,
+        itemId: string,
+        isSelected: boolean,
+      ) => {
+        if (isSelected) {
+          alert(itemId);
+        }
+      }}
       slots={{ item: CustomTreeItem }}
     />
   );

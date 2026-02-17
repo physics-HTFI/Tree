@@ -13,7 +13,7 @@ import {
   type UseTreeItemParameters,
 } from "@mui/x-tree-view";
 import React from "react";
-import { IconButton, Stack, Typography } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useSettingsValue } from "./_useSettingsValue";
 
 interface CustomTreeItemProps
@@ -51,9 +51,18 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   return (
     <TreeItemProvider {...getContextProviderProps()}>
       <TreeItemRoot {...getRootProps(other)}>
-        <TreeItemContent {...getContentProps()} sx={{ py: 0 }}>
+        <TreeItemContent
+          {...getContentProps()}
+          sx={{
+            py: 0,
+            // フォーカスリングを表示しない
+            ":is([data-focused]):not([data-selected]):not(:hover)": {
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           <TreeItemIconContainer {...getIconContainerProps()}>
-            <TreeItemIcon status={status} />
+            <TreeItemIcon status={status} slots={{ endIcon: VerticalLine }} />
           </TreeItemIconContainer>
           <Stack direction="row" spacing={0.5} alignItems="center">
             <TreeItemCheckbox {...getCheckboxProps()} />
@@ -90,3 +99,16 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     </TreeItemProvider>
   );
 });
+
+function VerticalLine() {
+  return (
+    <Box
+      sx={{
+        borderRight: "1px solid gainsboro",
+        color: "transparent",
+      }}
+    >
+      i
+    </Box>
+  );
+}
