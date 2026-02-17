@@ -1,6 +1,7 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { useTreeItemsValue } from "./_useTreeItemsValue";
 import { useSettingsValue } from "./_useSettingsValue";
+import { CustomTreeItem } from "./TreeItem";
 
 export function Tree() {
   const tree = useTreeItemsValue();
@@ -17,7 +18,7 @@ export function Tree() {
           ?.map((tier, index) => ({ index, checked: tier.checked === true }))
           ?.filter((tier) => !tier.checked)
           ?.map((tier) => tier.index) ?? [];
-      if (ignore.includes(child.tier ?? -1)) return false; // チェックが外れているティアは表示しない
+      if (ignore.includes(child.tier ?? 0)) return false; // チェックが外れているティアは表示しない
       return true;
     });
   };
@@ -28,6 +29,7 @@ export function Tree() {
       getItemId={getItemId}
       getItemLabel={getItemLabel}
       getItemChildren={getItemChildren}
+      slots={{ item: CustomTreeItem }}
     />
   );
 }

@@ -173,7 +173,7 @@ export function FileNodeEdit() {
                 variant="body1"
                 sx={{
                   color: tier.color,
-                  textDecoration: tier.underline ? "underline" : "none",
+                  textDecoration: tier.underline ? "underline" : undefined,
                 }}
               >
                 {tier.label}
