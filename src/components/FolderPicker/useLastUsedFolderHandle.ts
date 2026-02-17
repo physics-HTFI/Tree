@@ -4,7 +4,7 @@ import {
   saveLastUsedFolderAsync,
 } from "./lastUsedFolder";
 
-export const useLastUsed = (
+export const useLastUsedFolderHandle = (
   onSelect: (handle: FileSystemDirectoryHandle) => void,
 ) => {
   const [lastUsedFolder, setLastUsedFolder] =
@@ -14,16 +14,17 @@ export const useLastUsed = (
   useEffect(() => {
     (async () => {
       setLastUsedFolder(await loadLastUsedFolderAsync());
-    })();
+    })().catch(() => undefined);
   }, []);
 
-  const handleSelectAsync = async (
+  const setLastUsedFolderAsync = async (
     handle: FileSystemDirectoryHandle | null,
   ) => {
     if (!handle) return;
     onSelect(handle);
+    setLastUsedFolder(handle);
     await saveLastUsedFolderAsync(handle);
   };
 
-  return { lastUsedFolder, handleSelectAsync };
+  return { lastUsedFolder, setLastUsedFolderAsync };
 };

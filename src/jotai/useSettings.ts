@@ -15,5 +15,8 @@ const atomSettings = atom(
   },
 );
 
-export const useSettings = () => useAtom(atomSettings);
 export const useSettingsValue = () => useAtomValue(atomSettings);
+export const useSettings = () => {
+  const [settings, setSettings] = useAtom(atomSettings);
+  return { settings, setSettingsAsync: setSettings };
+};

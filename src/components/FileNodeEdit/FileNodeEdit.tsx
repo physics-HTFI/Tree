@@ -11,6 +11,7 @@ import { useSettingsValue } from "./_useSettingsValue";
 import { getTimeString } from "./getTimeString";
 
 export function FileNodeEdit() {
+  // フック
   const settings = useSettingsValue();
 
   const labels: Record<keyof FileNode, string> = {

@@ -31,8 +31,10 @@ export async function loadLastUsedFolderAsync(): Promise<FileSystemDirectoryHand
   if (!("indexedDB" in window)) return null;
   try {
     const db = await getDB();
-    const handle = await db.get(STORE_NAME, STORE_KEY);
-    return (handle as FileSystemDirectoryHandle) ?? null;
+    const handle = (await db.get(STORE_NAME, STORE_KEY)) as
+      | FileSystemDirectoryHandle
+      | undefined;
+    return handle ?? null;
   } catch (err) {
     console.error("getLastUsedFolder: failed to read handle", err);
     return null;

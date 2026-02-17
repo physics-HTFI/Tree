@@ -1,27 +1,27 @@
-import { pickLocalFolder } from "./pickLocalFolder";
+import { pickLocalFolderAsync } from "./pickLocalFolder";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { useLastUsed } from "./useLastUsed";
+import { useLastUsedFolderHandle } from "./useLastUsedFolderHandle";
+import { useFolder } from "./_useFolder";
 
-type Props = {
-  open: boolean;
-  onSelect: (handle: FileSystemDirectoryHandle) => void;
-};
+export function FolderPicker() {
+  // フック
+  const { folder, setFolderAsync } = useFolder();
+  const { lastUsedFolder, setLastUsedFolderAsync } =
+    useLastUsedFolderHandle(setFolderAsync);
 
-export function FolderPicker({ open, onSelect }: Props) {
-  const { lastUsedFolder, handleSelectAsync } = useLastUsed(onSelect);
+  // イベントハンドラー
+  const pickFolderAsync = async () =>
+    await setLastUsedFolderAsync(await pickLocalFolderAsync());
+  const pickLastUsedAsync = async () =>
+    await setLastUsedFolderAsync(lastUsedFolder);
 
-  const pickFolder = async () =>
-    await handleSelectAsync(await pickLocalFolder());
-
-  const pickLastUsed = async () => await handleSelectAsync(lastUsedFolder);
-
-  if (!open) return null;
+  const open = !folder;
   return (
     <Dialog open={open}>
       <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>
       <DialogContent>
         <Button
-          onClick={pickFolder}
+          onClick={pickFolderAsync}
           variant="contained"
           sx={{ mr: 2 }}
           className="mr-50"
@@ -32,7 +32,7 @@ export function FolderPicker({ open, onSelect }: Props) {
         </Button>
         {lastUsedFolder && (
           <Button
-            onClick={pickLastUsed}
+            onClick={pickLastUsedAsync}
             variant="outlined"
             sx={{ textTransform: "none" }}
           >

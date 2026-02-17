@@ -8,13 +8,15 @@ import {
 import { useSettings } from "./_useSettings";
 
 export function Settings() {
-  const [settings, setSettings] = useSettings();
+  // フック
+  const { settings, setSettingsAsync } = useSettings();
+
   const tiers = settings.tiers ?? [];
 
-  const updateSettings = (tier: Tier, index: number) => {
+  const updateSettingsAsync = async (tier: Tier, index: number) => {
     const newTiers = [...tiers];
     newTiers[index] = tier;
-    setSettings({ ...settings, tiers: newTiers });
+    await setSettingsAsync({ ...settings, tiers: newTiers });
   };
 
   return (
@@ -26,7 +28,7 @@ export function Settings() {
             key={`${i}: ${tier.label}`}
             tier={tier}
             index={i}
-            onChange={updateSettings}
+            onChange={updateSettingsAsync}
           />
         ))}
       </FormGroup>
