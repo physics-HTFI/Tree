@@ -1,5 +1,5 @@
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
-import { Settings } from "./components/Settings/Settings";
+import { Tiers } from "./components/Tiers/Tiers";
 import { FileNodeEdit } from "./components/FileNodeEdit/FileNodeEdit";
 import Grid from "@mui/material/Grid";
 import { Tree } from "./components/Tree/Tree";
@@ -14,7 +14,7 @@ function App() {
         <Grid size="grow">bbb</Grid>
       </Grid>
       <FolderPicker />
-      <Settings />
+      <Tiers />
       <FileNodeEdit />
     </>
   );

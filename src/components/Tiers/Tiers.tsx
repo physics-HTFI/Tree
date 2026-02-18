@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useSettings } from "./_useSettings";
 
-export function Settings() {
+export function Tiers() {
   // フック
   const { settings, setSettingsAsync } = useSettings();
 
@@ -23,7 +23,7 @@ export function Settings() {
     <Box sx={{ position: "fixed", top: 4, right: 4 }}>
       <FormGroup>
         <Count count={123} />
-        {tiers.map((tier, i) => (
+        {[...tiers].reverse().map((tier, i) => (
           <Label
             key={`${i}: ${tier.label}`}
             tier={tier}
