@@ -10,7 +10,7 @@ import {
 import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { getTimeString } from "./getTimeString";
 
-export function FileNodeEdit() {
+export function FileSettings() {
   // フック
   const settings = useAppSettingsValue();
 
