@@ -11,7 +11,24 @@ const atomGetTreeItems = atom<TreeNode[]>(() => {
           type: "folder",
           nodeId: "2",
           title: "folder2",
-          children: [],
+          children: [
+            {
+              type: "file",
+              nodeId: "9",
+              title: "title1",
+              tier: 1,
+              hasTicks: true,
+              key: 1,
+            },
+            {
+              type: "file",
+              nodeId: "10",
+              title: "title2",
+              tier: 2,
+              hasTicks: false,
+              key: 2,
+            },
+          ],
         },
         {
           type: "file",
@@ -62,22 +79,6 @@ const atomGetTreeItems = atom<TreeNode[]>(() => {
           key: 6,
         },
       ],
-    },
-    {
-      type: "file",
-      nodeId: "9",
-      title: "title1",
-      tier: 1,
-      hasTicks: true,
-      key: 1,
-    },
-    {
-      type: "file",
-      nodeId: "10",
-      title: "title2",
-      tier: 2,
-      hasTicks: false,
-      key: 2,
     },
   ] satisfies TreeNode[];
 });
