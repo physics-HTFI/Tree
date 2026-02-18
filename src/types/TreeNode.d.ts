@@ -1,23 +1,25 @@
 type TreeNode =
-  | (FolderNode & {
+  | {
       type: "folder";
       nodeId: string;
-      title?: string;
+      title: string;
       handle?: FileSystemDirectoryHandle;
+      data: FolderNode;
       children?: TreeNode[];
-    })
-  | (FileNode & {
+    }
+  | {
       type: "file";
       nodeId: string;
+      title: string;
+      data: FileNode;
       serial?: number;
-    });
+    };
 
 type FolderNode = {
   path?: string;
 };
 
 type FileNode = {
-  title?: string;
   path?: string;
   time?: number;
   start?: number;

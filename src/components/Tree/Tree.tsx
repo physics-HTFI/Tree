@@ -4,9 +4,11 @@ import { useSettingsValue } from "./_useSettingsValue";
 import { CustomTreeItem } from "./TreeItem";
 
 export function Tree() {
+  // フック
   const tree = useTreeItemsValue();
   const settings = useSettingsValue();
 
+  // イベントハンドラー
   const getItemId = (item: TreeNode) => item.nodeId;
   const getItemLabel = (item: TreeNode) => item.title ?? "---";
   const isItemSelectionDisabled = (item: TreeNode) => item.type === "folder";
@@ -19,27 +21,29 @@ export function Tree() {
           ?.map((tier, index) => ({ index, checked: tier.checked === true }))
           ?.filter((tier) => !tier.checked)
           ?.map((tier) => tier.index) ?? [];
-      if (ignore.includes(child.tier ?? 0)) return false; // チェックが外れているティアは表示しない
+      if (ignore.includes(child.data.tier ?? 0)) return false; // チェックが外れているティアは表示しない
       return true;
     });
+  };
+  const onItemSelectionToggle = (
+    _event: React.SyntheticEvent | null,
+    itemId: string,
+    isSelected: boolean,
+  ) => {
+    if (isSelected) {
+      alert(itemId);
+    }
   };
 
   return (
     <RichTreeView
       items={tree}
+      selectedItems={""}
       getItemId={getItemId}
       getItemLabel={getItemLabel}
       getItemChildren={getItemChildren}
       isItemSelectionDisabled={isItemSelectionDisabled}
-      onItemSelectionToggle={(
-        _event: React.SyntheticEvent | null,
-        itemId: string,
-        isSelected: boolean,
-      ) => {
-        if (isSelected) {
-          alert(itemId);
-        }
-      }}
+      onItemSelectionToggle={onItemSelectionToggle}
       slots={{ item: CustomTreeItem }}
     />
   );

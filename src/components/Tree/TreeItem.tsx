@@ -42,7 +42,7 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
 
   const item = useTreeItemModel<TreeNode>(itemId)!;
   const tier =
-    item.type === "file" ? settings?.tiers?.[item?.tier ?? 0] : undefined;
+    item.type === "file" ? settings?.tiers?.[item.data.tier ?? 0] : undefined;
   const sx = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
@@ -70,10 +70,10 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
             {item.type === "file" ? (
               <>
                 <Typography variant="caption">
-                  {item?.ticks ? "🕒" : undefined}
+                  {item.data.ticks ? "🕒" : undefined}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {item?.key}
+                  {item.data.key}
                 </Typography>
               </>
             ) : (
