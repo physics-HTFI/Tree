@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useAppSettings } from "./_useAppSettings";
 
-export function Tiers() {
+export function TierSettings() {
   // フック
   const { settings, setSettingsAsync } = useAppSettings();
 
