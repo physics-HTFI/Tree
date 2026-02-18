@@ -3,7 +3,6 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
-  Stack,
   Typography,
 } from "@mui/material";
 import { useAppSettings } from "./_useAppSettings";
@@ -24,16 +23,17 @@ export function TierSettings() {
     <Box sx={{ position: "fixed", top: 4, right: 4 }}>
       <FormGroup>
         <Count count={123} />
-        <Stack sx={{ flexDirection: "column-reverse" }}>
-          {tiers.map((tier, i) => (
+        {tiers
+          .map((tier, i) => ({ tier, i }))
+          ?.reverse()
+          ?.map((v) => (
             <Label
-              key={`${i}: ${tier.label}`}
-              tier={tier}
-              index={i}
+              key={`${v.i}: ${v.tier.label}`}
+              tier={v.tier}
+              index={v.i}
               onChange={updateSettingsAsync}
             />
           ))}
-        </Stack>
       </FormGroup>
     </Box>
   );
