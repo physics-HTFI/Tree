@@ -2,11 +2,13 @@ import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { useTreeItemsValue } from "./_useTreeItemsValue";
 import { useSettingsValue } from "./_useSettingsValue";
 import { CustomTreeItem } from "./TreeItem";
+import { useSelectedItemId } from "./_useSelectedItemId";
 
 export function Tree() {
   // フック
   const tree = useTreeItemsValue();
   const settings = useSettingsValue();
+  const [selectedItemId, setSelectedItemId] = useSelectedItemId();
 
   // イベントハンドラー
   const getItemId = (item: TreeNode) => item.nodeId;
@@ -30,15 +32,13 @@ export function Tree() {
     itemId: string,
     isSelected: boolean,
   ) => {
-    if (isSelected) {
-      alert(itemId);
-    }
+    setSelectedItemId(isSelected ? itemId : null);
   };
 
   return (
     <RichTreeView
       items={tree}
-      selectedItems={""}
+      selectedItems={selectedItemId}
       getItemId={getItemId}
       getItemLabel={getItemLabel}
       getItemChildren={getItemChildren}
