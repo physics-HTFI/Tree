@@ -1,6 +1,6 @@
 interface AppSettings {
   tiers?: TierSettings[];
-  searchUrl?: string;
+  searchExpression?: string;
   time?: {
     min?: number;
     max?: number;
@@ -10,7 +10,6 @@ interface AppSettings {
     max?: number;
   };
   ticks?: {
-    initialValue?: number;
     min?: number;
     max?: number;
   };
@@ -40,7 +39,7 @@ interface FileSettings {
   ticks?: number;
   key?: number;
   tier?: number;
-  selected?: boolean;
+  highlighted?: boolean;
   notes?: string;
   base64?: string;
 }

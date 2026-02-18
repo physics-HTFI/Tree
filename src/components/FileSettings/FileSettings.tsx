@@ -23,7 +23,7 @@ export function FileSettings() {
     ticks: "Ticks",
     key: "Key",
     tier: "Tier",
-    selected: "Selected",
+    highlighted: "highlighted",
     notes: "Notes",
     ...settings?.labels?.file,
   };
@@ -168,11 +168,11 @@ export function FileSettings() {
 
       {/* selected */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.selected}</Typography>
+        <Typography variant="body1">{labels.highlighted}</Typography>
       </Grid>
       <Grid size={9}>
         <Checkbox
-          checked={node.selected}
+          checked={node.highlighted}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
         />
