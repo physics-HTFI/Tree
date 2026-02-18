@@ -149,20 +149,24 @@ export function FileSettings() {
           onChange={() => {}}
           variant="standard"
           fullWidth
+          slotProps={{}}
         >
-          {settings?.tiers?.map((tier, i) => (
-            <MenuItem key={tier.label} value={i}>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: tier.color,
-                  textDecoration: tier.underline ? "underline" : undefined,
-                }}
-              >
-                {tier.label}
-              </Typography>{" "}
-            </MenuItem>
-          ))}
+          {settings?.tiers
+            ?.map((tier, i) => ({ tier, i }))
+            ?.reverse()
+            ?.map((v) => (
+              <MenuItem key={v.tier.label} value={v.i}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: v.tier.color,
+                    textDecoration: v.tier.underline ? "underline" : undefined,
+                  }}
+                >
+                  {v.tier.label}
+                </Typography>
+              </MenuItem>
+            ))}
         </Select>
       </Grid>
 
