@@ -1,13 +1,13 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { _atomFolder } from "./share/_atomFolder";
-import { _atomSettings } from "./share/_atomSettings";
+import { _atomAppSettings } from "./share/_atomAppSettings";
 import { SETTINGS_FILE_NAME } from "./share/SETTINGS_FILE_NAME";
 import { fileSystem } from "./share/fileSystem";
 
-const atomSettings = atom(
-  (get) => get(_atomSettings),
-  async (get, set, settings: Settings) => {
-    set(_atomSettings, settings);
+const atomAppSettings = atom(
+  (get) => get(_atomAppSettings),
+  async (get, set, settings: AppSettings) => {
+    set(_atomAppSettings, settings);
 
     // 設定ファイルを更新する
     const folder = get(_atomFolder);
@@ -15,8 +15,8 @@ const atomSettings = atom(
   },
 );
 
-export const useSettingsValue = () => useAtomValue(atomSettings);
-export const useSettings = () => {
-  const [settings, setSettings] = useAtom(atomSettings);
+export const useAppSettingsValue = () => useAtomValue(atomAppSettings);
+export const useAppSettings = () => {
+  const [settings, setSettings] = useAtom(atomAppSettings);
   return { settings, setSettingsAsync: setSettings };
 };

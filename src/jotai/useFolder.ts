@@ -1,6 +1,6 @@
 import { atom, useAtom } from "jotai";
 import { _atomFolder } from "./share/_atomFolder";
-import { _atomSettings } from "./share/_atomSettings";
+import { _atomAppSettings } from "./share/_atomAppSettings";
 import { SETTINGS_FILE_NAME } from "./share/SETTINGS_FILE_NAME";
 import { fileSystem } from "./share/fileSystem";
 
@@ -10,11 +10,11 @@ const atomFolder = atom(
     set(_atomFolder, folder);
 
     // Settingsを読み込んでatomにセットする
-    const settings = await fileSystem.parseAsync<Settings>(
+    const settings = await fileSystem.parseAsync<AppSettings>(
       folder,
       SETTINGS_FILE_NAME,
     );
-    set(_atomSettings, settings ?? {});
+    set(_atomAppSettings, settings ?? {});
   },
 );
 

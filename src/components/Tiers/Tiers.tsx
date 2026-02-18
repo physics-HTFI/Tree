@@ -5,15 +5,15 @@ import {
   FormGroup,
   Typography,
 } from "@mui/material";
-import { useSettings } from "./_useSettings";
+import { useAppSettings } from "./_useAppSettings";
 
 export function Tiers() {
   // フック
-  const { settings, setSettingsAsync } = useSettings();
+  const { settings, setSettingsAsync } = useAppSettings();
 
   const tiers = settings.tiers ?? [];
 
-  const updateSettingsAsync = async (tier: Tier, index: number) => {
+  const updateSettingsAsync = async (tier: TierSettings, index: number) => {
     const newTiers = [...tiers];
     newTiers[index] = tier;
     await setSettingsAsync({ ...settings, tiers: newTiers });
@@ -50,9 +50,9 @@ function Label({
   index,
   onChange,
 }: {
-  tier: Tier;
+  tier: TierSettings;
   index: number;
-  onChange: (tier: Tier, index: number) => void;
+  onChange: (tier: TierSettings, index: number) => void;
 }) {
   tier = {
     checked: true,

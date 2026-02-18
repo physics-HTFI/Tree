@@ -14,7 +14,7 @@ import {
 } from "@mui/x-tree-view";
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { useSettingsValue } from "./_useSettingsValue";
+import { useAppSettingsValue } from "./_useAppSettingsValue";
 
 interface CustomTreeItemProps
   extends
@@ -25,7 +25,7 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   props: CustomTreeItemProps,
   ref: React.Ref<HTMLLIElement>,
 ) {
-  const settings = useSettingsValue();
+  const settings = useAppSettingsValue();
   const { id, itemId, label, disabled, children, ...other } = props;
 
   const {
@@ -41,8 +41,7 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
   const item = useTreeItemModel<TreeNode>(itemId)!;
-  const tier =
-    item.type === "file" ? settings?.tiers?.[item.data.tier ?? 0] : undefined;
+  const tier = item.type === "file" ? settings?.tiers?.[item.tier] : undefined;
   const sx = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
@@ -70,10 +69,10 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
             {item.type === "file" ? (
               <>
                 <Typography variant="caption">
-                  {item.data.ticks ? "🕒" : undefined}
+                  {item.hasTicks ? "🕒" : undefined}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {item.data.key}
+                  {item.key}
                 </Typography>
               </>
             ) : (

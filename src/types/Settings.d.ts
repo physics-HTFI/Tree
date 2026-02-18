@@ -1,5 +1,5 @@
-interface Settings {
-  tiers?: Tier[];
+interface AppSettings {
+  tiers?: TierSettings[];
   searchUrl?: string;
   time?: {
     min?: number;
@@ -15,15 +15,32 @@ interface Settings {
     max?: number;
   };
   labels?: {
-    folder?: Record<keyof FolderNode, string>;
-    file?: Record<keyof FileNode, string>;
+    folder?: Record<Exclude<keyof FolderSettings, "order">, string>;
+    file?: Record<Exclude<keyof FileSettings, "base64">, string>;
   };
-  keys?: string[];
+  keys?: Record<number, string>;
 }
 
-interface Tier {
+interface TierSettings {
   label?: string;
   checked?: boolean;
   color?: string;
   underline?: boolean;
+}
+
+interface FolderSettings {
+  path?: string;
+  order?: { title?: string; tier?: number; hasTicks?: boolean; key?: number }[];
+}
+
+interface FileSettings {
+  path?: string;
+  time?: number;
+  start?: number;
+  ticks?: number;
+  key?: number;
+  tier?: number;
+  selected?: boolean;
+  notes?: string;
+  base64?: string;
 }

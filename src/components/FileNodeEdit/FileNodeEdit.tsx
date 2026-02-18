@@ -7,15 +7,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useSettingsValue } from "./_useSettingsValue";
+import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { getTimeString } from "./getTimeString";
 
 export function FileNodeEdit() {
   // フック
-  const settings = useSettingsValue();
+  const settings = useAppSettingsValue();
 
-  const labels: Record<keyof FileNode, string> = {
-    title: "Title",
+  type FileLabel = keyof NonNullable<Required<AppSettings>["labels"]["file"]>;
+  const labels: Record<FileLabel, string> = {
     path: "Path",
     time: "Time",
     start: "Start",
@@ -27,8 +27,7 @@ export function FileNodeEdit() {
     ...settings?.labels?.file,
   };
 
-  const node: FileNode = {
-    title: "Example File",
+  const node: FileSettings = {
     path: "example-file",
     time: 300,
     start: 0,
@@ -52,14 +51,6 @@ export function FileNodeEdit() {
         alignItems: "center",
       }}
     >
-      {/* title */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels.title}</Typography>
-      </Grid>
-      <Grid size={9}>
-        <TextField value={node.title} variant="standard" fullWidth />
-      </Grid>
-
       {/* id */}
       <Grid size={3}>
         <Typography variant="body1">{labels.path}</Typography>
@@ -148,9 +139,9 @@ export function FileNodeEdit() {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {settings?.keys?.map((key) => (
+          {Object.keys(settings?.keys ?? {}).map((key) => (
             <MenuItem key={key} value={key}>
-              {key}
+              {settings?.keys?.[parseInt(key)] ?? "---"}
             </MenuItem>
           ))}
         </Select>

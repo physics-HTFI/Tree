@@ -1,13 +1,13 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { useTreeItemsValue } from "./_useTreeItemsValue";
-import { useSettingsValue } from "./_useSettingsValue";
+import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { CustomTreeItem } from "./TreeItem";
 import { useSelectedItemId } from "./_useSelectedItemId";
 
 export function Tree() {
   // フック
   const tree = useTreeItemsValue();
-  const settings = useSettingsValue();
+  const settings = useAppSettingsValue();
   const [selectedItemId, setSelectedItemId] = useSelectedItemId();
 
   // イベントハンドラー
@@ -23,7 +23,7 @@ export function Tree() {
           ?.map((tier, index) => ({ index, checked: tier.checked === true }))
           ?.filter((tier) => !tier.checked)
           ?.map((tier) => tier.index) ?? [];
-      if (ignore.includes(child.data.tier ?? 0)) return false; // チェックが外れているティアは表示しない
+      if (ignore.includes(child.tier)) return false; // チェックが外れているティアは表示しない
       return true;
     });
   };
