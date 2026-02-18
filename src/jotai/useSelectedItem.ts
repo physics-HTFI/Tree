@@ -4,41 +4,60 @@ import { _atomSelectedItemId } from "./share/_atomSelectedItemId";
 export const useSelectedItemId = () => useAtom(_atomSelectedItemId);
 export const useSelectedItemIdValue = () => useAtomValue(_atomSelectedItemId);
 
-const items: Record<string, FolderSettings | FileSettings> = {
-  "1": {},
-  "2": {},
-  "3": { tier: 0 },
-  "4": { tier: 1 },
-  "5": { tier: 2 },
-  "6": { tier: 3 },
-  "7": { tier: 4 },
-  "8": { tier: 5 },
+const items: Record<
+  string,
+  | { type: "folder"; item: FolderSettings }
+  | { type: "file"; item: FileSettings }
+> = {
+  "1": { type: "folder", item: {} },
+  "2": { type: "folder", item: {} },
+  "3": { type: "file", item: { tier: 0 } },
+  "4": { type: "file", item: { tier: 1 } },
+  "5": { type: "file", item: { tier: 2 } },
+  "6": { type: "file", item: { tier: 3 } },
+  "7": { type: "file", item: { tier: 4 } },
+  "8": { type: "file", item: { tier: 5 } },
   "9": {
-    path: "id1",
-    time: 1,
-    start: 1,
-    ticks: 1,
-    key: 1,
-    tier: 1,
-    selected: false,
-    notes: "note1",
+    type: "file",
+    item: {
+      path: "id1",
+      time: 1,
+      start: 1,
+      ticks: 1,
+      key: 1,
+      tier: 1,
+      selected: false,
+      notes: "note1",
+    },
   },
   "10": {
-    path: "id2",
-    time: 2,
-    start: 2,
-    ticks: 2,
-    key: 2,
-    tier: 2,
-    selected: false,
-    notes: "note2",
+    type: "file",
+    item: {
+      path: "id2",
+      time: 2,
+      start: 2,
+      ticks: 2,
+      key: 2,
+      tier: 2,
+      selected: false,
+      notes: "note2",
+    },
   },
 };
 
-const atomSelectedItem = atom((get) => {
+const atomSelectedFolderSettings = atom((get) => {
   const selectedItemId = get(_atomSelectedItemId);
-  if (!selectedItemId) return null;
-  return items[selectedItemId] ?? null;
+  if (!selectedItemId || items[selectedItemId]?.type !== "folder") return null;
+  return items[selectedItemId].item;
 });
 
-export const useSelectedItemValue = () => useAtomValue(atomSelectedItem);
+const atomSelectedFileSettings = atom((get) => {
+  const selectedItemId = get(_atomSelectedItemId);
+  if (!selectedItemId || items[selectedItemId]?.type !== "file") return null;
+  return items[selectedItemId].item;
+});
+
+export const useSelectedFolderSettingsValue = () =>
+  useAtomValue(atomSelectedFolderSettings);
+export const useSelectedFileSettingsValue = () =>
+  useAtomValue(atomSelectedFileSettings);

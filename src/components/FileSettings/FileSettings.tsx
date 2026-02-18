@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { getTimeString } from "./getTimeString";
+import { useSelectedFileSettingsValue } from "../../jotai/useSelectedItem";
 
 export function FileSettings() {
   // フック
@@ -27,17 +28,8 @@ export function FileSettings() {
     ...settings?.labels?.file,
   };
 
-  const node: FileSettings = {
-    path: "example-file",
-    time: 300,
-    start: 0,
-    ticks: 100,
-    key: 0,
-    tier: 0,
-    selected: false,
-    notes: "This is an example file node.",
-  };
-
+  const node = useSelectedFileSettingsValue();
+  if (!node) return null;
   return (
     <Grid
       container
