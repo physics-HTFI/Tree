@@ -10,6 +10,12 @@ export function Tree() {
   const settings = useAppSettingsValue();
   const [selectedItemId, setSelectedItemId] = useSelectedItemId();
 
+  // チェックが外れているティアのインデックスのリストを作成する
+  const ignoredTiers =
+    settings.tiers
+      ?.map((tier, i) => (tier.checked ? -1 : i))
+      ?.filter((i) => i !== -1) ?? [];
+
   // イベントハンドラー
   const getItemId = (item: TreeNode) => item.nodeId;
   const getItemLabel = (item: TreeNode) => item.title ?? "---";
@@ -18,12 +24,7 @@ export function Tree() {
     if (item.type === "file") return;
     return item.children?.filter((child) => {
       if (child.type === "folder") return true; // フォルダは常に表示する
-      const ignore =
-        settings.tiers
-          ?.map((tier, index) => ({ index, checked: tier.checked === true }))
-          ?.filter((tier) => !tier.checked)
-          ?.map((tier) => tier.index) ?? [];
-      if (ignore.includes(child.tier)) return false; // チェックが外れているティアは表示しない
+      if (ignoredTiers.includes(child.tier)) return false; // チェックが外れているティアは表示しない
       return true;
     });
   };
