@@ -20,7 +20,7 @@ const items: Record<
   "9": {
     type: "file",
     item: {
-      path: "id1",
+      path: "path1",
       time: 1,
       start: 1,
       ticks: 1,
@@ -33,7 +33,7 @@ const items: Record<
   "10": {
     type: "file",
     item: {
-      path: "id2",
+      path: "path2",
       time: 2,
       start: 2,
       ticks: 2,
