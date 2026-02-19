@@ -19,27 +19,3 @@ interface AppSettings {
   };
   keys?: { key?: number; label?: string }[];
 }
-
-interface TierSettings {
-  label?: string;
-  checked?: boolean;
-  color?: string;
-  underline?: boolean;
-}
-
-interface FolderSettings {
-  path?: string;
-  order?: { title?: string; tier?: number; hasTicks?: boolean; key?: number }[];
-}
-
-interface FileSettings {
-  path?: string;
-  time?: number;
-  start?: number;
-  ticks?: number;
-  key?: number;
-  tier?: number;
-  highlighted?: boolean;
-  notes?: string;
-  base64?: string;
-}
