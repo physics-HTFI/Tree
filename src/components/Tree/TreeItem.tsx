@@ -68,12 +68,12 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
             <TreeItemLabel {...getLabelProps()} sx={sx} />
             {item.type === "file" ? (
               <>
-                <Typography variant="caption">
-                  {item.hasTicks ? "🕒" : undefined}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {item.key}
-                </Typography>
+                {item.hasTicks && <Typography variant="caption">🕒</Typography>}
+                {item.key && (
+                  <Typography variant="caption" color="textSecondary">
+                    {item.key}
+                  </Typography>
+                )}
               </>
             ) : (
               <IconButton

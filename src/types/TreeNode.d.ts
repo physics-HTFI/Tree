@@ -11,6 +11,6 @@ type TreeNode =
       nodeId: string;
       title: string;
       tier: number;
-      hasTicks: boolean;
-      key: number;
+      hasTicks?: boolean;
+      key?: string;
     };

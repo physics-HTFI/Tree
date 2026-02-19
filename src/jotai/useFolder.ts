@@ -3,6 +3,8 @@ import { _atomFolder } from "./share/_atomFolder";
 import { _atomAppSettings } from "./share/_atomAppSettings";
 import { SETTINGS_FILE_NAME } from "./share/SETTINGS_FILE_NAME";
 import { fileSystem } from "./share/fileSystem";
+import { _atomGetTreeItems } from "./share/_atomTreeItems";
+import { createTreeItemsFromFolder } from "./share/createTreeItemsFromFolder";
 
 const atomFolder = atom(
   (get) => get(_atomFolder),
@@ -15,10 +17,13 @@ const atomFolder = atom(
       SETTINGS_FILE_NAME,
     );
     set(_atomAppSettings, settings ?? {});
+
+    // フォルダからTreeItemsを生成してatomにセットする
+    set(_atomGetTreeItems, await createTreeItemsFromFolder(folder));
   },
 );
 
 export const useFolder = () => {
   const [folder, setFolder] = useAtom(atomFolder);
-  return { folder, setFolderAsync: setFolder };
+  return { isFolderSelected: !!folder, setFolderAsync: setFolder };
 };

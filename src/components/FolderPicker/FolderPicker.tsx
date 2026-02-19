@@ -5,7 +5,7 @@ import { useFolder } from "./_useFolder";
 
 export function FolderPicker() {
   // フック
-  const { folder, setFolderAsync } = useFolder();
+  const { isFolderSelected, setFolderAsync } = useFolder();
   const { lastUsedFolder, setLastUsedFolderAsync } =
     useLastUsedFolderHandle(setFolderAsync);
 
@@ -15,7 +15,7 @@ export function FolderPicker() {
   const pickLastUsedAsync = async () =>
     await setLastUsedFolderAsync(lastUsedFolder);
 
-  const open = !folder;
+  const open = !isFolderSelected;
   return (
     <Dialog open={open}>
       <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>
