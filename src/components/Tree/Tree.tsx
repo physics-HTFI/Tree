@@ -1,33 +1,17 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import { useTreeItemsValue } from "./_useTreeItemsValue";
-import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { CustomTreeItem } from "./TreeItem";
 import { useSelectedItemId } from "./_useSelectedItemId";
+import { useFilteredTreeItemsValue } from "../../jotai/useTreeItems";
 
 export function Tree() {
   // フック
-  const tree = useTreeItemsValue();
-  const settings = useAppSettingsValue();
+  const tree = useFilteredTreeItemsValue();
   const [selectedItemId, setSelectedItemId] = useSelectedItemId();
-
-  // チェックが外れているティアのインデックスのリストを作成する
-  const ignoredTiers =
-    settings.tiers
-      ?.map((tier, i) => (tier.checked ? -1 : i))
-      ?.filter((i) => i !== -1) ?? [];
 
   // イベントハンドラー
   const getItemId = (item: TreeNode) => item.nodeId;
   const getItemLabel = (item: TreeNode) => item.title ?? "---";
   const isItemSelectionDisabled = (item: TreeNode) => item.type === "folder";
-  const getItemChildren = (item: TreeNode) => {
-    if (item.type === "file") return;
-    return item.children?.filter((child) => {
-      if (child.type === "folder") return true; // フォルダは常に表示する
-      if (ignoredTiers.includes(child.tier)) return false; // チェックが外れているティアは表示しない
-      return true;
-    });
-  };
   const onItemSelectionToggle = (
     _event: React.SyntheticEvent | null,
     itemId: string,
@@ -42,7 +26,6 @@ export function Tree() {
       selectedItems={selectedItemId}
       getItemId={getItemId}
       getItemLabel={getItemLabel}
-      getItemChildren={getItemChildren}
       isItemSelectionDisabled={isItemSelectionDisabled}
       onItemSelectionToggle={onItemSelectionToggle}
       slots={{ item: CustomTreeItem }}

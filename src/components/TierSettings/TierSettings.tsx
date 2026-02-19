@@ -1,8 +1,8 @@
 import {
-  Box,
   Checkbox,
   FormControlLabel,
   FormGroup,
+  Stack,
   Typography,
 } from "@mui/material";
 import { useAppSettings } from "./_useAppSettings";
@@ -20,9 +20,14 @@ export function TierSettings() {
   };
 
   return (
-    <Box sx={{ position: "fixed", top: 4, right: 4 }}>
+    <Stack sx={{ position: "fixed", top: 4, right: 4 }}>
+      <Typography
+        variant="body1"
+        sx={{ borderBottom: "1px solid black", mb: 1, textAlign: "center" }}
+      >
+        {123}
+      </Typography>
       <FormGroup>
-        <Count count={123} />
         {tiers
           .map((tier, i) => ({ tier, i }))
           ?.reverse()
@@ -35,16 +40,7 @@ export function TierSettings() {
             />
           ))}
       </FormGroup>
-    </Box>
-  );
-}
-
-function Count({ count }: { count?: number }) {
-  if (count === undefined) return null;
-  return (
-    <Typography variant="body1" sx={{ borderBottom: "1px solid black", mb: 1 }}>
-      {count}
-    </Typography>
+    </Stack>
   );
 }
 
