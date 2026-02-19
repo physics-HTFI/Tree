@@ -1,6 +1,7 @@
-import { FormGroup, Stack, Typography } from "@mui/material";
+import { FormGroup, Stack } from "@mui/material";
 import { useAppSettings } from "./_useAppSettings";
-import { StyledCheckbox } from "./StyledCheckbox";
+import { CheckboxTier } from "./CheckboxTier";
+import { Counter } from "./Counter";
 
 export function TierSettings() {
   // フック
@@ -17,18 +18,13 @@ export function TierSettings() {
 
   return (
     <Stack sx={{ position: "fixed", top: 4, right: 4 }}>
-      <Typography
-        variant="body1"
-        sx={{ borderBottom: "1px solid black", mb: 1, textAlign: "center" }}
-      >
-        {123}
-      </Typography>
+      <Counter />
       <FormGroup>
         {tiers
           .map((tier, i) => ({ tier, i }))
           ?.reverse()
           ?.map((v) => (
-            <StyledCheckbox
+            <CheckboxTier
               key={`${v.i}: ${v.tier.label}`}
               tier={v.tier}
               index={v.i}

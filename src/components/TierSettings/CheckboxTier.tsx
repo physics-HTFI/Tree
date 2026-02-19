@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 
-export function StyledCheckbox({
+export function CheckboxTier({
   tier,
   index,
   onChange,
