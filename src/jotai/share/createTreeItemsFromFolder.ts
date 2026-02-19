@@ -1,3 +1,8 @@
+import {
+  APP_SETTINGS_FILE_NAME,
+  FOLDER_SETTINGS_FILE_NAME,
+} from "./SETTINGS_FILE_NAME";
+
 export async function createTreeItemsFromFolder(
   folder: FileSystemDirectoryHandle | null,
   parent: string = "",
@@ -17,6 +22,8 @@ export async function createTreeItemsFromFolder(
         children: await createTreeItemsFromFolder(handle, path),
       });
     } else {
+      if (entry.name === APP_SETTINGS_FILE_NAME) continue;
+      if (entry.name === FOLDER_SETTINGS_FILE_NAME) continue;
       fileItems.push({
         type: "file",
         nodeId: path,
