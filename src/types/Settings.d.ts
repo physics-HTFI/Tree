@@ -17,7 +17,7 @@ interface AppSettings {
     folder?: Record<Exclude<keyof FolderSettings, "order">, string>;
     file?: Record<Exclude<keyof FileSettings, "base64">, string>;
   };
-  keys?: Record<number, string>;
+  keys?: { key?: number; label?: string }[];
 }
 
 interface TierSettings {
