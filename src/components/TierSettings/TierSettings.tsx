@@ -1,17 +1,13 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { FormGroup, Stack, Typography } from "@mui/material";
 import { useAppSettings } from "./_useAppSettings";
+import { StyledCheckbox } from "./StyledCheckbox";
 
 export function TierSettings() {
   // フック
   const { settings, setSettingsAsync } = useAppSettings();
 
-  const tiers = settings.tiers ?? [];
+  const tiers = settings.tiers;
+  if (!tiers) return null;
 
   const updateSettingsAsync = async (tier: TierSettings, index: number) => {
     const newTiers = [...tiers];
@@ -32,7 +28,7 @@ export function TierSettings() {
           .map((tier, i) => ({ tier, i }))
           ?.reverse()
           ?.map((v) => (
-            <Label
+            <StyledCheckbox
               key={`${v.i}: ${v.tier.label}`}
               tier={v.tier}
               index={v.i}
@@ -41,51 +37,5 @@ export function TierSettings() {
           ))}
       </FormGroup>
     </Stack>
-  );
-}
-
-function Label({
-  tier,
-  index,
-  onChange,
-}: {
-  tier: TierSettings;
-  index: number;
-  onChange: (tier: TierSettings, index: number) => void;
-}) {
-  tier = {
-    checked: true,
-    color: "black",
-    label: "---",
-    underline: false,
-    ...tier,
-  };
-
-  const handleChange = () => {
-    onChange({ ...tier, checked: !tier.checked }, index);
-  };
-
-  return (
-    <FormControlLabel
-      label={
-        <Typography
-          variant="body1"
-          sx={{
-            color: tier.color,
-            textDecoration: tier.underline ? "underline" : undefined,
-          }}
-        >
-          {tier.label}
-        </Typography>
-      }
-      control={
-        <Checkbox
-          checked={tier.checked}
-          onChange={handleChange}
-          size="small"
-          sx={{ p: 0.5 }}
-        />
-      }
-    />
   );
 }
