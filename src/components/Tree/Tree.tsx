@@ -10,7 +10,7 @@ export function Tree() {
 
   // イベントハンドラー
   const getItemId = (item: TreeNode) => item.nodeId;
-  const getItemLabel = (item: TreeNode) => item.title.replace(/^\d+\s*/, "");
+  const getItemLabel = (item: TreeNode) => item.title;
   const isItemSelectionDisabled = (item: TreeNode) => item.type === "folder";
   const onItemSelectionToggle = (
     _event: React.SyntheticEvent | null,
