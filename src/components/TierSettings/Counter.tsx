@@ -15,14 +15,11 @@ export function Counter() {
   );
 }
 
-function countFiles(items: TreeNode[]): number {
+function countFiles(items: FolderNode | null): number {
+  if (!items) return 0;
   let count = 0;
-  for (const item of items) {
-    if (item.type === "file") {
-      count++;
-    } else if (item.type === "folder" && item.children) {
-      count += countFiles(item.children);
-    }
+  for (const item of items.children) {
+    count += item.type === "folder" ? countFiles(item) : 1;
   }
   return count;
 }

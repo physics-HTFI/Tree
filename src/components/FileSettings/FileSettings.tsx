@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { getTimeString } from "./getTimeString";
-import { useSelectedFileSettingsValue } from "../../jotai/useSelectedItem";
+import { useSelectedItemDataValue } from "../../jotai/useSelectedTreeNode";
 
 export function FileSettings() {
   // フック
@@ -17,13 +17,14 @@ export function FileSettings() {
 
   type FileLabel = keyof NonNullable<Required<AppSettings>["labels"]["file"]>;
   const labels: Record<FileLabel, string> = {
+    title: "Title",
     path: "Path",
     time: "Time",
     start: "Start",
     ticks: "Ticks",
     key: "Key",
     tier: "Tier",
-    highlighted: "highlighted",
+    highlighted: "Highlighted",
     notes: "Notes",
     ...settings?.labels?.file,
   };
@@ -31,8 +32,8 @@ export function FileSettings() {
   const start = { min: 0, max: 100, ...settings?.start };
   const ticks = { min: 50, max: 200, ...settings?.ticks };
 
-  const node = useSelectedFileSettingsValue();
-  if (!node) return null;
+  const item = useSelectedItemDataValue();
+  if (!item) return null;
   return (
     <Grid
       container
@@ -51,7 +52,7 @@ export function FileSettings() {
         <Typography variant="body1">{labels.path}</Typography>
       </Grid>
       <Grid size={9}>
-        <TextField value={node.path ?? ""} variant="standard" fullWidth />
+        <TextField value={item.path ?? ""} variant="standard" fullWidth />
       </Grid>
 
       {/* time */}
@@ -60,14 +61,14 @@ export function FileSettings() {
       </Grid>
       <Grid size={2}>
         <TextField
-          value={node.time ? getTimeString(node.time) : ""}
+          value={item.time ? getTimeString(item.time) : ""}
           variant="standard"
           fullWidth
         />
       </Grid>
       <Grid size={7} sx={{ pl: 0.5 }}>
         <Slider
-          value={node.time ?? time.min}
+          value={item.time ?? time.min}
           min={time.min}
           max={time.max}
           step={10}
@@ -82,7 +83,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={2}>
         <TextField
-          value={node.start ?? ""}
+          value={item.start ?? ""}
           variant="standard"
           type="number"
           fullWidth
@@ -90,7 +91,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={7} sx={{ pl: 0.5 }}>
         <Slider
-          value={node.start ?? start.min}
+          value={item.start ?? start.min}
           min={start.min}
           max={start.max}
           valueLabelDisplay="auto"
@@ -104,7 +105,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={2}>
         <TextField
-          value={node.ticks ?? ""}
+          value={item.ticks ?? ""}
           variant="standard"
           type="number"
           fullWidth
@@ -112,7 +113,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={7} sx={{ pl: 0.5 }}>
         <Slider
-          value={node.ticks ?? ticks.min}
+          value={item.ticks ?? ticks.min}
           min={ticks.min}
           max={ticks.max}
           valueLabelDisplay="auto"
@@ -126,7 +127,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={9}>
         <Select
-          value={node.key ?? ""}
+          value={item.key ?? ""}
           onChange={() => {}}
           variant="standard"
           fullWidth
@@ -148,7 +149,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={9}>
         <Select
-          value={node.tier ?? 0}
+          value={item.tier ?? 0}
           onChange={() => {}}
           variant="standard"
           fullWidth
@@ -179,7 +180,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={9}>
         <Checkbox
-          checked={node.highlighted ?? false}
+          checked={item.highlighted ?? false}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
         />
@@ -191,7 +192,7 @@ export function FileSettings() {
       </Grid>
       <Grid size={9}>
         <TextField
-          value={node.notes ?? ""}
+          value={item.notes ?? ""}
           variant="standard"
           multiline
           fullWidth
