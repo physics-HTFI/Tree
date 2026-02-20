@@ -43,10 +43,10 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   const item = useTreeItemModel<TreeNode>(itemId)!;
   const keyLabel =
     item.type === "item"
-      ? settings?.keys?.find((key) => key.key === item.key)?.label
+      ? settings?.keys?.find((key) => key.key === item.data.key)?.label
       : undefined;
   const tier =
-    item.type === "item" ? settings?.tiers?.[item.tier ?? 0] : undefined;
+    item.type === "item" ? settings?.tiers?.[item.data.tier ?? 0] : undefined;
   const sx = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
@@ -73,7 +73,9 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
             <TreeItemLabel {...getLabelProps()} sx={sx} />
             {item.type === "item" ? (
               <>
-                {item.ticks && <Typography variant="caption">🕒</Typography>}
+                {item.data.ticks && (
+                  <Typography variant="caption">🕒</Typography>
+                )}
                 {keyLabel && (
                   <Typography variant="caption" color="textSecondary">
                     {keyLabel}

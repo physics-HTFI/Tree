@@ -15,7 +15,7 @@ const atomFolder = atom(
     set(_atomAppSettings, settings ?? {});
 
     // フォルダからTreeItemsを生成してatomにセットする
-    set(_atomGetTreeItems, await createTreeItemsFromFolder(folder));
+    set(_atomGetTreeItems, (await createTreeItemsFromFolder(folder)).children);
   },
 );
 

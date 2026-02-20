@@ -1,10 +1,11 @@
 interface FolderData {
   path?: string;
-  entries?: (
-    | { type: "folder"; title: string }
-    | { type: "item"; item: ItemData }
-  )[];
+  entries?: EntryData[];
 }
+
+type EntryData =
+  | { type: "folder"; title: string }
+  | { type: "item"; data: ItemData };
 
 interface ItemData {
   title?: string;

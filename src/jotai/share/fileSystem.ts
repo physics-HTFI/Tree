@@ -1,3 +1,39 @@
+const APP_SETTINGS_FILE_NAME = "app.settings.json";
+const FOLDER_DATA_FILE_NAME = "folder.data.json";
+
+export const fileSystem = {
+  readFolderDataAsync: async (folder: FileSystemDirectoryHandle | null) =>
+    (await parseAsync<FolderData>(folder, FOLDER_DATA_FILE_NAME)) ?? {},
+
+  saveFolderDataAsync: async (
+    folder: FileSystemDirectoryHandle | null,
+    value: FolderNode,
+  ) => {
+    const folderData: FolderData = {
+      path: value.path,
+      entries: value.children.map((child) =>
+        child.type === "folder"
+          ? { type: "folder", title: child.title }
+          : { type: "item", data: child.data },
+      ),
+    };
+    await saveAsync<FolderData>(
+      folder,
+      FOLDER_DATA_FILE_NAME,
+      folderData,
+      formatFolderData,
+    );
+  },
+
+  readAppSettingsAsync: async (folder: FileSystemDirectoryHandle | null) =>
+    (await parseAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME)) ?? {},
+
+  saveAppSettingsAsync: async (
+    folder: FileSystemDirectoryHandle | null,
+    value: AppSettings,
+  ) => await saveAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME, value),
+};
+
 async function parseAsync<T>(
   folder: FileSystemDirectoryHandle | null,
   fileName: string,
@@ -16,10 +52,12 @@ async function saveAsync<T>(
   folder: FileSystemDirectoryHandle | null,
   fileName: string,
   value: T,
+  format?: (json: string) => string,
 ) {
   if (!folder) return;
   try {
-    const json = JSON.stringify(value, null, 2);
+    let json = JSON.stringify(value, null, 2);
+    if (format) json = format(json);
     const fileHandle = await folder.getFileHandle(fileName, {
       create: true,
     });
@@ -31,23 +69,6 @@ async function saveAsync<T>(
   }
 }
 
-const APP_SETTINGS_FILE_NAME = "app.settings.json";
-const FOLDER_DATA_FILE_NAME = "folder.data.json";
-
-export const fileSystem = {
-  readFolderDataAsync: async (folder: FileSystemDirectoryHandle | null) =>
-    (await parseAsync<FolderData>(folder, FOLDER_DATA_FILE_NAME)) ?? {},
-
-  saveFolderDataAsync: async (
-    folder: FileSystemDirectoryHandle | null,
-    value: FolderData,
-  ) => await saveAsync<FolderData>(folder, FOLDER_DATA_FILE_NAME, value),
-
-  readAppSettingsAsync: async (folder: FileSystemDirectoryHandle | null) =>
-    (await parseAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME)) ?? {},
-
-  saveAppSettingsAsync: async (
-    folder: FileSystemDirectoryHandle | null,
-    value: AppSettings,
-  ) => await saveAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME, value),
-};
+function formatFolderData(json: string) {
+  return json.replace(/\n\s+(?!("path"|"entries"|\{|\s|\]))/g, " ");
+}
