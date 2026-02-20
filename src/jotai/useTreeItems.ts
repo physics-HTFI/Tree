@@ -15,7 +15,10 @@ const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
     const children: TreeNode[] = [];
     for (const item of items.children) {
       if (item.type === "folder") {
-        children.push(filterTree(item));
+        const filteredChild = filterTree(item);
+        if (filteredChild.children.length === 0 && ignoredTiers.includes(0))
+          continue;
+        children.push(filteredChild);
       } else {
         if (ignoredTiers.includes(item.data.tier ?? 0)) continue; // チェックが外れているティアは表示しない
         children.push(item);
