@@ -1,1 +1,1 @@
-export { useAppSettings } from "../../jotai/useAppSettings";
+export { useAppSettingsValue } from "../../jotai/useAppSettings";

@@ -1,26 +1,21 @@
 import { atom, useAtomValue } from "jotai";
-import { _atomAppSettings } from "./share/_atomAppSettings";
 import { _atomGetTreeItems } from "./share/_atomTreeItems";
+import { _atomHiddenTiers } from "./share/_atomHiddenTiers";
 
 const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
   const tree = structuredClone(get(_atomGetTreeItems));
+  const hiddenTiers = get(_atomHiddenTiers);
   if (!tree) return null;
-
-  const ignoredTiers =
-    get(_atomAppSettings)
-      .tiers?.map((tier, i) => (tier.checked ? -1 : i))
-      ?.filter((i) => i !== -1) ?? [];
 
   const filterTree = (items: FolderNode): FolderNode => {
     const children: TreeNode[] = [];
     for (const item of items.children) {
       if (item.type === "folder") {
         const filteredChild = filterTree(item);
-        if (filteredChild.children.length === 0 && ignoredTiers.includes(0))
-          continue;
+        if (filteredChild.children.length === 0 && hiddenTiers.has(0)) continue;
         children.push(filteredChild);
       } else {
-        if (ignoredTiers.includes(item.data.tier ?? 0)) continue; // チェックが外れているティアは表示しない
+        if (hiddenTiers.has(item.data.tier ?? 0)) continue; // チェックが外れているティアは表示しない
         children.push(item);
       }
     }

@@ -22,7 +22,6 @@ interface AppSettings {
 
 interface TierSettings {
   label?: string;
-  checked?: boolean;
   color?: string;
   underline?: boolean;
 }

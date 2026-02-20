@@ -1,7 +1,7 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { CustomTreeItem } from "./TreeItem";
 import { useSelectedItemId } from "./_useSelectedItemId";
-import { useFilteredTreeItemsValue } from "../../jotai/useTreeItems";
+import { useFilteredTreeItemsValue } from "./_useFilteredTreeItemsValue";
 
 export function Tree() {
   // フック

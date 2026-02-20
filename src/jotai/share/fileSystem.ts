@@ -27,11 +27,6 @@ export const fileSystem = {
 
   readAppSettingsAsync: async (folder: FileSystemDirectoryHandle | null) =>
     (await parseAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME)) ?? {},
-
-  saveAppSettingsAsync: async (
-    folder: FileSystemDirectoryHandle | null,
-    value: AppSettings,
-  ) => await saveAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME, value),
 };
 
 async function parseAsync<T>(

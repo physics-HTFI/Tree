@@ -1,20 +1,16 @@
 import { FormGroup, Stack } from "@mui/material";
-import { useAppSettings } from "./_useAppSettings";
 import { CheckboxTier } from "./CheckboxTier";
 import { Counter } from "./Counter";
+import { useHiddenTiers } from "../../jotai/useHiddenTiers";
+import { useAppSettingsValue } from "./_useAppSettings";
 
 export function TierSettings() {
   // フック
-  const { settings, setSettingsAsync } = useAppSettings();
+  const settings = useAppSettingsValue();
+  const [hiddenTiers, setHiddenTiers] = useHiddenTiers();
 
   const tiers = settings.tiers;
   if (!tiers) return null;
-
-  const updateSettingsAsync = async (tier: TierSettings, index: number) => {
-    const newTiers = [...tiers];
-    newTiers[index] = tier;
-    await setSettingsAsync({ ...settings, tiers: newTiers });
-  };
 
   return (
     <Stack sx={{ position: "fixed", top: 4, right: 4 }}>
@@ -25,10 +21,17 @@ export function TierSettings() {
           ?.reverse()
           ?.map((v) => (
             <CheckboxTier
+              checked={!hiddenTiers.has(v.i)}
               key={`${v.i}: ${v.tier.label}`}
               tier={v.tier}
-              index={v.i}
-              onChange={updateSettingsAsync}
+              onChange={(checked) => {
+                if (checked) {
+                  hiddenTiers.delete(v.i);
+                } else {
+                  hiddenTiers.add(v.i);
+                }
+                setHiddenTiers(new Set(hiddenTiers));
+              }}
             />
           ))}
       </FormGroup>

@@ -1,16 +1,15 @@
 import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 
 export function CheckboxTier({
+  checked,
   tier,
-  index,
   onChange,
 }: {
+  checked: boolean;
   tier: TierSettings;
-  index: number;
-  onChange: (tier: TierSettings, index: number) => void;
+  onChange: (checked: boolean) => void;
 }) {
   tier = {
-    checked: true,
     color: "black",
     label: "---",
     underline: false,
@@ -18,7 +17,7 @@ export function CheckboxTier({
   };
 
   const handleChange = () => {
-    onChange({ ...tier, checked: !tier.checked }, index);
+    onChange(!checked);
   };
 
   return (
@@ -36,7 +35,7 @@ export function CheckboxTier({
       }
       control={
         <Checkbox
-          checked={tier.checked}
+          checked={checked}
           onChange={handleChange}
           size="small"
           sx={{ p: 0.5 }}
