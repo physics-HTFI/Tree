@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const _atomGetTreeItems = atom<TreeNode[]>([]);
+export const _atomGetTreeItems = atom<FolderNode | null>(null);

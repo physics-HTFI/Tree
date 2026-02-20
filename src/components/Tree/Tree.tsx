@@ -23,7 +23,7 @@ export function Tree() {
 
   return (
     <RichTreeView
-      items={tree}
+      items={tree?.children ?? []}
       selectedItems={selectedItemId}
       getItemId={getItemId}
       getItemLabel={getItemLabel}
