@@ -14,8 +14,15 @@ interface AppSettings {
     max?: number;
   };
   labels?: {
-    folder?: Record<Exclude<keyof FolderSettings, "order">, string>;
-    file?: Record<Exclude<keyof FileSettings, "base64">, string>;
+    folder?: Record<Exclude<keyof FolderData, "order">, string>;
+    file?: Record<keyof ItemData, string>;
   };
   keys?: { key?: number; label?: string }[];
+}
+
+interface TierSettings {
+  label?: string;
+  checked?: boolean;
+  color?: string;
+  underline?: boolean;
 }

@@ -17,7 +17,7 @@ const atomFilteredTreeItems = atom<TreeNode[]>((get) => {
     }
     return items.filter((item) => {
       if (item.type === "folder") return true; // フォルダは常に表示する
-      if (ignoredTiers.includes(item.tier)) return false; // チェックが外れているティアは表示しない
+      if (ignoredTiers.includes(item.tier ?? 0)) return false; // チェックが外れているティアは表示しない
       return true;
     });
   };

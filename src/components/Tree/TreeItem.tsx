@@ -41,7 +41,12 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
   const item = useTreeItemModel<TreeNode>(itemId)!;
-  const tier = item.type === "file" ? settings?.tiers?.[item.tier] : undefined;
+  const keyLabel =
+    item.type === "item"
+      ? settings?.keys?.find((key) => key.key === item.key)?.label
+      : undefined;
+  const tier =
+    item.type === "item" ? settings?.tiers?.[item.tier ?? 0] : undefined;
   const sx = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
@@ -66,12 +71,12 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           <Stack direction="row" spacing={0.5} alignItems="center">
             <TreeItemCheckbox {...getCheckboxProps()} />
             <TreeItemLabel {...getLabelProps()} sx={sx} />
-            {item.type === "file" ? (
+            {item.type === "item" ? (
               <>
-                {item.hasTicks && <Typography variant="caption">🕒</Typography>}
-                {item.key && (
+                {item.ticks && <Typography variant="caption">🕒</Typography>}
+                {keyLabel && (
                   <Typography variant="caption" color="textSecondary">
-                    {item.key}
+                    {keyLabel}
                   </Typography>
                 )}
               </>

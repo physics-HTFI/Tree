@@ -6,8 +6,7 @@ export const useSelectedItemIdValue = () => useAtomValue(_atomSelectedItemId);
 
 const items: Record<
   string,
-  | { type: "folder"; item: FolderSettings }
-  | { type: "file"; item: FileSettings }
+  { type: "folder"; item: FolderData } | { type: "file"; item: ItemData }
 > = {
   "1": { type: "folder", item: {} },
   "2": { type: "folder", item: {} },

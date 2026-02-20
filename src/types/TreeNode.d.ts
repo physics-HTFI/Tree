@@ -1,16 +1,15 @@
-type TreeNode =
-  | {
-      type: "folder";
-      nodeId: string;
-      title: string;
-      handle?: FileSystemDirectoryHandle;
-      children: TreeNode[];
-    }
-  | {
-      type: "file";
-      nodeId: string;
-      title: string;
-      tier: number;
-      hasTicks?: boolean;
-      key?: string;
-    };
+type TreeNode = FolderNode | ItemNode;
+
+type FolderNode = {
+  type: "folder";
+  nodeId: string;
+  title: string;
+  handle?: FileSystemDirectoryHandle;
+  path?: string;
+  children: TreeNode[];
+};
+
+type ItemNode = {
+  type: "item";
+  nodeId: string;
+} & ItemData;

@@ -1,7 +1,6 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { _atomFolder } from "./share/_atomFolder";
 import { _atomAppSettings } from "./share/_atomAppSettings";
-import { APP_SETTINGS_FILE_NAME } from "./share/SETTINGS_FILE_NAME";
 import { fileSystem } from "./share/fileSystem";
 
 const atomAppSettings = atom(
@@ -11,7 +10,7 @@ const atomAppSettings = atom(
 
     // 設定ファイルを更新する
     const folder = get(_atomFolder);
-    await fileSystem.saveAsync(folder, APP_SETTINGS_FILE_NAME, settings);
+    await fileSystem.saveAppSettingsAsync(folder, settings);
   },
 );
 
