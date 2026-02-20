@@ -51,10 +51,12 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
   };
+  const color =
+    item.type === "item" && item?.data.highlighted ? "pink" : undefined;
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
-      <TreeItemRoot {...getRootProps(other)}>
+      <TreeItemRoot {...getRootProps(other)} sx={{ background: color }}>
         <TreeItemContent
           {...getContentProps()}
           sx={{
@@ -75,6 +77,9 @@ export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
               <>
                 {item.data.ticks && (
                   <Typography variant="caption">🕒</Typography>
+                )}
+                {item.data.notes && (
+                  <Typography variant="caption">📝</Typography>
                 )}
                 {keyLabel && (
                   <Typography variant="caption" color="textSecondary">
