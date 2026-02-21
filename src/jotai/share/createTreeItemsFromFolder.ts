@@ -1,19 +1,19 @@
+import { createId } from "./createId";
+import { fileName } from "./fileName";
 import { fileSystem } from "./fileSystem";
-
-const TARGET_EXTENSION = ".svg".toLocaleLowerCase();
 
 export async function createTreeItemsFromFolder(
   handle: FileSystemDirectoryHandle | null,
-  nodeId: string = "root",
 ): Promise<FolderNode> {
-  if (!handle) return { type: "folder", nodeId, title: "---", children: [] };
+  if (!handle)
+    return { type: "folder", nodeId: "---", title: "---", children: [] };
 
   // FolderNodeを作成する
   const folderData = await fileSystem.readFolderDataAsync(handle);
   const folderNode: FolderNode = {
     type: "folder",
     title: handle.name,
-    nodeId,
+    nodeId: createId(),
     handle,
     path: folderData?.path,
     children: [],
@@ -22,24 +22,22 @@ export async function createTreeItemsFromFolder(
   // フォルダ内のエントリを取得し、TreeNodeの配列を作成する
   const children: TreeNode[] = [];
   for await (const entry of handle.values()) {
-    const path = `${nodeId}/${entry.name}`;
     if (entry.kind === "directory") {
       const node = await createTreeItemsFromFolder(
         entry as FileSystemDirectoryHandle,
-        path,
       );
       children.push(node);
     } else {
-      if (!entry.name.toLowerCase().endsWith(TARGET_EXTENSION)) continue;
+      if (!fileName.isSvgFile(entry.name)) continue;
       children.push({
         type: "item",
-        nodeId: path,
+        nodeId: createId(),
         parent: folderNode,
-        data: { title: entry.name },
+        data: { title: fileName.baseName(entry.name) },
       });
     }
   }
-  const sortedChildren = sortNodes(folderData, children);
+  const sortedChildren = sortChildren(folderData, folderNode, children);
   folderNode.children = sortedChildren;
 
   const lengthChanged = folderData?.entries?.length !== children.length;
@@ -47,14 +45,15 @@ export async function createTreeItemsFromFolder(
   return folderNode;
 }
 
-function sortNodes(folderData: FolderData, nodes: TreeNode[]): TreeNode[] {
+function sortChildren(
+  folderData: FolderData,
+  parentNode: FolderNode,
+  childNodes: TreeNode[],
+): TreeNode[] {
   const retval: TreeNode[] = [];
-  const isSameTitle = (entry: EntryData, node: TreeNode) =>
-    (entry.type === "folder" ? entry : entry.data).title ===
-    (node.type === "folder" ? node : node.data).title;
 
   // 未知のノードを追加
-  for (const node of nodes) {
+  for (const node of childNodes) {
     const exists =
       undefined !==
       folderData.entries?.find((entry) => isSameTitle(entry, node));
@@ -64,13 +63,27 @@ function sortNodes(folderData: FolderData, nodes: TreeNode[]): TreeNode[] {
 
   // 既知のノードをソートして追加
   for (const entry of folderData.entries ?? []) {
-    let node = nodes.find((node) => isSameTitle(entry, node));
-    if (!node) continue;
-    if (node.type === "item" && entry.type === "item") {
-      node = { ...node, data: { ...node.data, ...entry.data } };
+    const node = childNodes.find((node) => isSameTitle(entry, node));
+    if (entry.type === "folder") {
+      if (!node) continue;
+      retval.push(node);
+    } else {
+      retval.push({
+        type: "item",
+        nodeId: createId(),
+        parent: parentNode,
+        data: entry.data,
+      });
     }
-    retval.push(node);
   }
 
   return retval;
+}
+
+function isSameTitle(entry: EntryData, node: TreeNode) {
+  if (entry.type === "folder") {
+    return node.type === "folder" ? entry.title === node.title : false;
+  } else {
+    return node.type === "item" ? entry.data.title === node.data.title : false;
+  }
 }
