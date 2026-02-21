@@ -14,15 +14,21 @@ import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { getTimeString } from "./getTimeString";
 import { getSearchUrl } from "./getSearchUrl";
+import { useState } from "react";
 
 export function ItemEditor() {
   // フック
   const settings = useAppSettingsValue();
   const selectedNode = useSelectedItemNodeValue();
   const { updateFolderNodeAsync } = useUpdateFolderNode(selectedNode?.nodeId);
+  const [nodeId, setNodeId] = useState<string>();
+  const [item, setItem] = useState<ItemData>();
 
-  if (!selectedNode?.data) return null;
-  const item = selectedNode.data;
+  if (selectedNode?.nodeId !== nodeId) {
+    setNodeId(selectedNode?.nodeId);
+    setItem(selectedNode?.data);
+  }
+  if (!item) return null;
 
   const labels: Record<keyof ItemData, string> = {
     title: "Title",
@@ -40,6 +46,11 @@ export function ItemEditor() {
   const start = { min: 0, max: 300, ...settings.start };
   const ticks = { min: 0, max: 300, ...settings.ticks };
   const searchUrl = getSearchUrl(settings, item);
+
+  const update = async (newItem: ItemData) => {
+    setItem({ ...item, ...newItem });
+    await updateFolderNodeAsync(newItem);
+  };
 
   return (
     <Grid
@@ -77,9 +88,7 @@ export function ItemEditor() {
           value={item.title ?? ""}
           variant="standard"
           fullWidth
-          onChange={async (e) =>
-            await updateFolderNodeAsync({ title: e.currentTarget.value })
-          }
+          onChange={async (e) => await update({ title: e.currentTarget.value })}
         />
       </Grid>
 
