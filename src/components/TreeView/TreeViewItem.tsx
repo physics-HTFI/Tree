@@ -16,13 +16,13 @@ import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useAppSettingsValue } from "./_useAppSettingsValue";
 
-interface CustomTreeItemProps
+interface CustomTreeViewItemProps
   extends
     Omit<UseTreeItemParameters, "rootRef">,
     Omit<React.HTMLAttributes<HTMLLIElement>, "onFocus"> {}
 
-export const CustomTreeItem = React.forwardRef(function CustomTreeItem(
-  props: CustomTreeItemProps,
+export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
+  props: CustomTreeViewItemProps,
   ref: React.Ref<HTMLLIElement>,
 ) {
   const settings = useAppSettingsValue();

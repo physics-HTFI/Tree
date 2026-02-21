@@ -1,9 +1,9 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import { CustomTreeItem } from "./TreeItem";
+import { CustomTreeViewItem } from "./TreeViewItem";
 import { useSelectedItemId } from "./_useSelectedItemId";
 import { useFilteredTreeItemsValue } from "./_useFilteredTreeItemsValue";
 
-export function Tree() {
+export function TreeView() {
   // フック
   const tree = useFilteredTreeItemsValue();
   const [selectedItemId, setSelectedItemId] = useSelectedItemId();
@@ -29,7 +29,7 @@ export function Tree() {
       getItemLabel={getItemLabel}
       isItemSelectionDisabled={isItemSelectionDisabled}
       onItemSelectionToggle={onItemSelectionToggle}
-      slots={{ item: CustomTreeItem }}
+      slots={{ item: CustomTreeViewItem }}
     />
   );
 }
