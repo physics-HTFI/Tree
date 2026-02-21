@@ -1,6 +1,7 @@
 import {
   Checkbox,
   Grid,
+  IconButton,
   MenuItem,
   Select,
   Slider,
@@ -10,6 +11,7 @@ import {
 import { useAppSettingsValue } from "./_useAppSettingsValue";
 import { getTimeString } from "./getTimeString";
 import { useSelectedItemDataValue } from "../../jotai/useSelectedTreeNode";
+import { Brush, Search } from "@mui/icons-material";
 
 export function FileSettings() {
   // フック
@@ -28,12 +30,20 @@ export function FileSettings() {
     notes: "Notes",
     ...settings?.labels?.file,
   };
-  const time = { min: 100, max: 300, ...settings?.time };
-  const start = { min: 0, max: 100, ...settings?.start };
-  const ticks = { min: 50, max: 200, ...settings?.ticks };
+  const time = { min: 0, max: 300, ...settings?.time };
+  const start = { min: 0, max: 300, ...settings?.start };
+  const ticks = { min: 0, max: 300, ...settings?.ticks };
 
   const item = useSelectedItemDataValue();
   if (!item) return null;
+  const searchUrl =
+    settings?.searchExpression && item.title
+      ? settings.searchExpression.replace(
+          "{{key}}",
+          item.title.replace(".svg", ""),
+        )
+      : null;
+
   return (
     <Grid
       container
@@ -47,6 +57,20 @@ export function FileSettings() {
         alignItems: "center",
       }}
     >
+      <Grid size={12} sx={{ textAlign: "right" }}>
+        {searchUrl && (
+          <IconButton
+            color="primary"
+            onClick={() => window.open(searchUrl, "_blank")}
+          >
+            <Search />
+          </IconButton>
+        )}
+        <IconButton color="primary">
+          <Brush />
+        </IconButton>
+      </Grid>
+
       {/* path */}
       <Grid size={3}>
         <Typography variant="body1">{labels.path}</Typography>
