@@ -71,6 +71,14 @@ export function FileSettings() {
         </IconButton>
       </Grid>
 
+      {/* title */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels.title}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <TextField value={item.title ?? ""} variant="standard" fullWidth />
+      </Grid>
+
       {/* path */}
       <Grid size={3}>
         <Typography variant="body1">{labels.path}</Typography>
