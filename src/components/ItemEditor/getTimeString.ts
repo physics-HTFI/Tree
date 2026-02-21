@@ -1,8 +1,0 @@
-/**
- *  Converts time in seconds to a string in the format "M:SS".
- */
-export function getTimeString(time: number): string {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}

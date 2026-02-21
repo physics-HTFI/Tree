@@ -75,13 +75,13 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
             <TreeItemLabel {...getLabelProps()} sx={sx} />
             {item.type === "item" ? (
               <>
-                {item.data.ticks && (
+                {item.data.ticks !== undefined && (
                   <Typography variant="caption">🕒</Typography>
                 )}
-                {item.data.notes && (
+                {!!item.data.notes && (
                   <Typography variant="caption">📝</Typography>
                 )}
-                {keyLabel && (
+                {!!keyLabel && (
                   <Typography variant="caption" color="textSecondary">
                     {keyLabel}
                   </Typography>
