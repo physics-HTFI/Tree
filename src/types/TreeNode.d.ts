@@ -12,5 +12,6 @@ type FolderNode = {
 type ItemNode = {
   type: "item";
   nodeId: string;
+  parent: FolderNode;
   data: ItemData;
 };

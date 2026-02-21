@@ -14,7 +14,7 @@ interface AppSettings {
     max?: number;
   };
   labels?: {
-    folder?: Record<Exclude<keyof FolderData, "order">, string>;
+    folder?: Record<Exclude<keyof FolderData, "entries">, string>;
     file?: Record<keyof ItemData, string>;
   };
   keys?: { key?: number; label?: string }[];

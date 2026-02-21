@@ -8,6 +8,17 @@ export async function createTreeItemsFromFolder(
 ): Promise<FolderNode> {
   if (!handle) return { type: "folder", nodeId, title: "---", children: [] };
 
+  // FolderNodeを作成する
+  const folderData = await fileSystem.readFolderDataAsync(handle);
+  const folderNode: FolderNode = {
+    type: "folder",
+    title: handle.name,
+    nodeId,
+    handle,
+    path: folderData?.path,
+    children: [],
+  };
+
   // フォルダ内のエントリを取得し、TreeNodeの配列を作成する
   const children: TreeNode[] = [];
   for await (const entry of handle.values()) {
@@ -23,22 +34,13 @@ export async function createTreeItemsFromFolder(
       children.push({
         type: "item",
         nodeId: path,
+        parent: folderNode,
         data: { title: entry.name },
       });
     }
   }
-
-  // FolderNodeを作成する
-  const folderData = await fileSystem.readFolderDataAsync(handle);
   const sortedChildren = sortNodes(folderData, children);
-  const folderNode: FolderNode = {
-    type: "folder",
-    title: handle.name,
-    nodeId,
-    handle,
-    path: folderData?.path,
-    children: sortedChildren,
-  };
+  folderNode.children = sortedChildren;
 
   const lengthChanged = folderData?.entries?.length !== children.length;
   if (lengthChanged) await fileSystem.saveFolderDataAsync(handle, folderNode);

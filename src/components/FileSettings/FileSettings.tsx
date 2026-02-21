@@ -8,17 +8,22 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useAppSettingsValue } from "./_useAppSettingsValue";
-import { getTimeString } from "./getTimeString";
-import { useSelectedItemDataValue } from "../../jotai/useSelectedTreeNode";
 import { Brush, Search } from "@mui/icons-material";
+import { useAppSettingsValue } from "../../jotai/useAppSettings";
+import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
+import { useUpdateFolderNode } from "../../jotai/useTreeItems";
+import { getTimeString } from "./getTimeString";
 
 export function FileSettings() {
   // フック
   const settings = useAppSettingsValue();
+  const selectedNode = useSelectedItemNodeValue();
+  const { updateFolderNodeAsync } = useUpdateFolderNode(selectedNode?.nodeId);
 
-  type FileLabel = keyof NonNullable<Required<AppSettings>["labels"]["file"]>;
-  const labels: Record<FileLabel, string> = {
+  if (!selectedNode?.data) return null;
+  const item = selectedNode.data;
+
+  const labels: Record<keyof ItemData, string> = {
     title: "Title",
     path: "Path",
     time: "Time",
@@ -34,8 +39,6 @@ export function FileSettings() {
   const start = { min: 0, max: 300, ...settings?.start };
   const ticks = { min: 0, max: 300, ...settings?.ticks };
 
-  const item = useSelectedItemDataValue();
-  if (!item) return null;
   const searchUrl =
     settings?.searchExpression && item.title
       ? settings.searchExpression.replace(
@@ -76,7 +79,14 @@ export function FileSettings() {
         <Typography variant="body1">{labels.title}</Typography>
       </Grid>
       <Grid size={9}>
-        <TextField value={item.title ?? ""} variant="standard" fullWidth />
+        <TextField
+          value={item.title ?? ""}
+          variant="standard"
+          fullWidth
+          onChange={async (e) =>
+            await updateFolderNodeAsync({ title: e.currentTarget.value })
+          }
+        />
       </Grid>
 
       {/* path */}
