@@ -13,6 +13,7 @@ import { useAppSettingsValue } from "../../jotai/useAppSettings";
 import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { getTimeString } from "./getTimeString";
+import { getSearchUrl } from "./getSearchUrl";
 
 export function ItemEditor() {
   // フック
@@ -38,14 +39,7 @@ export function ItemEditor() {
   const time = { min: 0, max: 300, ...settings?.time };
   const start = { min: 0, max: 300, ...settings?.start };
   const ticks = { min: 0, max: 300, ...settings?.ticks };
-
-  const searchUrl =
-    settings?.searchExpression && item.title
-      ? settings.searchExpression.replace(
-          "{{key}}",
-          item.title.replace(".svg", ""),
-        )
-      : null;
+  const searchUrl = getSearchUrl(settings, item);
 
   return (
     <Grid
