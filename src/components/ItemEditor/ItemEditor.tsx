@@ -16,6 +16,7 @@ import { toTimeString } from "./toTimeString";
 import { getSearchUrl } from "./getSearchUrl";
 import { useState } from "react";
 import { fromTimeString } from "./fromTimeString";
+import { useDebounce } from "./useDebounce";
 
 export function ItemEditor() {
   // フック
@@ -24,6 +25,10 @@ export function ItemEditor() {
   const { updateFolderNodeAsync } = useUpdateFolderNode(selectedNode?.nodeId);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemData>();
+  const { debounced: debouncedUpdate } = useDebounce(
+    updateFolderNodeAsync,
+    1000,
+  );
 
   if (selectedNode?.nodeId !== nodeId) {
     setNodeId(selectedNode?.nodeId);
@@ -48,9 +53,10 @@ export function ItemEditor() {
   const ticks = { min: 0, max: 300, ...settings.ticks };
   const searchUrl = getSearchUrl(settings, item);
 
-  const update = async (newItem: ItemData) => {
-    setItem({ ...item, ...newItem });
-    await updateFolderNodeAsync(newItem);
+  const update = (diff: ItemData) => {
+    const newItem = { ...item, ...diff };
+    setItem(newItem);
+    debouncedUpdate(newItem);
   };
 
   return (
@@ -89,9 +95,9 @@ export function ItemEditor() {
           value={item.title ?? ""}
           variant="standard"
           fullWidth
-          onChange={async (e) => {
+          onChange={(e) => {
             if (e.currentTarget.value === "") return;
-            await update({ title: filterString(e.currentTarget.value) });
+            update({ title: filterString(e.currentTarget.value) });
           }}
         />
       </Grid>
@@ -105,9 +111,9 @@ export function ItemEditor() {
           value={item.path ?? ""}
           variant="standard"
           fullWidth
-          onChange={async (e) =>
-            await update({ path: filterString(e.currentTarget.value) })
-          }
+          onChange={(e) => {
+            update({ path: filterString(e.currentTarget.value) });
+          }}
         />
       </Grid>
 
@@ -120,9 +126,9 @@ export function ItemEditor() {
           value={item.time ? toTimeString(item.time) : ""}
           variant="standard"
           fullWidth
-          onChange={async (e) => {
+          onChange={(e) => {
             const time = fromTimeString(e.currentTarget.value);
-            await update({ time });
+            update({ time });
           }}
         />
       </Grid>
@@ -147,10 +153,10 @@ export function ItemEditor() {
           variant="standard"
           type="number"
           fullWidth
-          onChange={async (e) => {
+          onChange={(e) => {
             const start = filterNumber(e.target.value);
             if (start !== undefined && start < 0) return;
-            await update({ start });
+            update({ start });
           }}
         />
       </Grid>
@@ -174,10 +180,10 @@ export function ItemEditor() {
           variant="standard"
           type="number"
           fullWidth
-          onChange={async (e) => {
+          onChange={(e) => {
             const ticks = filterNumber(e.target.value);
             if (ticks !== undefined && ticks < 1) return;
-            await update({ ticks });
+            update({ ticks });
           }}
         />
       </Grid>
@@ -198,9 +204,7 @@ export function ItemEditor() {
       <Grid size={9}>
         <Select
           value={item.key ?? ""}
-          onChange={async (e) =>
-            await update({ key: filterNumber(e.target.value) })
-          }
+          onChange={(e) => update({ key: filterNumber(e.target.value) })}
           variant="standard"
           fullWidth
         >
@@ -222,9 +226,7 @@ export function ItemEditor() {
       <Grid size={9}>
         <Select
           value={item.tier ?? 0}
-          onChange={async (e) =>
-            await update({ tier: filterNumber(e.target.value) })
-          }
+          onChange={(e) => update({ tier: filterNumber(e.target.value) })}
           variant="standard"
           fullWidth
           slotProps={{}}
@@ -257,8 +259,8 @@ export function ItemEditor() {
           checked={item.highlighted ?? false}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
-          onChange={async (e) =>
-            await update({ highlighted: e.target.checked ? true : undefined })
+          onChange={(e) =>
+            update({ highlighted: e.target.checked ? true : undefined })
           }
         />
       </Grid>
@@ -273,8 +275,8 @@ export function ItemEditor() {
           variant="standard"
           multiline
           fullWidth
-          onChange={async (e) =>
-            await update({ notes: filterString(e.currentTarget.value) })
+          onChange={(e) =>
+            update({ notes: filterString(e.currentTarget.value) })
           }
         />
       </Grid>
