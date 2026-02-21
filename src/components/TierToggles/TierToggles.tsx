@@ -4,7 +4,7 @@ import { Counter } from "./Counter";
 import { useHiddenTiers } from "../../jotai/useHiddenTiers";
 import { useAppSettingsValue } from "./_useAppSettings";
 
-export function TierSettings() {
+export function TierToggles() {
   // フック
   const settings = useAppSettingsValue();
   const [hiddenTiers, setHiddenTiers] = useHiddenTiers();

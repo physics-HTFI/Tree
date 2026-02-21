@@ -14,7 +14,7 @@ import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { getTimeString } from "./getTimeString";
 
-export function FileSettings() {
+export function ItemEditor() {
   // フック
   const settings = useAppSettingsValue();
   const selectedNode = useSelectedItemNodeValue();
