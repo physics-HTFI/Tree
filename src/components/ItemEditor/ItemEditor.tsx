@@ -34,11 +34,11 @@ export function ItemEditor() {
     tier: "Tier",
     highlighted: "Highlighted",
     notes: "Notes",
-    ...settings?.labels?.file,
+    ...settings.labels?.file,
   };
-  const time = { min: 0, max: 300, ...settings?.time };
-  const start = { min: 0, max: 300, ...settings?.start };
-  const ticks = { min: 0, max: 300, ...settings?.ticks };
+  const time = { min: 0, max: 300, ...settings.time };
+  const start = { min: 0, max: 300, ...settings.start };
+  const ticks = { min: 0, max: 300, ...settings.ticks };
   const searchUrl = getSearchUrl(settings, item);
 
   return (
