@@ -1,12 +1,17 @@
-import { Close } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import { useUnselect } from "../../jotai/useSelectedTreeNode";
+import { useAppSettingsValue } from "../../jotai/useAppSettings";
 
 export function CloseButton() {
   const { unselect } = useUnselect();
+
+  const settings = useAppSettingsValue();
+  const icon = settings.buttons?.close;
+  if (!icon) return null;
+
   return (
-    <IconButton color="primary" onClick={unselect}>
-      <Close />
-    </IconButton>
+    <Button onClick={unselect} sx={{ minWidth: 0 }}>
+      {icon}
+    </Button>
   );
 }

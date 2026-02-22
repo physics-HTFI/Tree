@@ -6,7 +6,7 @@ import { TreeView } from "./components/TreeView/TreeView";
 import { TickPanelButton } from "./components/TickPanelButton/TickPanelButton";
 import { Box, Stack } from "@mui/material";
 import { LinkButton } from "./components/LinkButton/LinkButton";
-import { DrawButton } from "./components/DrawButton/DrawButton";
+import { EditButton } from "./components/EditButton/EditButton";
 import { CloseButton } from "./components/CloseButton/CloseButton";
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
         <TierToggles />
         <Box sx={{ mt: "auto" }} />
         <Stack direction="row" sx={{ my: 2 }}>
-          <DrawButton />
+          <EditButton />
           <LinkButton />
           <TickPanelButton />
           <CloseButton />
