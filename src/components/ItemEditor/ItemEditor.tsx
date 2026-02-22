@@ -23,10 +23,7 @@ export function ItemEditor() {
   const { updateFolderNodeAsync } = useUpdateFolderNode(selectedNode?.nodeId);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemData>();
-  const { debounced: debouncedUpdate } = useDebounce(
-    updateFolderNodeAsync,
-    1000,
-  );
+  const { debounced: debouncedUpdate } = useDebounce(updateFolderNodeAsync);
 
   if (selectedNode?.nodeId !== nodeId) {
     setNodeId(selectedNode?.nodeId);
@@ -37,10 +34,14 @@ export function ItemEditor() {
   const labels = settings.labels?.file;
   const searchUrl = getSearchUrl(settings, item);
 
-  const update = (diff: ItemData) => {
+  const update = (diff: ItemData, delayed: boolean) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
-    debouncedUpdate(newItem);
+    if (delayed) {
+      debouncedUpdate(newItem, 1000);
+    } else {
+      debouncedUpdate(newItem, 0);
+    }
   };
 
   return (
@@ -81,7 +82,7 @@ export function ItemEditor() {
           fullWidth
           onChange={(e) => {
             if (e.currentTarget.value === "") return;
-            update({ title: filterString(e.currentTarget.value) });
+            update({ title: filterString(e.currentTarget.value) }, true);
           }}
         />
       </Grid>
@@ -96,7 +97,7 @@ export function ItemEditor() {
           variant="standard"
           fullWidth
           onChange={(e) => {
-            update({ path: filterString(e.currentTarget.value) });
+            update({ path: filterString(e.currentTarget.value) }, true);
           }}
         />
       </Grid>
@@ -108,10 +109,11 @@ export function ItemEditor() {
       <Grid size={9}>
         <Select
           value={item.tier ?? 0}
-          onChange={(e) => update({ tier: filterNumber(e.target.value) })}
+          onChange={(e) =>
+            update({ tier: filterNumber(e.target.value) }, false)
+          }
           variant="standard"
           fullWidth
-          slotProps={{}}
         >
           {settings?.tiers
             ?.map((tier, i) => ({ tier, i }))
@@ -142,15 +144,18 @@ export function ItemEditor() {
           variant="standard"
           sx={{ width: 60 }}
           onWheel={(e) =>
-            update({
-              time: getWheeledValue(
-                item.time,
-                settings.defaults.time,
-                10,
-                10,
-                e,
-              ),
-            })
+            update(
+              {
+                time: getWheeledValue(
+                  item.time,
+                  settings.defaults.time,
+                  10,
+                  10,
+                  e,
+                ),
+              },
+              true,
+            )
           }
         />
       </Grid>
@@ -165,15 +170,18 @@ export function ItemEditor() {
           variant="standard"
           sx={{ width: 60 }}
           onWheel={(e) =>
-            update({
-              start: getWheeledValue(
-                item.start,
-                settings.defaults.start,
-                0,
-                1,
-                e,
-              ),
-            })
+            update(
+              {
+                start: getWheeledValue(
+                  item.start,
+                  settings.defaults.start,
+                  0,
+                  1,
+                  e,
+                ),
+              },
+              true,
+            )
           }
         />
       </Grid>
@@ -188,15 +196,18 @@ export function ItemEditor() {
           variant="standard"
           sx={{ width: 60 }}
           onWheel={(e) =>
-            update({
-              ticks: getWheeledValue(
-                item.ticks,
-                settings.defaults.ticks,
-                30,
-                1,
-                e,
-              ),
-            })
+            update(
+              {
+                ticks: getWheeledValue(
+                  item.ticks,
+                  settings.defaults.ticks,
+                  30,
+                  1,
+                  e,
+                ),
+              },
+              true,
+            )
           }
         />
       </Grid>
@@ -208,7 +219,7 @@ export function ItemEditor() {
       <Grid size={9}>
         <Select
           value={item.key ?? ""}
-          onChange={(e) => update({ key: filterNumber(e.target.value) })}
+          onChange={(e) => update({ key: filterNumber(e.target.value) }, false)}
           variant="standard"
           fullWidth
         >
@@ -223,7 +234,7 @@ export function ItemEditor() {
         </Select>
       </Grid>
 
-      {/* selected */}
+      {/* highlighted */}
       <Grid size={3}>
         <Typography variant="body1">
           {labels?.highlighted ?? "Highlighted"}
@@ -235,7 +246,7 @@ export function ItemEditor() {
           size="small"
           sx={{ p: 0, display: "inline-block" }}
           onChange={(e) =>
-            update({ highlighted: e.target.checked ? true : undefined })
+            update({ highlighted: e.target.checked ? true : undefined }, false)
           }
         />
       </Grid>
@@ -251,7 +262,7 @@ export function ItemEditor() {
           multiline
           fullWidth
           onChange={(e) =>
-            update({ notes: filterString(e.currentTarget.value) })
+            update({ notes: filterString(e.currentTarget.value) }, true)
           }
         />
       </Grid>
