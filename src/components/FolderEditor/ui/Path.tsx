@@ -1,27 +1,29 @@
 import { OpenInNew } from "@mui/icons-material";
 import { IconButton, Stack, TextField, Typography } from "@mui/material";
+import { filterString } from "../../../utils/filterString";
 
 export function Path({
-  folder,
+  path,
   label,
   onChange,
 }: {
-  folder: FolderNode;
+  path?: string;
   label?: string;
-  onChange: (folder: FolderNode) => void;
+  onChange: (path?: string) => void;
 }) {
   return (
     <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
       <Typography variant="body1">{label ?? "Path"}</Typography>
       <TextField
-        value={folder.path ?? ""}
+        value={path ?? ""}
         variant="standard"
         fullWidth
-        onChange={(e) => onChange({ ...folder, path: e.currentTarget.value })}
+        onChange={(e) => onChange(filterString(e.currentTarget.value))}
       />
       <IconButton
-        disabled={!folder.path}
-        onClick={() => window.open(folder.path, "_blank")}
+        disabled={!path}
+        color="primary"
+        onClick={() => path && window.open(path, "_blank")}
       >
         <OpenInNew />
       </IconButton>
