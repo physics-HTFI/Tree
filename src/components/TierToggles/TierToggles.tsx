@@ -2,7 +2,7 @@ import { FormGroup, Stack } from "@mui/material";
 import { CheckboxTier } from "./CheckboxTier";
 import { Counter } from "./Counter";
 import { useHiddenTiers } from "../../jotai/useHiddenTiers";
-import { useAppSettingsValue } from "./_useAppSettings";
+import { useAppSettingsValue } from "../../jotai/useAppSettings";
 
 export function TierToggles() {
   // フック

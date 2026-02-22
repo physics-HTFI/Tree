@@ -1,12 +1,12 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { CustomTreeViewItem } from "./TreeViewItem";
-import { useSelectedItemId } from "./_useSelectedItemId";
-import { useFilteredTreeItemsValue } from "./_useFilteredTreeItemsValue";
+import { useFilteredTreeItemsValue } from "../../jotai/useTreeItems";
+import { useSelectedTreeNodeId } from "../../jotai/useSelectedTreeNode";
 
 export function TreeView() {
   // フック
   const tree = useFilteredTreeItemsValue();
-  const [selectedItemId, setSelectedItemId] = useSelectedItemId();
+  const [selectedItemId, setSelectedItemId] = useSelectedTreeNodeId();
 
   // イベントハンドラー
   const getItemId = (item: TreeNode) => item.nodeId;

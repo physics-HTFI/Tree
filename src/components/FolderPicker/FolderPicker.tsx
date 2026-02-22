@@ -1,7 +1,7 @@
 import { pickLocalFolderAsync } from "./pickLocalFolder";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useLastUsedFolderHandle } from "./useLastUsedFolderHandle";
-import { useFolder } from "./_useFolder";
+import { useFolder } from "../../jotai/useFolder";
 
 export function FolderPicker() {
   // フック
