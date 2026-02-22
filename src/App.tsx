@@ -3,6 +3,7 @@ import { TierToggles } from "./components/TierToggles/TierToggles";
 import { ItemEditor } from "./components/ItemEditor/ItemEditor";
 import Grid from "@mui/material/Grid";
 import { TreeView } from "./components/TreeView/TreeView";
+import { TickDialogButton } from "./components/TickDialogButton/TickDialogButton";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <FolderPicker />
       <TierToggles />
       <ItemEditor />
+      <TickDialogButton />
     </>
   );
 }
