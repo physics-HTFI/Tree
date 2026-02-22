@@ -13,5 +13,6 @@ type ItemNode = {
   type: "item";
   nodeId: string;
   parent: FolderNode;
+  hasSvg: boolean;
   data: ItemData;
 };

@@ -33,6 +33,7 @@ export async function createTreeItemsFromFolder(
         type: "item",
         nodeId: createId(),
         parent: folderNode,
+        hasSvg: true,
         data: { title: fileName.baseName(entry.name) },
       });
     }
@@ -72,6 +73,7 @@ function sortChildren(
         type: "item",
         nodeId: createId(),
         parent: parentNode,
+        hasSvg: !!node,
         data: entry.data,
       });
     }

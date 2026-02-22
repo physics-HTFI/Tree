@@ -70,23 +70,27 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
           <TreeItemIconContainer {...getIconContainerProps()}>
             <TreeItemIcon status={status} slots={{ endIcon: VerticalLine }} />
           </TreeItemIconContainer>
-          <Stack direction="row" spacing={0.5} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: "center",
+              // width: item.type === "item" ? "100%" : undefined,
+            }}
+          >
             <TreeItemCheckbox {...getCheckboxProps()} />
             <TreeItemLabel {...getLabelProps()} sx={sx} />
             {item.type === "item" ? (
-              <>
-                {item.data.ticks !== undefined && (
-                  <Typography variant="caption">🕒</Typography>
-                )}
-                {!!item.data.notes && (
-                  <Typography variant="caption">📝</Typography>
-                )}
-                {!!keyLabel && (
-                  <Typography variant="caption" color="textSecondary">
-                    {keyLabel}
-                  </Typography>
-                )}
-              </>
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                whiteSpace="nowrap"
+              >
+                {item.hasSvg && "🖼️"}
+                {item.data.ticks !== undefined && "🕒"}
+                {!!item.data.notes && "📝"}
+                {!!keyLabel && keyLabel}
+              </Typography>
             ) : (
               <IconButton
                 onClick={(e) => e.stopPropagation()}
