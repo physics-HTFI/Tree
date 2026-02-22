@@ -3,7 +3,7 @@ import { TierToggles } from "./components/TierToggles/TierToggles";
 import { ItemEditor } from "./components/ItemEditor/ItemEditor";
 import Grid from "@mui/material/Grid";
 import { TreeView } from "./components/TreeView/TreeView";
-import { TickDialogButton } from "./components/TickDialogButton/TickDialogButton";
+import { TickDialogButton } from "./components/TickPanelButton/TickPanelButton";
 
 function App() {
   return (
