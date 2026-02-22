@@ -31,7 +31,6 @@ export function ItemForm({
       spacing={1}
       sx={{
         textAlign: "left",
-        maxWidth: 300,
         alignItems: "center",
       }}
     >

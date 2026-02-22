@@ -30,6 +30,7 @@ function App() {
           top: 8,
           bottom: 8,
           right: 8,
+          maxWidth: 300,
         }}
       >
         <TierToggles />
