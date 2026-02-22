@@ -7,8 +7,8 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
 import { useTick } from "./useTick";
 import { Box, Card, CardContent, ClickAwayListener } from "@mui/material";
-import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
-import { useAppSettingsValue } from "../../jotai/useAppSettings";
+import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
+import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
   const selectedItem = useSelectedItemNodeValue();

@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Button, Popper } from "@mui/material";
+import { Popper } from "@mui/material";
 import { TickPanel } from "./TickPanel";
-import { useAppSettingsValue } from "../../jotai/useAppSettings";
+import { useAppSettingsValue } from "../../../jotai/useAppSettings";
+import { ButtonBase } from "../ui/ButtonBase";
 
 export function TickPanelButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -12,12 +13,10 @@ export function TickPanelButton() {
 
   return (
     <>
-      <Button
+      <ButtonBase
+        type="tick"
         onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}
-        sx={{ minWidth: 0 }}
-      >
-        {icon}
-      </Button>
+      />
       <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top-end">
         <TickPanel onClose={() => setAnchorEl(null)} />
       </Popper>

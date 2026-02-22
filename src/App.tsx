@@ -3,11 +3,13 @@ import { TierToggles } from "./components/TierToggles/TierToggles";
 import { ItemEditor } from "./components/ItemEditor/ItemEditor";
 import Grid from "@mui/material/Grid";
 import { TreeView } from "./components/TreeView/TreeView";
-import { TickPanelButton } from "./components/TickPanelButton/TickPanelButton";
 import { Box, Stack } from "@mui/material";
-import { LinkButton } from "./components/LinkButton/LinkButton";
-import { EditButton } from "./components/EditButton/EditButton";
-import { CloseButton } from "./components/CloseButton/CloseButton";
+import {
+  CloseButton,
+  EditButton,
+  LinkButton,
+  TickPanelButton,
+} from "./components/Buttons";
 
 function App() {
   return (
