@@ -5,7 +5,7 @@ export function getWheeledNumber(
   event: React.WheelEvent,
 ): number | undefined {
   if (event.target !== document.activeElement) return item[type]; // 未フォーカス時は無視する（誤変更を防ぐため）
-  const defaultValue = settings.defaults[type];
+  const defaultValue = settings?.defaults?.[type];
   const constants = {
     time: { min: 10, delta: 10 },
     start: { min: 0, delta: 1 },

@@ -1,7 +1,7 @@
 interface AppSettings {
   tiers?: TierSettings[];
   searchExpression?: string;
-  defaults: {
+  defaults?: {
     time?: number;
     start?: number;
     ticks?: number;

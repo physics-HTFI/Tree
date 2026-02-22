@@ -25,7 +25,9 @@ export const fileSystem = {
     );
   },
 
-  readAppSettingsAsync: async (folder: FileSystemDirectoryHandle | null) =>
+  readAppSettingsAsync: async (
+    folder: FileSystemDirectoryHandle | null,
+  ): Promise<AppSettings> =>
     (await parseAsync<AppSettings>(folder, APP_SETTINGS_FILE_NAME)) ?? {},
 };
 
