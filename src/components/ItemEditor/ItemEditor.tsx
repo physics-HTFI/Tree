@@ -36,21 +36,7 @@ export function ItemEditor() {
   }
   if (!item) return null;
 
-  const labels: Record<keyof ItemData, string> = {
-    title: "Title",
-    path: "Path",
-    time: "Time",
-    start: "Start",
-    ticks: "Ticks",
-    key: "Key",
-    tier: "Tier",
-    highlighted: "Highlighted",
-    notes: "Notes",
-    ...settings.labels?.file,
-  };
-  const time = { min: 0, max: 300, ...settings.time };
-  const start = { min: 0, max: 300, ...settings.start };
-  const ticks = { min: 0, max: 300, ...settings.ticks };
+  const labels = settings.labels?.file;
   const searchUrl = getSearchUrl(settings, item);
 
   const update = (diff: ItemData) => {
@@ -88,7 +74,7 @@ export function ItemEditor() {
 
       {/* title */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.title}</Typography>
+        <Typography variant="body1">{labels?.title ?? "Title"}</Typography>
       </Grid>
       <Grid size={9}>
         <TextField
@@ -104,7 +90,7 @@ export function ItemEditor() {
 
       {/* path */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.path}</Typography>
+        <Typography variant="body1">{labels?.path ?? "Path"}</Typography>
       </Grid>
       <Grid size={9}>
         <TextField
@@ -119,7 +105,7 @@ export function ItemEditor() {
 
       {/* time */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.time}</Typography>
+        <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
       </Grid>
       <Grid size={2}>
         <TextField
@@ -134,9 +120,9 @@ export function ItemEditor() {
       </Grid>
       <Grid size={7} sx={{ pl: 0.5 }}>
         <Slider
-          value={item.time ?? time.min}
-          min={time.min}
-          max={time.max}
+          value={item.time}
+          min={settings?.time?.min}
+          max={settings?.time?.max}
           step={10}
           valueLabelDisplay="auto"
           size="small"
@@ -145,7 +131,7 @@ export function ItemEditor() {
 
       {/* start */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.start}</Typography>
+        <Typography variant="body1">{labels?.start ?? "Start"}</Typography>
       </Grid>
       <Grid size={2}>
         <TextField
@@ -162,9 +148,9 @@ export function ItemEditor() {
       </Grid>
       <Grid size={7} sx={{ pl: 0.5 }}>
         <Slider
-          value={item.start ?? start.min}
-          min={start.min}
-          max={start.max}
+          value={item.start}
+          min={settings?.start?.min}
+          max={settings?.start?.max}
           valueLabelDisplay="auto"
           size="small"
         />
@@ -172,7 +158,7 @@ export function ItemEditor() {
 
       {/* ticks */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.ticks}</Typography>
+        <Typography variant="body1">{labels?.ticks ?? "Ticks"}</Typography>
       </Grid>
       <Grid size={2}>
         <TextField
@@ -189,9 +175,9 @@ export function ItemEditor() {
       </Grid>
       <Grid size={7} sx={{ pl: 0.5 }}>
         <Slider
-          value={item.ticks ?? ticks.min}
-          min={ticks.min}
-          max={ticks.max}
+          value={item.ticks}
+          min={settings?.ticks?.min}
+          max={settings?.ticks?.max}
           valueLabelDisplay="auto"
           size="small"
         />
@@ -199,7 +185,7 @@ export function ItemEditor() {
 
       {/* key */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.key}</Typography>
+        <Typography variant="body1">{labels?.key ?? "Key"}</Typography>
       </Grid>
       <Grid size={9}>
         <Select
@@ -221,7 +207,7 @@ export function ItemEditor() {
 
       {/* tier */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.tier}</Typography>
+        <Typography variant="body1">{labels?.tier ?? "Tier"}</Typography>
       </Grid>
       <Grid size={9}>
         <Select
@@ -252,7 +238,9 @@ export function ItemEditor() {
 
       {/* selected */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.highlighted}</Typography>
+        <Typography variant="body1">
+          {labels?.highlighted ?? "Highlighted"}
+        </Typography>
       </Grid>
       <Grid size={9}>
         <Checkbox
@@ -267,7 +255,7 @@ export function ItemEditor() {
 
       {/* notes */}
       <Grid size={3}>
-        <Typography variant="body1">{labels.notes}</Typography>
+        <Typography variant="body1">{labels?.notes ?? "Notes"}</Typography>
       </Grid>
       <Grid size={9}>
         <TextField
