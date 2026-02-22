@@ -107,7 +107,7 @@ export function ItemEditor() {
       <Grid size={3}>
         <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
       </Grid>
-      <Grid size={2}>
+      <Grid size={2.5}>
         <TextField
           value={item.time ? toTimeString(item.time) : ""}
           variant="standard"
@@ -118,14 +118,14 @@ export function ItemEditor() {
           }}
         />
       </Grid>
-      <Grid size={7} sx={{ pl: 0.5 }}>
+      <Grid size={6.5} sx={{ pl: 0.5 }}>
         <Slider
           value={item.time}
           min={settings?.time?.min}
           max={settings?.time?.max}
           step={10}
-          valueLabelDisplay="auto"
           size="small"
+          onChange={(_, time) => update({ time })}
         />
       </Grid>
 
@@ -133,7 +133,7 @@ export function ItemEditor() {
       <Grid size={3}>
         <Typography variant="body1">{labels?.start ?? "Start"}</Typography>
       </Grid>
-      <Grid size={2}>
+      <Grid size={2.5}>
         <TextField
           value={item.start ?? ""}
           variant="standard"
@@ -146,13 +146,13 @@ export function ItemEditor() {
           }}
         />
       </Grid>
-      <Grid size={7} sx={{ pl: 0.5 }}>
+      <Grid size={6.5} sx={{ pl: 0.5 }}>
         <Slider
           value={item.start}
           min={settings?.start?.min}
           max={settings?.start?.max}
-          valueLabelDisplay="auto"
           size="small"
+          onChange={(_, start) => update({ start })}
         />
       </Grid>
 
@@ -160,7 +160,7 @@ export function ItemEditor() {
       <Grid size={3}>
         <Typography variant="body1">{labels?.ticks ?? "Ticks"}</Typography>
       </Grid>
-      <Grid size={2}>
+      <Grid size={2.5}>
         <TextField
           value={item.ticks ?? ""}
           variant="standard"
@@ -173,13 +173,13 @@ export function ItemEditor() {
           }}
         />
       </Grid>
-      <Grid size={7} sx={{ pl: 0.5 }}>
+      <Grid size={6.5} sx={{ pl: 0.5 }}>
         <Slider
           value={item.ticks}
           min={settings?.ticks?.min}
           max={settings?.ticks?.max}
-          valueLabelDisplay="auto"
           size="small"
+          onChange={(_, ticks) => update({ ticks })}
         />
       </Grid>
 
