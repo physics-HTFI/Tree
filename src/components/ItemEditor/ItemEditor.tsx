@@ -4,6 +4,7 @@ import {
   IconButton,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -11,10 +12,12 @@ import { Brush, Search } from "@mui/icons-material";
 import { useAppSettingsValue } from "../../jotai/useAppSettings";
 import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
-import { toTimeString } from "./toTimeString";
-import { getSearchUrl } from "./getSearchUrl";
+import { toTimeString } from "./utils/toTimeString";
+import { getSearchUrl } from "./utils/getSearchUrl";
 import { useState } from "react";
 import { useDebounce } from "./useDebounce";
+import { getWheeledNumber } from "./utils/getWheeledNumber";
+import { CloseButton } from "./ui/CloseButton";
 
 export function ItemEditor() {
   // フック
@@ -40,7 +43,7 @@ export function ItemEditor() {
     if (delayed) {
       debouncedUpdate(newItem, 1000);
     } else {
-      debouncedUpdate(newItem, 0);
+      debouncedUpdate(newItem, 100);
     }
   };
 
@@ -80,10 +83,9 @@ export function ItemEditor() {
           value={item.title ?? ""}
           variant="standard"
           fullWidth
-          onChange={(e) => {
-            if (e.currentTarget.value === "") return;
-            update({ title: filterString(e.currentTarget.value) }, true);
-          }}
+          onChange={(e) =>
+            update({ title: filterString(e.currentTarget.value) }, true)
+          }
         />
       </Grid>
 
@@ -144,20 +146,10 @@ export function ItemEditor() {
           variant="standard"
           sx={{ width: 60 }}
           onWheel={(e) =>
-            update(
-              {
-                time: getWheeledValue(
-                  item.time,
-                  settings.defaults.time,
-                  10,
-                  10,
-                  e,
-                ),
-              },
-              true,
-            )
+            update({ time: getWheeledNumber("time", item, settings, e) }, true)
           }
         />
+        <CloseButton onClick={() => update({ time: undefined }, false)} />
       </Grid>
 
       {/* start */}
@@ -171,19 +163,12 @@ export function ItemEditor() {
           sx={{ width: 60 }}
           onWheel={(e) =>
             update(
-              {
-                start: getWheeledValue(
-                  item.start,
-                  settings.defaults.start,
-                  0,
-                  1,
-                  e,
-                ),
-              },
+              { start: getWheeledNumber("start", item, settings, e) },
               true,
             )
           }
         />
+        <CloseButton onClick={() => update({ start: undefined }, false)} />
       </Grid>
 
       {/* ticks */}
@@ -197,19 +182,12 @@ export function ItemEditor() {
           sx={{ width: 60 }}
           onWheel={(e) =>
             update(
-              {
-                ticks: getWheeledValue(
-                  item.ticks,
-                  settings.defaults.ticks,
-                  30,
-                  1,
-                  e,
-                ),
-              },
+              { ticks: getWheeledNumber("ticks", item, settings, e) },
               true,
             )
           }
         />
+        <CloseButton onClick={() => update({ ticks: undefined }, false)} />
       </Grid>
 
       {/* key */}
@@ -221,17 +199,15 @@ export function ItemEditor() {
           value={item.key ?? ""}
           onChange={(e) => update({ key: filterNumber(e.target.value) }, false)}
           variant="standard"
-          fullWidth
+          sx={{ width: 90 }}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           {settings?.keys?.map((key, index) => (
             <MenuItem key={index} value={key.key}>
               {key.label ?? "---"}
             </MenuItem>
           ))}
         </Select>
+        <CloseButton onClick={() => update({ key: undefined }, false)} />
       </Grid>
 
       {/* highlighted */}
@@ -256,15 +232,18 @@ export function ItemEditor() {
         <Typography variant="body1">{labels?.notes ?? "Notes"}</Typography>
       </Grid>
       <Grid size={9}>
-        <TextField
-          value={item.notes ?? ""}
-          variant="standard"
-          multiline
-          fullWidth
-          onChange={(e) =>
-            update({ notes: filterString(e.currentTarget.value) }, true)
-          }
-        />
+        <Stack direction="row" alignItems="center">
+          <TextField
+            value={item.notes ?? ""}
+            variant="standard"
+            multiline
+            fullWidth
+            onChange={(e) =>
+              update({ notes: filterString(e.currentTarget.value) }, true)
+            }
+          />
+          <CloseButton onClick={() => update({ notes: undefined }, false)} />
+        </Stack>
       </Grid>
     </Grid>
   );
@@ -278,16 +257,4 @@ function filterNumber(value: string | number) {
   if (value === "") return undefined;
   const num = Number(value);
   return isNaN(num) ? undefined : num;
-}
-
-function getWheeledValue(
-  value: number | undefined,
-  defaultValue: number | undefined,
-  min: number,
-  delta: number,
-  event: React.WheelEvent,
-) {
-  if (event.target !== document.activeElement) return value; // 未フォーカス時は無視する（誤変更を防ぐため）
-  if (value === undefined) return defaultValue ?? min;
-  return Math.max(min, value + (event.deltaY > 0 ? 1 : -1) * delta);
 }
