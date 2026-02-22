@@ -1,17 +1,10 @@
 interface AppSettings {
   tiers?: TierSettings[];
   searchExpression?: string;
-  time?: {
-    min?: number;
-    max?: number;
-  };
-  start?: {
-    min?: number;
-    max?: number;
-  };
-  ticks?: {
-    min?: number;
-    max?: number;
+  defaults: {
+    time?: number;
+    start?: number;
+    ticks?: number;
   };
   labels?: {
     folder?: Record<Exclude<keyof FolderData, "entries">, string>;

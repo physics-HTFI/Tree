@@ -4,7 +4,6 @@ import {
   IconButton,
   MenuItem,
   Select,
-  Slider,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,7 +14,6 @@ import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { toTimeString } from "./toTimeString";
 import { getSearchUrl } from "./getSearchUrl";
 import { useState } from "react";
-import { fromTimeString } from "./fromTimeString";
 import { useDebounce } from "./useDebounce";
 
 export function ItemEditor() {
@@ -103,108 +101,6 @@ export function ItemEditor() {
         />
       </Grid>
 
-      {/* time */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
-      </Grid>
-      <Grid size={2.5}>
-        <TextField
-          value={item.time ? toTimeString(item.time) : ""}
-          variant="standard"
-          fullWidth
-          onChange={(e) => {
-            const time = fromTimeString(e.currentTarget.value);
-            update({ time });
-          }}
-        />
-      </Grid>
-      <Grid size={6.5} sx={{ pl: 0.5 }}>
-        <Slider
-          value={item.time}
-          min={settings?.time?.min}
-          max={settings?.time?.max}
-          step={10}
-          size="small"
-          onChange={(_, time) => update({ time })}
-        />
-      </Grid>
-
-      {/* start */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels?.start ?? "Start"}</Typography>
-      </Grid>
-      <Grid size={2.5}>
-        <TextField
-          value={item.start ?? ""}
-          variant="standard"
-          type="number"
-          fullWidth
-          onChange={(e) => {
-            const start = filterNumber(e.target.value);
-            if (start !== undefined && start < 0) return;
-            update({ start });
-          }}
-        />
-      </Grid>
-      <Grid size={6.5} sx={{ pl: 0.5 }}>
-        <Slider
-          value={item.start}
-          min={settings?.start?.min}
-          max={settings?.start?.max}
-          size="small"
-          onChange={(_, start) => update({ start })}
-        />
-      </Grid>
-
-      {/* ticks */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels?.ticks ?? "Ticks"}</Typography>
-      </Grid>
-      <Grid size={2.5}>
-        <TextField
-          value={item.ticks ?? ""}
-          variant="standard"
-          type="number"
-          fullWidth
-          onChange={(e) => {
-            const ticks = filterNumber(e.target.value);
-            if (ticks !== undefined && ticks < 1) return;
-            update({ ticks });
-          }}
-        />
-      </Grid>
-      <Grid size={6.5} sx={{ pl: 0.5 }}>
-        <Slider
-          value={item.ticks}
-          min={settings?.ticks?.min}
-          max={settings?.ticks?.max}
-          size="small"
-          onChange={(_, ticks) => update({ ticks })}
-        />
-      </Grid>
-
-      {/* key */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels?.key ?? "Key"}</Typography>
-      </Grid>
-      <Grid size={9}>
-        <Select
-          value={item.key ?? ""}
-          onChange={(e) => update({ key: filterNumber(e.target.value) })}
-          variant="standard"
-          fullWidth
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          {settings?.keys?.map((key, index) => (
-            <MenuItem key={index} value={key.key}>
-              {key.label ?? "---"}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-
       {/* tier */}
       <Grid size={3}>
         <Typography variant="body1">{labels?.tier ?? "Tier"}</Typography>
@@ -233,6 +129,97 @@ export function ItemEditor() {
                 </Typography>
               </MenuItem>
             ))}
+        </Select>
+      </Grid>
+
+      {/* time */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <TextField
+          value={item.time ? toTimeString(item.time) : ""}
+          variant="standard"
+          sx={{ width: 60 }}
+          onWheel={(e) =>
+            update({
+              time: getWheeledValue(
+                item.time,
+                settings.defaults.time,
+                10,
+                10,
+                e,
+              ),
+            })
+          }
+        />
+      </Grid>
+
+      {/* start */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.start ?? "Start"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <TextField
+          value={item.start ?? ""}
+          variant="standard"
+          sx={{ width: 60 }}
+          onWheel={(e) =>
+            update({
+              start: getWheeledValue(
+                item.start,
+                settings.defaults.start,
+                0,
+                1,
+                e,
+              ),
+            })
+          }
+        />
+      </Grid>
+
+      {/* ticks */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.ticks ?? "Ticks"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <TextField
+          value={item.ticks ?? ""}
+          variant="standard"
+          sx={{ width: 60 }}
+          onWheel={(e) =>
+            update({
+              ticks: getWheeledValue(
+                item.ticks,
+                settings.defaults.ticks,
+                30,
+                1,
+                e,
+              ),
+            })
+          }
+        />
+      </Grid>
+
+      {/* key */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.key ?? "Key"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <Select
+          value={item.key ?? ""}
+          onChange={(e) => update({ key: filterNumber(e.target.value) })}
+          variant="standard"
+          fullWidth
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {settings?.keys?.map((key, index) => (
+            <MenuItem key={index} value={key.key}>
+              {key.label ?? "---"}
+            </MenuItem>
+          ))}
         </Select>
       </Grid>
 
@@ -280,4 +267,16 @@ function filterNumber(value: string | number) {
   if (value === "") return undefined;
   const num = Number(value);
   return isNaN(num) ? undefined : num;
+}
+
+function getWheeledValue(
+  value: number | undefined,
+  defaultValue: number | undefined,
+  min: number,
+  delta: number,
+  event: React.WheelEvent,
+) {
+  if (event.target !== document.activeElement) return value; // 未フォーカス時は無視する（誤変更を防ぐため）
+  if (value === undefined) return defaultValue ?? min;
+  return Math.max(min, value + (event.deltaY > 0 ? 1 : -1) * delta);
 }
