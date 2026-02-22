@@ -12,7 +12,7 @@ import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { toTimeString } from "./utils/toTimeString";
 import { useState } from "react";
-import { useDebounce } from "./useDebounce";
+import { useDebounce } from "../../hooks/useDebounce";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 
@@ -20,7 +20,9 @@ export function ItemEditor() {
   // フック
   const settings = useAppSettingsValue();
   const selectedNode = useSelectedItemNodeValue();
-  const { updateFolderNodeAsync } = useUpdateFolderNode(selectedNode?.nodeId);
+  const { updateByItemDataAsync: updateFolderNodeAsync } = useUpdateFolderNode(
+    selectedNode?.nodeId,
+  );
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemData>();
   const { debounced: debouncedUpdate } = useDebounce(updateFolderNodeAsync);

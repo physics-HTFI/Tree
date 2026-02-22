@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { _atomSelectedTreeNodeId } from "./share/_atomSelectedTreeNodeId";
 import { _atomTreeItems } from "./share/_atomTreeItems";
 
@@ -8,6 +8,8 @@ const useTreeNode = (nodeId: string | null) => {
 };
 
 export const useSelectedTreeNodeId = () => useAtom(_atomSelectedTreeNodeId);
+export const useSetSelectedTreeNodeId = () =>
+  useSetAtom(_atomSelectedTreeNodeId);
 export const useUnselect = () => {
   const [, setSelectedNodeId] = useAtom(_atomSelectedTreeNodeId);
   return { unselect: () => setSelectedNodeId(null) };
@@ -15,6 +17,11 @@ export const useUnselect = () => {
 export const useSelectedTreeNodeIdValue = () =>
   useAtomValue(_atomSelectedTreeNodeId);
 export const useFolderNodeValue = (nodeId: string): FolderNode | null => {
+  const node = useTreeNode(nodeId);
+  return node?.type === "folder" ? node : null;
+};
+export const useSelectedFolderNodeValue = (): FolderNode | null => {
+  const nodeId = useAtomValue(_atomSelectedTreeNodeId);
   const node = useTreeNode(nodeId);
   return node?.type === "folder" ? node : null;
 };

@@ -10,11 +10,13 @@ import {
   LinkButton,
   TickPanelButton,
 } from "./components/Buttons";
+import { FolderEditor } from "./components/FolderEditor/FolderEditor";
 
 function App() {
   return (
     <>
       <FolderPicker />
+      <FolderEditor />
       <Grid container spacing={2}>
         <Grid>
           <TreeView />

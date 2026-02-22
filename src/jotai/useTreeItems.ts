@@ -34,11 +34,24 @@ export const useFilteredTreeItemsValue = () =>
 export const useUpdateFolderNode = (nodeId?: string) => {
   const [treeItems, setTreeItems] = useAtom(_atomTreeItems);
   return {
-    updateFolderNodeAsync: async (newItem: ItemData) => {
+    updateByItemDataAsync: async (newItem: ItemData) => {
       const folderNode = getFolderNode(treeItems, nodeId ?? null);
       const itemNode = getItemNode(treeItems, nodeId ?? null);
       if (!treeItems || !folderNode?.handle || !itemNode) return;
       itemNode.data = { ...itemNode.data, ...newItem };
+      await fileSystem.saveFolderDataAsync(folderNode.handle, folderNode);
+      setTreeItems({ ...treeItems });
+    },
+    updateAsync: async (newFolder: FolderNode) => {
+      const folderNode = getFolderNode(treeItems, nodeId ?? null);
+      if (
+        !treeItems ||
+        !folderNode?.handle ||
+        newFolder.nodeId !== folderNode.nodeId
+      )
+        return;
+      folderNode.path = newFolder.path;
+      folderNode.children = newFolder.children;
       await fileSystem.saveFolderDataAsync(folderNode.handle, folderNode);
       setTreeItems({ ...treeItems });
     },
@@ -53,10 +66,12 @@ function getFolderNode(
   nodeId?: string | null,
 ): FolderNode | null {
   if (!treeNodes || !nodeId) return null;
-  for (const item of treeNodes.children) {
-    if (item.nodeId === nodeId) return treeNodes;
-    if (item.type === "folder") {
-      const found = getFolderNode(item, nodeId);
+  if (treeNodes.nodeId === nodeId) return treeNodes;
+  for (const child of treeNodes.children) {
+    if (child.nodeId === nodeId)
+      return child.type === "folder" ? child : treeNodes;
+    if (child.type === "folder") {
+      const found = getFolderNode(child, nodeId);
       if (found) return found;
     }
   }
@@ -68,10 +83,10 @@ function getItemNode(
   nodeId: string | null,
 ): ItemNode | null {
   if (!treeNodes || !nodeId) return null;
-  for (const item of treeNodes.children) {
-    if (item.nodeId === nodeId) return item.type === "item" ? item : null;
-    if (item.type === "folder") {
-      const found = getItemNode(item, nodeId);
+  for (const child of treeNodes.children) {
+    if (child.nodeId === nodeId) return child.type === "item" ? child : null;
+    if (child.type === "folder") {
+      const found = getItemNode(child, nodeId);
       if (found) return found;
     }
   }

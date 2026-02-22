@@ -15,6 +15,7 @@ import {
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useAppSettingsValue } from "../../jotai/useAppSettings";
+import { useSetSelectedTreeNodeId } from "../../jotai/useSelectedTreeNode";
 
 interface CustomTreeViewItemProps
   extends
@@ -26,6 +27,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   ref: React.Ref<HTMLLIElement>,
 ) {
   const settings = useAppSettingsValue();
+  const setSelectedTreeNodeId = useSetSelectedTreeNodeId();
   const { id, itemId, label, disabled, children, ...other } = props;
 
   const {
@@ -40,19 +42,19 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
     status,
   } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
-  const item = useTreeItemModel<TreeNode>(itemId)!;
+  const node = useTreeItemModel<TreeNode>(itemId)!;
   const keyLabel =
-    item.type === "item"
-      ? settings?.keys?.find((key) => key.key === item.data.key)?.label
+    node.type === "item"
+      ? settings?.keys?.find((key) => key.key === node.data.key)?.label
       : undefined;
   const tier =
-    item.type === "item" ? settings?.tiers?.[item.data.tier ?? 0] : undefined;
+    node.type === "item" ? settings?.tiers?.[node.data.tier ?? 0] : undefined;
   const sx = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
   };
   const color =
-    item.type === "item" && item?.data.highlighted ? "pink" : undefined;
+    node.type === "item" && node?.data.highlighted ? "pink" : undefined;
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
@@ -75,25 +77,28 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
             spacing={0.5}
             sx={{
               alignItems: "center",
-              // width: item.type === "item" ? "100%" : undefined,
+              // width: item.type === "item" ? "100%" : undefined, // アイコンを右端に寄せる
             }}
           >
             <TreeItemCheckbox {...getCheckboxProps()} />
             <TreeItemLabel {...getLabelProps()} sx={sx} />
-            {item.type === "item" ? (
+            {node.type === "item" ? (
               <Typography
                 variant="caption"
                 color="textSecondary"
                 whiteSpace="nowrap"
               >
-                {item.hasSvg && "🖼️"}
-                {item.data.ticks !== undefined && "🕒"}
-                {!!item.data.notes && "📝"}
+                {node.hasSvg && "🖼️"}
+                {node.data.ticks !== undefined && "🕒"}
+                {!!node.data.notes && "📝"}
                 {!!keyLabel && keyLabel}
               </Typography>
             ) : (
               <IconButton
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedTreeNodeId(node.nodeId);
+                }}
                 sx={{
                   p: 0,
                   pb: 0.3,
