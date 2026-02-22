@@ -1,19 +1,16 @@
 import {
   Checkbox,
   Grid,
-  IconButton,
   MenuItem,
   Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { Brush, Search } from "@mui/icons-material";
 import { useAppSettingsValue } from "../../jotai/useAppSettings";
 import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { toTimeString } from "./utils/toTimeString";
-import { getSearchUrl } from "./utils/getSearchUrl";
 import { useState } from "react";
 import { useDebounce } from "./useDebounce";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
@@ -35,7 +32,6 @@ export function ItemEditor() {
   if (!item) return null;
 
   const labels = settings.labels?.file;
-  const searchUrl = getSearchUrl(settings, item);
 
   const update = (diff: ItemData, delayed: boolean) => {
     const newItem = { ...item, ...diff };
@@ -52,28 +48,11 @@ export function ItemEditor() {
       container
       spacing={1}
       sx={{
-        position: "fixed",
-        bottom: 8,
-        right: 8,
         textAlign: "left",
         maxWidth: 300,
         alignItems: "center",
       }}
     >
-      <Grid size={12} sx={{ textAlign: "right" }}>
-        {searchUrl && (
-          <IconButton
-            color="primary"
-            onClick={() => window.open(searchUrl, "_blank")}
-          >
-            <Search />
-          </IconButton>
-        )}
-        <IconButton color="primary">
-          <Brush />
-        </IconButton>
-      </Grid>
-
       {/* title */}
       <Grid size={3}>
         <Typography variant="body1">{labels?.title ?? "Title"}</Typography>

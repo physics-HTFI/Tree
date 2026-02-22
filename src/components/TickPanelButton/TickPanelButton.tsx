@@ -3,14 +3,13 @@ import { IconButton, Popper } from "@mui/material";
 import { MusicNote } from "@mui/icons-material";
 import { TickPanel } from "./TickPanel";
 
-export function TickDialogButton() {
+export function TickPanelButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   return (
     <>
       <IconButton
         onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}
         color="primary"
-        sx={{ position: "fixed", bottom: 16, right: 16 }}
       >
         <MusicNote />
       </IconButton>

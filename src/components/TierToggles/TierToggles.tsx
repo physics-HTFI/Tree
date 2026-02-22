@@ -13,7 +13,7 @@ export function TierToggles() {
   if (!tiers) return null;
 
   return (
-    <Stack sx={{ position: "fixed", top: 4, right: 4 }}>
+    <Stack>
       <Counter />
       <FormGroup>
         {tiers

@@ -8,6 +8,10 @@ const useTreeNode = (nodeId: string | null) => {
 };
 
 export const useSelectedTreeNodeId = () => useAtom(_atomSelectedTreeNodeId);
+export const useUnselect = () => {
+  const [, setSelectedNodeId] = useAtom(_atomSelectedTreeNodeId);
+  return { unselect: () => setSelectedNodeId(null) };
+};
 export const useSelectedTreeNodeIdValue = () =>
   useAtomValue(_atomSelectedTreeNodeId);
 export const useFolderNodeValue = (nodeId: string): FolderNode | null => {

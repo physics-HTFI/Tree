@@ -1,10 +1,16 @@
 interface AppSettings {
   tiers?: TierSettings[];
-  searchExpression?: string;
+  linkExpression?: string;
   defaults?: {
     time?: number;
     start?: number;
     ticks?: number;
+  };
+  buttons?: {
+    link?: string;
+    edit?: string;
+    tick?: string;
+    close?: string;
   };
   labels?: {
     folder?: Record<Exclude<keyof FolderData, "entries">, string>;
