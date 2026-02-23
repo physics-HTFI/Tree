@@ -11,6 +11,7 @@ import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { useDebounce } from "../../hooks/useDebounce";
 import { AddItem } from "./ui/AddItem";
 import { createId } from "../../utils/createId";
+import { AddFolder } from "./ui/AddFolder";
 
 export function FolderEditor() {
   const settings = useAppSettingsValue();
@@ -27,13 +28,13 @@ export function FolderEditor() {
 
   if (!folder?.handle) return null;
 
-  const updatePath = (path?: string) => {
+  const updatePath = async (path?: string) => {
     const newFolder = { ...folder, path };
     setFolder(newFolder);
-    debouncedUpdate(newFolder, 100);
+    await updateAsync(newFolder);
   };
 
-  const addItem = (item: ItemData) => {
+  const addItem = async (item: ItemData) => {
     const newFolder = { ...folder };
     const newItem: ItemNode = {
       type: "item",
@@ -44,7 +45,31 @@ export function FolderEditor() {
     };
     newFolder.children = [newItem, ...newFolder.children];
     setFolder(newFolder);
-    debouncedUpdate(newFolder, 100);
+    await updateAsync(newFolder);
+  };
+
+  const addFolder = async (title: string, path?: string) => {
+    if (!folder.handle) return;
+    try {
+      const subFolderHandle = await folder.handle?.getDirectoryHandle(title, {
+        create: true,
+      });
+      const subFolder: FolderNode = {
+        type: "folder",
+        title,
+        path,
+        nodeId: createId(),
+        handle: subFolderHandle,
+        children: [],
+      };
+      const newFolder = { ...folder };
+      newFolder.children = [subFolder, ...newFolder.children];
+      setFolder(newFolder);
+      await updateAsync(subFolder);
+      await updateAsync(newFolder);
+    } catch {
+      return;
+    }
   };
 
   return (
@@ -61,7 +86,8 @@ export function FolderEditor() {
             onChange={(_, newValue) => setTabValue(newValue)}
             aria-label="basic tabs example"
           >
-            <Tab label="追加" />
+            <Tab label="アイテム追加" />
+            <Tab label="フォルダ追加" />
             <Tab label="並び替え" />
           </Tabs>
         </Box>
@@ -69,7 +95,10 @@ export function FolderEditor() {
           <AddItem onAdd={addItem} />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          Item Two
+          <AddFolder onAdd={addFolder} />
+        </TabPanel>
+        <TabPanel value={tabValue} index={2}>
+          Item Three
         </TabPanel>
       </DialogContent>
     </Dialog>
