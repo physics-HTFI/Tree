@@ -11,6 +11,8 @@ interface AppSettings {
     edit?: string;
     tick?: string;
     close?: string;
+    model_enabled?: string;
+    model_disabled?: string;
   };
   labels?: Record<
     keyof ItemData | Exclude<keyof FolderData, "entries">,

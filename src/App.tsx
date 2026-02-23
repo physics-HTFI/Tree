@@ -8,6 +8,7 @@ import {
   CloseButton,
   EditButton,
   LinkButton,
+  ModelEnableButton,
   TickPanelButton,
 } from "./components/Buttons";
 import { FolderEditor } from "./components/FolderEditor/FolderEditor";
@@ -38,6 +39,7 @@ function App() {
         <Model />
         <Box sx={{ mt: "auto" }} />
         <Stack direction="row" sx={{ my: 2 }}>
+          <ModelEnableButton />
           <EditButton />
           <LinkButton />
           <CloseButton />
