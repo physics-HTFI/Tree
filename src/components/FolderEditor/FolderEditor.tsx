@@ -18,14 +18,14 @@ export function FolderEditor() {
   const { unselect } = useUnselect();
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
-  const { updateAsync } = useUpdateFolderNode(folder?.nodeId);
+  const { updateAsync } = useUpdateFolderNode();
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
   if (folder?.nodeId !== defaultFolder?.nodeId) {
     setFolder(defaultFolder);
   }
 
-  if (!folder) return null;
+  if (!folder?.handle) return null;
 
   const updatePath = (path?: string) => {
     const newFolder = { ...folder, path };

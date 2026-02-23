@@ -5,20 +5,17 @@ export const fileSystem = {
   readFolderDataAsync: async (folder: FileSystemDirectoryHandle | null) =>
     (await parseAsync<FolderData>(folder, FOLDER_DATA_FILE_NAME)) ?? {},
 
-  saveFolderDataAsync: async (
-    folder: FileSystemDirectoryHandle | null,
-    value: FolderNode,
-  ) => {
+  saveFolderDataAsync: async (folder: FolderNode) => {
     const folderData: FolderData = {
-      path: value.path,
-      entries: value.children.map((child) =>
+      path: folder.path,
+      entries: folder.children.map((child) =>
         child.type === "folder"
           ? { type: "folder", title: child.title }
           : { type: "item", data: child.data },
       ),
     };
     await saveAsync<FolderData>(
-      folder,
+      folder.handle ?? null,
       FOLDER_DATA_FILE_NAME,
       folderData,
       formatFolderData,

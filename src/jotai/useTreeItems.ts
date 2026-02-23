@@ -31,19 +31,20 @@ export const useFilteredTreeItemsValue = () =>
   useAtomValue(atomFilteredTreeItems);
 
 /** nodeId を持つ（含む） FolderNode の内容を保存し、ツリービューを更新する */
-export const useUpdateFolderNode = (nodeId?: string) => {
+export const useUpdateFolderNode = () => {
   const [treeItems, setTreeItems] = useAtom(_atomTreeItems);
   return {
-    updateByItemDataAsync: async (newItem: ItemData) => {
-      const folderNode = getFolderNode(treeItems, nodeId ?? null);
-      const itemNode = getItemNode(treeItems, nodeId ?? null);
+    updateByItemDataAsync: async (newItemNode: ItemNode) => {
+      const nodeId = newItemNode.nodeId ?? null;
+      const folderNode = getFolderNode(treeItems, nodeId);
+      const itemNode = getItemNode(treeItems, nodeId);
       if (!treeItems || !folderNode?.handle || !itemNode) return;
-      itemNode.data = { ...itemNode.data, ...newItem };
-      await fileSystem.saveFolderDataAsync(folderNode.handle, folderNode);
+      itemNode.data = { ...itemNode.data, ...newItemNode.data };
+      await fileSystem.saveFolderDataAsync(folderNode);
       setTreeItems({ ...treeItems });
     },
     updateAsync: async (newFolder: FolderNode) => {
-      const folderNode = getFolderNode(treeItems, nodeId ?? null);
+      const folderNode = getFolderNode(treeItems, newFolder.nodeId ?? null);
       if (
         !treeItems ||
         !folderNode?.handle ||
@@ -52,7 +53,7 @@ export const useUpdateFolderNode = (nodeId?: string) => {
         return;
       folderNode.path = newFolder.path;
       folderNode.children = newFolder.children;
-      await fileSystem.saveFolderDataAsync(folderNode.handle, folderNode);
+      await fileSystem.saveFolderDataAsync(folderNode);
       setTreeItems({ ...treeItems });
     },
   };
