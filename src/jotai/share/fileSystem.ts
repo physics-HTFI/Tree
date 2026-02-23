@@ -64,5 +64,5 @@ async function saveAsync<T>(
 }
 
 function formatFolderData(json: string) {
-  return json.replace(/\n\s+(?!("path"|"entries"|\{|\s|\]))/g, " ");
+  return json.replace(/\n\s{4}\s*(?!\{)/g, " ");
 }
