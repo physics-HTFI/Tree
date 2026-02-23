@@ -12,6 +12,7 @@ import { toTimeString } from "./utils/toTimeString";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 import { filterString } from "../../../utils/filterString";
+import { usePreventScroll } from "./hooks/usePreventScroll";
 
 export function ItemForm({
   item,
@@ -22,6 +23,7 @@ export function ItemForm({
 }) {
   // フック
   const settings = useAppSettingsValue();
+  const ref = usePreventScroll();
 
   const labels = settings.labels;
   if (!item) return null;
@@ -30,6 +32,7 @@ export function ItemForm({
     <Grid
       container
       spacing={1}
+      ref={ref}
       sx={{
         textAlign: "left",
         alignItems: "center",
