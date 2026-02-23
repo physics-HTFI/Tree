@@ -21,7 +21,16 @@ function App() {
       <FolderPicker />
       <FolderEditor />
       <Grid container spacing={2}>
-        <Grid>
+        <Grid
+          sx={{
+            p: 1,
+            position: "sticky", // (1) スクロールしても常に表示する
+            top: 0, // (1)
+            alignSelf: "flex-start", // (1)
+            overflow: "auto", // (2) アイテムが多い場合にスクロール可能にする
+            maxHeight: "100vh", // (2)
+          }}
+        >
           <TreeView />
         </Grid>
         <Grid size="grow">
