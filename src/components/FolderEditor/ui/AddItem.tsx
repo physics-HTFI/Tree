@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ItemForm } from "../../share/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
 
-const defaultItem: ItemData = { tier: 0 };
+const defaultItem: ItemData = {};
 
 export function AddItem({ onAdd }: { onAdd: (item: ItemData) => void }) {
   const [item, setItem] = useState<ItemData>(defaultItem);

@@ -71,7 +71,9 @@ export function ItemForm({
       <Grid size={9}>
         <Select
           value={item.tier ?? 0}
-          onChange={(e) => onChange({ tier: filterNumber(e.target.value) })}
+          onChange={(e) =>
+            onChange({ tier: filterNumber(e.target.value, false) })
+          }
           variant="standard"
           fullWidth
         >
@@ -201,8 +203,10 @@ export function ItemForm({
   );
 }
 
-function filterNumber(value: string | number) {
+/** 文字列を数値に変換する。できない場合はundefined。 */
+function filterNumber(value: string | number, allowZero = true) {
   if (value === "") return undefined;
   const num = Number(value);
+  if (!allowZero && num === 0) return undefined;
   return isNaN(num) ? undefined : num;
 }
