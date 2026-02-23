@@ -11,7 +11,7 @@ export const fileSystem = {
       entries: folder.children.map((child) =>
         child.type === "folder"
           ? { type: "folder", title: child.title }
-          : { type: "item", data: child.data },
+          : child.data,
       ),
     };
     await saveAsync<FolderData>(

@@ -19,7 +19,7 @@ export function ItemEditor() {
   }
   if (!selectedNode || !item) return null;
 
-  const update = async (diff: ItemData) => {
+  const update = async (diff: Partial<ItemData>) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
     const keysToDelay: (keyof ItemData)[] = [

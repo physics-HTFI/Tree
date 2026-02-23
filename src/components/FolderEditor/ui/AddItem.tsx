@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ItemForm } from "../../share/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
 
-const defaultItem: ItemData = {};
+const defaultItem: ItemData = { type: "item" };
 
 export function AddItem({ onAdd }: { onAdd: (item: ItemData) => void }) {
   const [item, setItem] = useState<ItemData>(defaultItem);
@@ -10,7 +10,7 @@ export function AddItem({ onAdd }: { onAdd: (item: ItemData) => void }) {
   const canAdd = Boolean(item.title);
   const reset = () => setItem(defaultItem);
 
-  const update = (diff: ItemData) => {
+  const update = (diff: Partial<ItemData>) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
   };

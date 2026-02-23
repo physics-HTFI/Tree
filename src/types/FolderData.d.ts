@@ -3,11 +3,10 @@ interface FolderData {
   entries?: EntryData[];
 }
 
-type EntryData =
-  | { type: "folder"; title: string }
-  | { type: "item"; data: ItemData };
+type EntryData = { type: "folder"; title: string } | ItemData;
 
 interface ItemData {
+  type: "item";
   title?: string;
   path?: string;
   time?: number;

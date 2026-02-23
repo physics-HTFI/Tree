@@ -18,7 +18,7 @@ export function ItemForm({
   onChange,
 }: {
   item: ItemData | null;
-  onChange: (itemDiff: ItemData) => void;
+  onChange: (itemDiff: Partial<ItemData>) => void;
 }) {
   // フック
   const settings = useAppSettingsValue();
