@@ -1,6 +1,8 @@
 export const fileSystem = {
   readTextAsync,
   saveTextAsync,
+  renameAsync,
+  existsAsync,
 
   parseJsonAsync,
   saveAsJsonAsync,
@@ -69,4 +71,34 @@ async function saveAsJsonAsync<T>(
     alert(`JSONファイルの保存に失敗しました: ${fileName}`);
     return;
   }
+}
+
+async function renameAsync(
+  folder: FileSystemDirectoryHandle | null,
+  oldName: string,
+  newName: string,
+) {
+  if (!folder) return;
+  try {
+    const text = await readTextAsync(folder, oldName);
+    if (text === null) throw new Error();
+    await saveTextAsync(folder, newName, text);
+    await folder.removeEntry(oldName);
+  } catch {
+    alert(`ファイルの名前変更に失敗しました: ${oldName} → ${newName}`);
+    return;
+  }
+}
+
+async function existsAsync(
+  folder: FileSystemDirectoryHandle | null,
+  fileName: string,
+) {
+  if (!folder) return false;
+  try {
+    await folder.getFileHandle(fileName);
+  } catch {
+    return false;
+  }
+  return true;
 }

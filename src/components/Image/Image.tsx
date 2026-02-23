@@ -15,9 +15,8 @@ export function Image() {
   if (nodeId !== selectedItem.nodeId) {
     setNodeId(selectedItem.nodeId);
     const load = async () => {
-      try {
-        await handle.getFileHandle(fileName); // 存在確認
-      } catch {
+      const exists = await fileSystem.existsAsync(handle, fileName);
+      if (!exists) {
         setSvg(null);
         return;
       }
