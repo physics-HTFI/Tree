@@ -11,6 +11,7 @@ import {
   TickPanelButton,
 } from "./components/Buttons";
 import { FolderEditor } from "./components/FolderEditor/FolderEditor";
+import { Model } from "./components/Model/Model";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         }}
       >
         <TierToggles />
+        <Model />
         <Box sx={{ mt: "auto" }} />
         <Stack direction="row" sx={{ my: 2 }}>
           <EditButton />
