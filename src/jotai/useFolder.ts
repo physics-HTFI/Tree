@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { _atomFolder } from "./share/_atomFolder";
 import { _atomAppSettings } from "./share/_atomAppSettings";
-import { fileSystem } from "./share/fileSystem";
+import { appFileSystem } from "./share/appFileSystem";
 import { _atomTreeItems } from "./share/_atomTreeItems";
 import { createTreeItemsFromFolder } from "./share/createTreeItemsFromFolder";
 
@@ -11,7 +11,7 @@ const atomFolder = atom(
     set(_atomFolder, folder);
 
     // Settingsを読み込んでatomにセットする
-    const settings = await fileSystem.readAppSettingsAsync(folder);
+    const settings = await appFileSystem.readAppSettingsAsync(folder);
     set(_atomAppSettings, settings ?? {});
 
     // フォルダからTreeItemsを生成してatomにセットする

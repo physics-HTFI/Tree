@@ -1,7 +1,7 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { _atomTreeItems } from "./share/_atomTreeItems";
 import { _atomHiddenTiers } from "./share/_atomHiddenTiers";
-import { fileSystem } from "./share/fileSystem";
+import { appFileSystem } from "./share/appFileSystem";
 
 const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
   const tree = structuredClone(get(_atomTreeItems));
@@ -40,7 +40,7 @@ export const useUpdateFolderNode = () => {
       const itemNode = getItemNode(treeItems, nodeId);
       if (!treeItems || !folderNode?.handle || !itemNode) return;
       itemNode.data = { ...itemNode.data, ...newItemNode.data };
-      await fileSystem.saveFolderDataAsync(folderNode);
+      await appFileSystem.saveFolderDataAsync(folderNode);
       setTreeItems({ ...treeItems });
     },
     updateAsync: async (newFolder: FolderNode) => {
@@ -53,7 +53,7 @@ export const useUpdateFolderNode = () => {
         return;
       folderNode.path = newFolder.path;
       folderNode.children = newFolder.children;
-      await fileSystem.saveFolderDataAsync(folderNode);
+      await appFileSystem.saveFolderDataAsync(folderNode);
       setTreeItems({ ...treeItems });
     },
   };

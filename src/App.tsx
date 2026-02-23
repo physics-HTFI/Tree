@@ -13,6 +13,7 @@ import {
 } from "./components/Buttons";
 import { FolderEditor } from "./components/FolderEditor/FolderEditor";
 import { Model } from "./components/Model/Model";
+import { Image } from "./components/Image/Image";
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
         <Grid>
           <TreeView />
         </Grid>
-        <Grid size="grow">bbb</Grid>
+        <Grid size="grow">
+          <Image />
+        </Grid>
       </Grid>
       <Stack
         sx={{

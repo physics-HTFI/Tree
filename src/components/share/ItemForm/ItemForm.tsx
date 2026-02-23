@@ -115,6 +115,7 @@ export function ItemForm({
         <TextField
           value={item.start ?? ""}
           variant="standard"
+          autoComplete="off"
           sx={{ width: 60 }}
           onWheel={(e) =>
             onChange({ start: getWheeledNumber("start", item, settings, e) })
@@ -131,10 +132,11 @@ export function ItemForm({
         <TextField
           value={item.time ? toTimeString(item.time) : ""}
           variant="standard"
+          autoComplete="off"
           sx={{ width: 60 }}
-          onWheel={(e) =>
-            onChange({ time: getWheeledNumber("time", item, settings, e) })
-          }
+          onWheel={(e) => {
+            onChange({ time: getWheeledNumber("time", item, settings, e) });
+          }}
         />
         <CloseButton onClick={() => onChange({ time: undefined })} />
       </Grid>
@@ -147,6 +149,7 @@ export function ItemForm({
         <TextField
           value={item.ticks ?? ""}
           variant="standard"
+          autoComplete="off"
           sx={{ width: 60 }}
           onWheel={(e) =>
             onChange({ ticks: getWheeledNumber("ticks", item, settings, e) })

@@ -1,6 +1,6 @@
 import { createId } from "../../utils/createId";
 import { fileName } from "./fileName";
-import { fileSystem } from "./fileSystem";
+import { appFileSystem } from "./appFileSystem";
 
 export async function createTreeItemsFromFolder(
   handle: FileSystemDirectoryHandle | null,
@@ -9,7 +9,7 @@ export async function createTreeItemsFromFolder(
     return { type: "folder", nodeId: "---", title: "---", children: [] };
 
   // FolderNodeを作成する
-  const folderData = await fileSystem.readFolderDataAsync(handle);
+  const folderData = await appFileSystem.readFolderDataAsync(handle);
   const folderNode: FolderNode = {
     type: "folder",
     title: handle.name,
@@ -42,7 +42,7 @@ export async function createTreeItemsFromFolder(
   folderNode.children = sortedChildren;
 
   const lengthChanged = folderData?.entries?.length !== children.length;
-  if (lengthChanged) await fileSystem.saveFolderDataAsync(folderNode);
+  if (lengthChanged) await appFileSystem.saveFolderDataAsync(folderNode);
   return folderNode;
 }
 
