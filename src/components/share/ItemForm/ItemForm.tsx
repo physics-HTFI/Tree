@@ -25,6 +25,7 @@ export function ItemForm({
 
   const labels = settings.labels;
   if (!item) return null;
+  const isUrl = item.path?.startsWith("https://") ?? false;
   return (
     <Grid
       container
@@ -178,6 +179,23 @@ export function ItemForm({
           onChange={(e) =>
             onChange({ highlighted: e.target.checked ? true : undefined })
           }
+        />
+      </Grid>
+
+      {/* pop */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.pop ?? "Pop"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <Checkbox
+          checked={isUrl || (item.pop ?? false)}
+          disabled={isUrl}
+          size="small"
+          sx={{ p: 0, display: "inline-block" }}
+          onChange={(e) => {
+            if (isUrl) return;
+            onChange({ pop: e.target.checked ? true : undefined });
+          }}
         />
       </Grid>
 

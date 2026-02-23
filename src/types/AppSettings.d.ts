@@ -1,6 +1,12 @@
 interface AppSettings {
   tiers?: TierSettings[];
-  linkExpression?: string;
+  expressions?: {
+    link?: string;
+    pop?: string;
+    frame?: string;
+    is_id?: string;
+    search_id?: string;
+  };
   defaults?: {
     time?: number;
     start?: number;
