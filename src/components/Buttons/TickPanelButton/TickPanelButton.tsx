@@ -17,7 +17,11 @@ export function TickPanelButton() {
         type="tick"
         onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}
       />
-      <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} placement="top-end">
+      <Popper
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        placement="bottom-end"
+      >
         <TickPanel onClose={() => setAnchorEl(null)} />
       </Popper>
     </>

@@ -38,8 +38,8 @@ function App() {
         <Stack direction="row" sx={{ my: 2 }}>
           <EditButton />
           <LinkButton />
-          <TickPanelButton />
           <CloseButton />
+          <TickPanelButton />
         </Stack>
         <ItemEditor />
       </Stack>
