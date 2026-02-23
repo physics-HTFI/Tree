@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useState } from "react";
-import { fileSystem } from "../../utils/fileSystem";
+import { getBase64 } from "./getBase64";
 
 export function Image() {
   const selectedItem: ItemNode | null = useSelectedItemNodeValue();
@@ -14,23 +14,9 @@ export function Image() {
 
   if (nodeId !== selectedItem.nodeId) {
     setNodeId(selectedItem.nodeId);
-    const load = async () => {
-      const exists = await fileSystem.existsAsync(handle, fileName);
-      if (!exists) {
-        setSvg(null);
-        return;
-      }
-      const svgText = await fileSystem.readTextAsync(handle, fileName);
-      if (!svgText) {
-        setSvg(null);
-        return;
-      }
-      const bytes = new TextEncoder().encode(svgText);
-      const bin = Array.from(bytes, (b) => String.fromCharCode(b)).join("");
-      const base64 = btoa(bin);
-      setSvg(base64);
-    };
-    load().catch(() => undefined);
+    getBase64(handle, fileName)
+      .then(setSvg)
+      .catch(() => undefined);
   }
 
   if (!svg) return null;
