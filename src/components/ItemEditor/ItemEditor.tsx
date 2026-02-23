@@ -7,11 +7,10 @@ import { ItemForm } from "../share/ItemForm/ItemForm";
 export function ItemEditor() {
   // フック
   const selectedNode = useSelectedItemNodeValue();
-  const { updateByItemDataAsync: updateFolderNodeAsync } =
-    useUpdateFolderNode();
+  const { updateByItemDataAsync } = useUpdateFolderNode();
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemData>();
-  const { debounced: debouncedUpdate } = useDebounce(updateFolderNodeAsync);
+  const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);
 
   if (selectedNode?.nodeId !== nodeId) {
     setNodeId(selectedNode?.nodeId);
@@ -34,7 +33,7 @@ export function ItemEditor() {
     if (delays) {
       debouncedUpdate({ ...selectedNode, data: newItem }, 1000);
     } else {
-      await updateFolderNodeAsync({ ...selectedNode, data: newItem });
+      await updateByItemDataAsync({ ...selectedNode, data: newItem });
     }
   };
 

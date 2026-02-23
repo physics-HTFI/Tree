@@ -2,6 +2,7 @@ import { atom, useAtom, useAtomValue } from "jotai";
 import { _atomTreeItems } from "./share/_atomTreeItems";
 import { _atomHiddenTiers } from "./share/_atomHiddenTiers";
 import { appFileSystem } from "./share/appFileSystem";
+import { fileSystem } from "../utils/fileSystem";
 
 const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
   const tree = structuredClone(get(_atomTreeItems));
@@ -39,6 +40,22 @@ export const useUpdateFolderNode = () => {
       const folderNode = getFolderNode(treeItems, nodeId);
       const itemNode = getItemNode(treeItems, nodeId);
       if (!treeItems || !folderNode?.handle || !itemNode) return;
+      // SVGファイルの名前を変更（タイトルが変更された場合）
+      if (
+        itemNode.hasSvg &&
+        itemNode.data.title &&
+        newItemNode.data.title &&
+        itemNode.data.title !== newItemNode.data.title
+      ) {
+        const oldFileName = itemNode.data.title + ".svg";
+        const newFileName = newItemNode.data.title + ".svg";
+        await fileSystem.renameAsync(
+          folderNode.handle,
+          oldFileName,
+          newFileName,
+        );
+      }
+      // itemNode を更新
       itemNode.data = { ...itemNode.data, ...newItemNode.data };
       await appFileSystem.saveFolderDataAsync(folderNode);
       setTreeItems({ ...treeItems });
