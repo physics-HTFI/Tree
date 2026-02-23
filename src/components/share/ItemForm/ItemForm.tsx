@@ -23,7 +23,7 @@ export function ItemForm({
   // フック
   const settings = useAppSettingsValue();
 
-  const labels = settings.labels?.file;
+  const labels = settings.labels;
   if (!item) return null;
   return (
     <Grid

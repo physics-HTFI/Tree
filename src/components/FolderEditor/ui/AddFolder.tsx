@@ -41,7 +41,7 @@ export function AddFolder({
         {/* title */}
         <Grid size={3}>
           <Typography variant="body1">
-            {settings.labels?.file?.title ?? "Title"}
+            {settings.labels?.title ?? "Title"}
           </Typography>
         </Grid>
         <Grid size={9}>
@@ -58,7 +58,7 @@ export function AddFolder({
         {/* path */}
         <Grid size={3}>
           <Typography variant="body1">
-            {settings.labels?.folder?.path ?? "Path"}
+            {settings.labels?.path ?? "Path"}
           </Typography>
         </Grid>
         <Grid size={9}>

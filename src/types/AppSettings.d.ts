@@ -12,10 +12,10 @@ interface AppSettings {
     tick?: string;
     close?: string;
   };
-  labels?: {
-    folder?: Record<Exclude<keyof FolderData, "entries">, string>;
-    file?: Record<keyof ItemData, string>;
-  };
+  labels?: Record<
+    keyof ItemData | Exclude<keyof FolderData, "entries">,
+    string
+  >;
   keys?: { key?: number; label?: string }[];
 }
 

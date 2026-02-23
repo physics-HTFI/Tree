@@ -93,7 +93,7 @@ export function FolderEditor() {
       <DialogContent sx={{ width: 400, minHeight: "60vh" }}>
         <Path
           path={folder?.path}
-          label={settings?.labels?.folder?.path}
+          label={settings.labels?.path}
           onChange={updatePath}
         />
         <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
