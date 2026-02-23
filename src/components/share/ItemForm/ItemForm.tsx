@@ -44,6 +44,7 @@ export function ItemForm({
           value={item.title ?? ""}
           variant="standard"
           fullWidth
+          autoComplete="off"
           onChange={(e) =>
             onChange({ title: filterString(e.currentTarget.value) })
           }
@@ -59,8 +60,17 @@ export function ItemForm({
           value={item.path ?? ""}
           variant="standard"
           fullWidth
+          autoComplete="off"
           onChange={(e) => {
-            onChange({ path: filterString(e.currentTarget.value) });
+            const regexp = new RegExp(
+              settings.expressions?.search_id ?? "(?!)",
+            ); // "(?!)" は何にもマッチしない
+            const value = e.currentTarget.value;
+            const { id, start } = value.match(regexp)?.groups ?? {};
+            onChange({
+              path: id ?? filterString(value),
+              start: start ? filterNumber(start, false) : undefined,
+            });
           }}
         />
       </Grid>
@@ -97,22 +107,6 @@ export function ItemForm({
         </Select>
       </Grid>
 
-      {/* time */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
-      </Grid>
-      <Grid size={9}>
-        <TextField
-          value={item.time ? toTimeString(item.time) : ""}
-          variant="standard"
-          sx={{ width: 60 }}
-          onWheel={(e) =>
-            onChange({ time: getWheeledNumber("time", item, settings, e) })
-          }
-        />
-        <CloseButton onClick={() => onChange({ time: undefined })} />
-      </Grid>
-
       {/* start */}
       <Grid size={3}>
         <Typography variant="body1">{labels?.start ?? "Start"}</Typography>
@@ -127,6 +121,22 @@ export function ItemForm({
           }
         />
         <CloseButton onClick={() => onChange({ start: undefined })} />
+      </Grid>
+
+      {/* time */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <TextField
+          value={item.time ? toTimeString(item.time) : ""}
+          variant="standard"
+          sx={{ width: 60 }}
+          onWheel={(e) =>
+            onChange({ time: getWheeledNumber("time", item, settings, e) })
+          }
+        />
+        <CloseButton onClick={() => onChange({ time: undefined })} />
       </Grid>
 
       {/* ticks */}
@@ -210,6 +220,7 @@ export function ItemForm({
             variant="standard"
             multiline
             fullWidth
+            autoComplete="off"
             onChange={(e) =>
               onChange({ notes: filterString(e.currentTarget.value) })
             }
