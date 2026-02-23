@@ -1,4 +1,11 @@
-import { Box, Dialog, DialogContent, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import {
   useSelectedFolderNodeValue,
   useUnselect,
@@ -12,6 +19,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { AddItem } from "./ui/AddItem";
 import { createId } from "../../utils/createId";
 import { AddFolder } from "./ui/AddFolder";
+import { SortItems } from "./ui/SortItems";
 
 export function FolderEditor() {
   const settings = useAppSettingsValue();
@@ -72,8 +80,16 @@ export function FolderEditor() {
     }
   };
 
+  const updateChildren = async (items: TreeNode[]) => {
+    if (!folder) return;
+    const newFolder = { ...folder, children: items };
+    setFolder(newFolder);
+    debouncedUpdate(newFolder, 1000);
+  };
+
   return (
     <Dialog open={true} onClose={unselect}>
+      <DialogTitle>{folder.title}</DialogTitle>
       <DialogContent sx={{ width: 400, minHeight: "60vh" }}>
         <Path
           path={folder?.path}
@@ -98,7 +114,7 @@ export function FolderEditor() {
           <AddFolder onAdd={addFolder} />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          Item Three
+          <SortItems defaultList={folder.children} onChange={updateChildren} />
         </TabPanel>
       </DialogContent>
     </Dialog>
