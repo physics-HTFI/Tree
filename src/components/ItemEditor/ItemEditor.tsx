@@ -19,7 +19,7 @@ export function ItemEditor() {
   }
   if (!selectedNode || !item) return null;
 
-  const update = (diff: ItemData) => {
+  const update = async (diff: ItemData) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
     const keysToDelay: (keyof ItemData)[] = [
@@ -30,10 +30,12 @@ export function ItemEditor() {
       "ticks",
       "notes",
     ];
-    const delay = keysToDelay.some((key) => diff[key] !== undefined)
-      ? 1000
-      : 100;
-    debouncedUpdate({ ...selectedNode, data: newItem }, delay);
+    const delays = keysToDelay.some((key) => diff[key] !== undefined);
+    if (delays) {
+      debouncedUpdate({ ...selectedNode, data: newItem }, 1000);
+    } else {
+      await updateFolderNodeAsync({ ...selectedNode, data: newItem });
+    }
   };
 
   return <ItemForm item={item} onChange={update} />;
