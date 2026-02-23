@@ -15,6 +15,6 @@ interface ItemData {
   key?: number;
   tier?: number;
   highlighted?: boolean;
-  pop?: boolean;
+  window?: boolean;
   notes?: string;
 }

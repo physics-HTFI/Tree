@@ -4,6 +4,7 @@ interface AppSettings {
     link?: string;
     pop?: string;
     frame?: string;
+    is_url?: string;
     is_id?: string;
     search_id?: string;
   };

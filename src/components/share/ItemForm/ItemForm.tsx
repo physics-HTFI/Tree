@@ -192,19 +192,19 @@ export function ItemForm({
         />
       </Grid>
 
-      {/* pop */}
+      {/* window */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.pop ?? "Pop"}</Typography>
+        <Typography variant="body1">{labels?.window ?? "Window"}</Typography>
       </Grid>
       <Grid size={9}>
         <Checkbox
-          checked={isUrl || (item.pop ?? false)}
+          checked={isUrl || (item.window ?? false)}
           disabled={isUrl}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
           onChange={(e) => {
             if (isUrl) return;
-            onChange({ pop: e.target.checked ? true : undefined });
+            onChange({ window: e.target.checked ? true : undefined });
           }}
         />
       </Grid>

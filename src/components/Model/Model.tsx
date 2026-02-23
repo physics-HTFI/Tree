@@ -7,45 +7,45 @@ export function Model() {
   const settings = useAppSettingsValue();
   const item = useSelectedItemNodeValue();
   const modelEnabled = useModelEnabledValue();
-  const [prevSrc, setPrevSrc] = useState<string>();
+  const [prevSrc, setPrevSrc] = useState<string | null>(null);
 
   if (
     !settings.expressions?.pop ||
     !settings.expressions?.frame ||
+    !settings.expressions?.is_url ||
     !settings.expressions?.is_id
   )
     return null;
-  if (!modelEnabled) return;
 
   const path = item?.data?.path;
-  let src = path;
-  let pop: boolean | null = null;
-  if (path) {
-    const isUrl = path.startsWith("https://");
-    pop = isUrl || (item?.data?.pop ?? false);
-    if (!isUrl) {
-      const expression = pop
-        ? settings.expressions.pop
-        : settings.expressions.frame;
-      src = expression
+  const isUrl = path
+    ? new RegExp(settings.expressions.is_url).test(path)
+    : null;
+  const isId = path ? new RegExp(settings.expressions.is_id).test(path) : null;
+
+  if (!modelEnabled || !path || (!isUrl && !isId)) {
+    if (prevSrc) setPrevSrc(null);
+    return null;
+  }
+
+  const isWindow = isUrl || (item?.data?.window ?? false);
+  const expression = isWindow
+    ? settings.expressions.pop
+    : settings.expressions.frame;
+  const src = isUrl
+    ? path
+    : expression
         .replace("{{ID}}", path)
         .replace("{{START}}", (item?.data.start ?? 0).toString());
-    }
-    const isId = new RegExp(settings.expressions.is_id).test(path);
-    if (!isId && !isUrl) {
-      pop = null;
-      src = undefined;
-    }
-  }
 
   if (src !== prevSrc) {
     setPrevSrc(src);
-    if (!pop || !path) return;
+    if (!isWindow) return;
     const features = `width=500,height=400,top=0,left=${window.parent.screen.width - 500}`;
     window.open(src, "_blank", features); // note: YouTube blocks programmatic closing even when the window isn’t opened via _blank.
   }
 
-  if (pop !== false) return null;
+  if (isWindow) return null;
   return (
     <iframe
       width="500"
