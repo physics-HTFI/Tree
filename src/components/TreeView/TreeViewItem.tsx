@@ -54,7 +54,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
     textDecoration: tier?.underline ? "underline" : undefined,
   };
   const color =
-    node.type === "item" && node?.data.highlighted ? "pink" : undefined;
+    node.type === "item" && node?.data.highlighted ? "mistyrose" : undefined;
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
