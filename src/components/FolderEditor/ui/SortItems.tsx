@@ -1,6 +1,7 @@
 import {
   Delete,
   Folder,
+  ImageOutlined,
   KeyboardArrowDown,
   KeyboardArrowUp,
 } from "@mui/icons-material";
@@ -74,7 +75,13 @@ export function SortItems({
             )
           }
         >
-          <ListItemIcon>{item.type === "folder" && <Folder />}</ListItemIcon>
+          <ListItemIcon>
+            {item.type === "folder" ? (
+              <Folder />
+            ) : item.hasSvg ? (
+              <ImageOutlined />
+            ) : null}
+          </ListItemIcon>
           <ListItemText
             primary={item.type === "folder" ? item.title : item.data.title}
           />
