@@ -22,28 +22,29 @@ function App() {
       <Stack direction="row" spacing={1}>
         <TreeView />
         <Image />
-      </Stack>
-      <Stack
-        sx={{
-          position: "fixed",
-          alignItems: "flex-end",
-          top: 8,
-          bottom: 8,
-          right: 8,
-          maxWidth: 300,
-        }}
-      >
-        <TierToggles />
-        <Model />
-        <Box sx={{ mt: "auto" }} />
-        <Stack direction="row" sx={{ mb: 2 }}>
-          <ModelEnableButton />
-          <EditButton />
-          <LinkButton />
-          <CloseButton />
-          <TickPanelButton />
+        <Stack
+          sx={{
+            alignItems: "flex-end",
+            maxWidth: 300,
+            ml: "auto !important", // 右寄せにする
+            p: 1,
+            height: "calc(100vh - 16px)",
+            position: "sticky", // (1) 位置を固定する
+            top: 0, // (1)
+          }}
+        >
+          <TierToggles />
+          <Model />
+          <Box sx={{ mt: "auto" }} />
+          <Stack direction="row" sx={{ mb: 2 }}>
+            <ModelEnableButton />
+            <EditButton />
+            <LinkButton />
+            <CloseButton />
+            <TickPanelButton />
+          </Stack>
+          <ItemEditor />
         </Stack>
-        <ItemEditor />
       </Stack>
     </>
   );
