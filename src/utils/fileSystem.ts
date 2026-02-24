@@ -18,7 +18,6 @@ async function readTextAsync(
     const file = await fileHandle.getFile();
     return await file.text();
   } catch {
-    alert(`ファイルの読み込みに失敗しました: ${fileName}`);
     return null;
   }
 }
