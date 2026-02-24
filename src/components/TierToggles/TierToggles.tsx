@@ -1,8 +1,8 @@
 import { FormGroup, Stack } from "@mui/material";
-import { CheckboxTier } from "./CheckboxTier";
-import { Counter } from "./Counter";
+import { CheckboxTier } from "./ui/CheckboxTier";
 import { useHiddenTiers } from "../../jotai/useHiddenTiers";
 import { useAppSettingsValue } from "../../jotai/useAppSettings";
+import { Counter } from "./ui/Counter";
 
 export function TierToggles() {
   // フック
@@ -13,7 +13,7 @@ export function TierToggles() {
   if (!tiers) return null;
 
   return (
-    <Stack>
+    <Stack direction="row">
       <Counter />
       <FormGroup>
         {tiers

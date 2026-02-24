@@ -1,4 +1,4 @@
-import { fileSystem } from "../../utils/fileSystem";
+import { fileSystem } from "../../../utils/fileSystem";
 
 export async function getBase64(
   folder: FileSystemDirectoryHandle,

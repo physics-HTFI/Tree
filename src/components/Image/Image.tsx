@@ -1,8 +1,8 @@
 import { Chip, Stack } from "@mui/material";
 import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useState } from "react";
-import { getBase64 } from "./getBase64";
-import { useScroll } from "./useScroll";
+import { getBase64 } from "./utils/getBase64";
+import { useScroll } from "./hooks/useScroll";
 
 export function Image() {
   const selectedItem: ItemNode | null = useSelectedItemNodeValue();

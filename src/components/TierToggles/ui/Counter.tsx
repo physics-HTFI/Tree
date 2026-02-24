@@ -1,15 +1,12 @@
 import { Typography } from "@mui/material";
-import { useFilteredTreeItemsValue } from "../../jotai/useTreeItems";
+import { useFilteredTreeItemsValue } from "../../../jotai/useTreeItems";
 
 export function Counter() {
   const filteredTreeItems = useFilteredTreeItemsValue();
   const count = countFiles(filteredTreeItems);
 
   return (
-    <Typography
-      variant="body1"
-      sx={{ borderBottom: "1px solid black", mb: 1, textAlign: "center" }}
-    >
+    <Typography variant="h5" sx={{ mr: 3 }}>
       {count}
     </Typography>
   );
