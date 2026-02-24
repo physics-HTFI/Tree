@@ -30,29 +30,22 @@ export function TreeView() {
     }
   }
 
-  // イベントハンドラー
-  const getItemId = (item: TreeNode) => item.nodeId;
-  const getItemLabel = (item: TreeNode) =>
-    (item.type === "item" ? item.data.title : item.title) ?? "---";
-  const isItemSelectionDisabled = (item: TreeNode) => item.type === "folder";
-  const onItemSelectionToggle = (
-    _event: React.SyntheticEvent | null,
-    itemId: string,
-    isSelected: boolean,
-  ) => {
-    setSelectedItemId(isSelected ? itemId : null);
-  };
-
   return (
     <RichTreeView
       items={tree?.children ?? []}
       selectedItems={selectedItemId}
-      getItemId={getItemId}
-      getItemLabel={getItemLabel}
-      isItemSelectionDisabled={isItemSelectionDisabled}
-      onItemSelectionToggle={onItemSelectionToggle}
       expandedItems={expandedIds}
-      onExpandedItemsChange={(_event, ids) => setExpandedIds(ids)}
+      getItemId={(item) => item.nodeId}
+      isItemSelectionDisabled={(item) => item.type === "folder"}
+      getItemLabel={(item) =>
+        (item.type === "item" ? item.data.title : item.title) ?? "---"
+      }
+      onItemSelectionToggle={(_, itemId, isSelected) =>
+        setSelectedItemId(isSelected ? itemId : null)
+      }
+      onExpandedItemsChange={(_, ids) =>
+        setExpandedIds(showsTier0 ? trimIds(expandedIds, ids) : ids)
+      }
       slots={{ item: CustomTreeViewItem }}
       sx={{
         p: 1,
@@ -64,4 +57,13 @@ export function TreeView() {
       }}
     />
   );
+}
+
+/**
+ * 親子関係にあるフォルダのIDのみを残す
+ */
+function trimIds(preIds: string[], currentIds: string[]): string[] {
+  if (currentIds.length <= preIds.length) return currentIds;
+  const addedId = currentIds.find((id) => !preIds.includes(id)) ?? "";
+  return currentIds.filter((id) => addedId.startsWith(id));
 }

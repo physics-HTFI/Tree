@@ -4,6 +4,7 @@ import { appFileSystem } from "./appFileSystem";
 
 export async function createTreeItemsFromFolder(
   handle: FileSystemDirectoryHandle | null,
+  parentId: string = "",
 ): Promise<FolderNode> {
   if (!handle)
     return { type: "folder", nodeId: "---", title: "---", children: [] };
@@ -13,7 +14,7 @@ export async function createTreeItemsFromFolder(
   const folderNode: FolderNode = {
     type: "folder",
     title: handle.name,
-    nodeId: createId(),
+    nodeId: createId({ type: "folder", title: handle.name }, parentId),
     handle,
     path: folderData?.path,
     children: [],
@@ -25,16 +26,21 @@ export async function createTreeItemsFromFolder(
     if (entry.kind === "directory") {
       const node = await createTreeItemsFromFolder(
         entry as FileSystemDirectoryHandle,
+        folderNode.nodeId,
       );
       children.push(node);
     } else {
       if (!fileName.isSvgFile(entry.name)) continue;
+      const data = {
+        type: "item",
+        title: fileName.baseName(entry.name),
+      } as const;
       children.push({
         type: "item",
-        nodeId: createId(),
+        nodeId: createId(data, folderNode.nodeId),
         parent: folderNode,
         hasSvg: true,
-        data: { type: "item", title: fileName.baseName(entry.name) },
+        data,
       });
     }
   }
@@ -71,7 +77,7 @@ function sortChildren(
     } else {
       retval.push({
         type: "item",
-        nodeId: createId(),
+        nodeId: createId(entry, parentNode.nodeId),
         parent: parentNode,
         hasSvg: !!node,
         data: entry,

@@ -46,7 +46,7 @@ export function FolderEditor() {
     const newFolder = { ...folder };
     const newItem: ItemNode = {
       type: "item",
-      nodeId: createId(),
+      nodeId: createId({ type: "item", title: item.title }, folder.nodeId),
       parent: newFolder,
       hasSvg: false,
       data: item,
@@ -66,7 +66,7 @@ export function FolderEditor() {
         type: "folder",
         title,
         path,
-        nodeId: createId(),
+        nodeId: createId({ type: "folder", title }, folder.nodeId),
         handle: subFolderHandle,
         children: [],
       };
