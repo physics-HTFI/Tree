@@ -12,7 +12,7 @@ import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
   const selectedItem = useSelectedItemNodeValue();
-  const defaultTicks = useAppSettingsValue().defaults?.ticks ?? 100;
+  const defaultTicks = useAppSettingsValue().defaults?.ticks;
   const [item, setItem] = useState<ItemNode | null>(null);
   const [ticks, setTicks] = useState(defaultTicks);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -24,7 +24,7 @@ export function TickPanel({ onClose }: { onClose: () => void }) {
   }
 
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || !ticks) return;
     const id = setInterval(tick, (60 / ticks) * 1000);
     return () => clearInterval(id);
   }, [isPlaying, ticks, tick]);
@@ -38,6 +38,7 @@ export function TickPanel({ onClose }: { onClose: () => void }) {
     }
   }, [isPlaying, tick]);
 
+  if (!ticks) return null;
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Card
