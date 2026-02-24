@@ -1,5 +1,7 @@
 interface AppSettings {
   tiers?: TierSettings[];
+  keys?: { key?: number; label?: string }[];
+  speeds?: { speed?: number; label?: string }[];
   expressions?: {
     link?: string;
     pop?: string;
@@ -25,7 +27,6 @@ interface AppSettings {
     keyof ItemData | Exclude<keyof FolderData, "entries">,
     string
   >;
-  keys?: { key?: number; label?: string }[];
 }
 
 interface TierSettings {

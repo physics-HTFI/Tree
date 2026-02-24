@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppSettingsValue } from "../../../jotai/useAppSettings";
-import { toTimeString } from "./utils/toTimeString";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 import { filterString } from "../../../utils/filterString";
@@ -72,7 +71,7 @@ export function ItemForm({
             const { id, start } = value.match(regexp)?.groups ?? {};
             onChange({
               path: id ?? filterString(value),
-              start: start ? filterNumber(start, false) : undefined,
+              start: start ? filterNumber(start, [0]) : undefined,
             });
           }}
         />
@@ -86,7 +85,7 @@ export function ItemForm({
         <Select
           value={item.tier ?? 0}
           onChange={(e) =>
-            onChange({ tier: filterNumber(e.target.value, false) })
+            onChange({ tier: filterNumber(e.target.value, [0]) })
           }
           variant="standard"
           fullWidth
@@ -127,23 +126,6 @@ export function ItemForm({
         <CloseButton onClick={() => onChange({ start: undefined })} />
       </Grid>
 
-      {/* time */}
-      <Grid size={3}>
-        <Typography variant="body1">{labels?.time ?? "Time"}</Typography>
-      </Grid>
-      <Grid size={9}>
-        <TextField
-          value={item.time ? toTimeString(item.time) : ""}
-          variant="standard"
-          autoComplete="off"
-          sx={{ width: 60 }}
-          onWheel={(e) => {
-            onChange({ time: getWheeledNumber("time", item, settings, e) });
-          }}
-        />
-        <CloseButton onClick={() => onChange({ time: undefined })} />
-      </Grid>
-
       {/* ticks */}
       <Grid size={3}>
         <Typography variant="body1">{labels?.ticks ?? "Ticks"}</Typography>
@@ -179,6 +161,26 @@ export function ItemForm({
           ))}
         </Select>
         <CloseButton onClick={() => onChange({ key: undefined })} />
+      </Grid>
+
+      {/* speed */}
+      <Grid size={3}>
+        <Typography variant="body1">{labels?.speed ?? "Speed"}</Typography>
+      </Grid>
+      <Grid size={9}>
+        <Select
+          value={item.speed ?? ""}
+          onChange={(e) => onChange({ speed: filterNumber(e.target.value) })}
+          variant="standard"
+          sx={{ width: 90 }}
+        >
+          {settings?.speeds?.map((speed, index) => (
+            <MenuItem key={index} value={speed.speed}>
+              {speed.label ?? "---"}
+            </MenuItem>
+          ))}
+        </Select>
+        <CloseButton onClick={() => onChange({ speed: undefined })} />
       </Grid>
 
       {/* highlighted */}
@@ -239,9 +241,9 @@ export function ItemForm({
 }
 
 /** 文字列を数値に変換する。できない場合はundefined。 */
-function filterNumber(value: string | number, allowZero = true) {
+function filterNumber(value: string | number, ignore: number[] = []) {
   if (value === "") return undefined;
   const num = Number(value);
-  if (!allowZero && num === 0) return undefined;
+  if (ignore.includes(num)) return undefined;
   return isNaN(num) ? undefined : num;
 }

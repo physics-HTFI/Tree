@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export function useScroll(speed: "normal" | "fast" | "slow", hasSvg: boolean) {
+export function useScroll(speed: number, hasSvg: boolean) {
   const ref = useRef<HTMLImageElement | null>(null);
   const [time, setTime] = useState<number>(0);
   const [scrolling, setScrolling] = useState<boolean>(true);
-  const scrollTime = { normal: 240, fast: 180, slow: 300 }[speed] * 1000;
+  const scrollTime = (240 - 30 * speed) * 1000;
 
   useEffect(() => {
     if (!hasSvg || !ref.current || !scrolling) return;

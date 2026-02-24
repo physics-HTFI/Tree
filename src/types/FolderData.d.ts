@@ -9,7 +9,7 @@ interface ItemData {
   type: "item";
   title?: string;
   path?: string;
-  time?: number;
+  speed?: number;
   start?: number;
   ticks?: number;
   key?: number;

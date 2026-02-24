@@ -9,7 +9,7 @@ export function Image() {
   const [nodeId, setNodeId] = useState<string>();
   const [svg, setSvg] = useState<string | null>(null);
   const { ref, scrolling, toggleScroll, timerStart } = useScroll(
-    "normal",
+    selectedItem?.data?.speed ?? 0,
     !!svg,
   );
 
