@@ -24,7 +24,6 @@ export function ItemEditor() {
     const keysToDelay: (keyof ItemData)[] = [
       "title",
       "path",
-      "time",
       "start",
       "ticks",
       "notes",

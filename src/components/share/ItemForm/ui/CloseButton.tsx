@@ -13,7 +13,7 @@ export function CloseButton({ onClick }: { onClick: () => void }) {
       }}
       onClick={onClick}
     >
-      <Close />
+      <Close fontSize="small" />
     </IconButton>
   );
 }

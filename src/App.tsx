@@ -36,7 +36,7 @@ function App() {
           <TierToggles />
           <Model />
           <Box sx={{ mt: "auto" }} />
-          <Stack direction="row" sx={{ mb: 2 }}>
+          <Stack direction="row" sx={{ mb: 1 }}>
             <ModelEnableButton />
             <EditButton />
             <LinkButton />

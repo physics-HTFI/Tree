@@ -7,11 +7,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 import { filterString } from "../../../utils/filterString";
 import { usePreventScroll } from "./hooks/usePreventScroll";
+import { useAppSettingsValue } from "../../../jotai/useAppSettings";
+import { Header } from "./ui/Header";
 
 export function ItemForm({
   item,
@@ -30,21 +31,23 @@ export function ItemForm({
   return (
     <Grid
       container
-      spacing={1}
+      rowSpacing={1}
+      columnSpacing={2}
       ref={ref}
       sx={{
         textAlign: "left",
-        alignItems: "center",
+        alignItems: "baseline",
       }}
     >
       {/* title */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.title ?? "Title"}</Typography>
+        <Header title={labels?.title ?? "Title"} />
       </Grid>
       <Grid size={9}>
         <TextField
           value={item.title ?? ""}
           variant="standard"
+          size="small"
           fullWidth
           autoComplete="off"
           onChange={(e) =>
@@ -55,12 +58,13 @@ export function ItemForm({
 
       {/* path */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.path ?? "Path"}</Typography>
+        <Header title={labels?.path ?? "Path"} />
       </Grid>
       <Grid size={9}>
         <TextField
           value={item.path ?? ""}
           variant="standard"
+          size="small"
           fullWidth
           autoComplete="off"
           onChange={(e) => {
@@ -79,7 +83,7 @@ export function ItemForm({
 
       {/* tier */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.tier ?? "Tier"}</Typography>
+        <Header title={labels?.tier ?? "Tier"} />
       </Grid>
       <Grid size={9}>
         <Select
@@ -88,6 +92,7 @@ export function ItemForm({
             onChange({ tier: filterNumber(e.target.value, [0]) })
           }
           variant="standard"
+          size="small"
           fullWidth
         >
           {settings?.tiers
@@ -111,13 +116,14 @@ export function ItemForm({
 
       {/* start */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.start ?? "Start"}</Typography>
+        <Header title={labels?.start ?? "Start"} />
       </Grid>
       <Grid size={9}>
         <TextField
           value={item.start ?? ""}
           variant="standard"
           autoComplete="off"
+          size="small"
           sx={{ width: 60 }}
           onWheel={(e) =>
             onChange({ start: getWheeledNumber("start", item, settings, e) })
@@ -128,7 +134,7 @@ export function ItemForm({
 
       {/* ticks */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.ticks ?? "Ticks"}</Typography>
+        <Header title={labels?.ticks ?? "Ticks"} />
       </Grid>
       <Grid size={9}>
         <TextField
@@ -136,6 +142,7 @@ export function ItemForm({
           variant="standard"
           autoComplete="off"
           sx={{ width: 60 }}
+          size="small"
           onWheel={(e) =>
             onChange({ ticks: getWheeledNumber("ticks", item, settings, e) })
           }
@@ -145,13 +152,14 @@ export function ItemForm({
 
       {/* key */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.key ?? "Key"}</Typography>
+        <Header title={labels?.key ?? "Key"} />
       </Grid>
       <Grid size={9}>
         <Select
           value={item.key ?? ""}
           onChange={(e) => onChange({ key: filterNumber(e.target.value) })}
           variant="standard"
+          size="small"
           sx={{ width: 90 }}
         >
           {settings?.keys?.map((key, index) => (
@@ -165,7 +173,7 @@ export function ItemForm({
 
       {/* speed */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.speed ?? "Speed"}</Typography>
+        <Header title={labels?.speed ?? "Speed"} />
       </Grid>
       <Grid size={9}>
         <Select
@@ -173,6 +181,7 @@ export function ItemForm({
           onChange={(e) => onChange({ speed: filterNumber(e.target.value) })}
           variant="standard"
           sx={{ width: 90 }}
+          size="small"
         >
           {settings?.speeds?.map((speed, index) => (
             <MenuItem key={index} value={speed.speed}>
@@ -185,9 +194,7 @@ export function ItemForm({
 
       {/* highlighted */}
       <Grid size={3}>
-        <Typography variant="body1">
-          {labels?.highlighted ?? "Highlighted"}
-        </Typography>
+        <Header title={labels?.highlighted ?? "Highlighted"} />
       </Grid>
       <Grid size={9}>
         <Checkbox
@@ -202,7 +209,7 @@ export function ItemForm({
 
       {/* window */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.window ?? "Window"}</Typography>
+        <Header title={labels?.window ?? "Window"} />
       </Grid>
       <Grid size={9}>
         <Checkbox
@@ -219,7 +226,7 @@ export function ItemForm({
 
       {/* notes */}
       <Grid size={3}>
-        <Typography variant="body1">{labels?.notes ?? "Notes"}</Typography>
+        <Header title={labels?.notes ?? "Notes"} />
       </Grid>
       <Grid size={9}>
         <Stack direction="row" alignItems="center">
@@ -229,6 +236,7 @@ export function ItemForm({
             multiline
             fullWidth
             autoComplete="off"
+            size="small"
             onChange={(e) =>
               onChange({ notes: filterString(e.currentTarget.value) })
             }
