@@ -27,6 +27,12 @@ interface AppSettings {
     keyof ItemData | Exclude<keyof FolderData, "entries">,
     string
   >;
+  frame?: {
+    width?: number;
+    height?: number;
+    allow?: string;
+    referrerPolicy?: HTMLAttributeReferrerPolicy;
+  };
 }
 
 interface TierSettings {

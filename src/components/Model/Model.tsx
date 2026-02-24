@@ -13,7 +13,9 @@ export function Model() {
     !settings.expressions?.pop ||
     !settings.expressions?.frame ||
     !settings.expressions?.is_url ||
-    !settings.expressions?.is_id
+    !settings.expressions?.is_id ||
+    !settings.frame?.width ||
+    !settings.frame?.height
   )
     return null;
 
@@ -41,18 +43,18 @@ export function Model() {
   if (src !== prevSrc) {
     setPrevSrc(src);
     if (!isWindow) return;
-    const features = `width=500,height=400,top=0,left=${window.parent.screen.width - 500}`;
+    const features = `width=${settings.frame.width},height=${settings.frame.height},top=0,left=${window.parent.screen.width - settings.frame.width}`;
     window.open(src, "_blank", features); // note: YouTube blocks programmatic closing even when the window isn’t opened via _blank.
   }
 
   if (isWindow) return null;
   return (
     <iframe
-      width="500"
-      height="400"
+      width={settings.frame.width}
+      height={settings.frame.height}
       src={src}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerPolicy="strict-origin-when-cross-origin"
+      allow={settings.frame.allow}
+      referrerPolicy={settings.frame.referrerPolicy}
       allowFullScreen
     />
   );
