@@ -1,4 +1,4 @@
-import { fileSystem } from "../../utils/fileSystem";
+import { fileSystem } from "../../generics/utils/fileSystem";
 
 const APP_SETTINGS_FILE_NAME = "app.settings.json";
 const FOLDER_DATA_FILE_NAME = "folder.data.json";

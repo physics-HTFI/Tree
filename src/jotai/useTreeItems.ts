@@ -2,7 +2,7 @@ import { atom, useAtom, useAtomValue } from "jotai";
 import { _atomTreeItems } from "./share/_atomTreeItems";
 import { _atomHiddenTiers } from "./share/_atomHiddenTiers";
 import { appFileSystem } from "./share/appFileSystem";
-import { fileSystem } from "../utils/fileSystem";
+import { fileSystem } from "../generics/utils/fileSystem";
 
 const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
   const tree = structuredClone(get(_atomTreeItems));
