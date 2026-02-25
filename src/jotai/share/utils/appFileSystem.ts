@@ -1,7 +1,7 @@
 import { fileSystem } from "../../../generics/utils/fileSystem";
 
-const APP_SETTINGS_FILE_NAME = "app.settings.json";
-const FOLDER_DATA_FILE_NAME = "folder.data.json";
+const APP_SETTINGS_FILE_NAME = ".settings.json";
+const FOLDER_DATA_FILE_NAME = ".folder.json";
 
 export const appFileSystem = {
   readAppSettingsAsync: async (
@@ -27,6 +27,11 @@ export const appFileSystem = {
           : child.entry,
       ),
     };
+
+    // 1項目を1行にまとめる関数
+    const formatFolderData = (json: string) =>
+      json.replace(/\n\s{4}\s*(?!\{)/g, " ");
+
     await fileSystem.saveAsJsonAsync<FolderData>(
       folder.handle ?? null,
       FOLDER_DATA_FILE_NAME,
@@ -35,8 +40,3 @@ export const appFileSystem = {
     );
   },
 };
-
-/** 1項目を1行にまとめる */
-function formatFolderData(json: string) {
-  return json.replace(/\n\s{4}\s*(?!\{)/g, " ");
-}
