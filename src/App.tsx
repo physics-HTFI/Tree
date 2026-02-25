@@ -1,5 +1,4 @@
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
-import { TierToggles } from "./components/TierToggles/TierToggles";
 import { Box, Stack } from "@mui/material";
 import {
   CloseButton,
@@ -8,7 +7,7 @@ import {
   ModelEnableButton,
   TickPanelButton,
 } from "./components/Buttons";
-import { FolderEditor, ItemEditor } from "./components/Editors";
+import { FolderEditor, ItemEditor, TierEditor } from "./components/Editors";
 import { ImageView, ModelView, TreeView } from "./components/Views";
 
 function App() {
@@ -30,7 +29,7 @@ function App() {
             top: 0, // (1)
           }}
         >
-          <TierToggles />
+          <TierEditor />
           <ModelView />
           <Box sx={{ mt: "auto" }} />
           <Stack direction="row" sx={{ mb: 1 }}>
