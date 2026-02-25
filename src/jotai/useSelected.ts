@@ -1,11 +1,12 @@
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   atomSelectedFolderNode,
   atomSelectedItemNode,
   atomSelectedSvg,
   atomSelectedTreeNodeId,
-  atomUnselect,
 } from "./share/atomSelected";
+
+const atomUnselect = atom(null, (_, set) => set(atomSelectedTreeNodeId, null));
 
 export const useSelected = {
   useTreeNodeId: () => useAtom(atomSelectedTreeNodeId),

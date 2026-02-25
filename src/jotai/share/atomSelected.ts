@@ -37,7 +37,3 @@ export const atomSelectedTreeNodeId = atom(
     set(atomSelectedSvg, svg ? "data:image/svg+xml;base64," + svg : null);
   },
 );
-
-export const atomUnselect = atom(null, (_, set) =>
-  set(atomSelectedTreeNodeId, null),
-);
