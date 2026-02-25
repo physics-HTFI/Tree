@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
-import { filterString } from "../../../utils/filterString";
+import { filterString } from "../../../../utils/filterString";
 import { usePreventScroll } from "./hooks/usePreventScroll";
-import { useAppSettingsValue } from "../../../jotai/useAppSettings";
+import { useAppSettingsValue } from "../../../../jotai/useAppSettings";
 import { Header } from "./ui/Header";
 
 export function ItemForm({

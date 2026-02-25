@@ -1,6 +1,5 @@
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
 import { TierToggles } from "./components/TierToggles/TierToggles";
-import { ItemEditor } from "./components/ItemEditor/ItemEditor";
 import { TreeView } from "./components/TreeView/TreeView";
 import { Box, Stack } from "@mui/material";
 import {
@@ -10,9 +9,9 @@ import {
   ModelEnableButton,
   TickPanelButton,
 } from "./components/Buttons";
-import { FolderEditor } from "./components/FolderEditor/FolderEditor";
 import { ModelView } from "./components/ModelView/ModelView";
 import { ImageView } from "./components/ImageView/ImageView";
+import { FolderEditor, ItemEditor } from "./components/Editors";
 
 function App() {
   return (

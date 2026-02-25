@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ItemForm } from "../../share/ItemForm/ItemForm";
+import { ItemForm } from "../../ui/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
 
 const defaultItem: ItemData = { type: "item" };

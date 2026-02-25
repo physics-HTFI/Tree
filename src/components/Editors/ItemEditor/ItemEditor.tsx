@@ -2,7 +2,7 @@ import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
 import { useUpdateFolderNode } from "../../jotai/useTreeItems";
 import { useState } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
-import { ItemForm } from "../share/ItemForm/ItemForm";
+import { ItemForm } from "../ui/ItemForm/ItemForm";
 
 export function ItemEditor() {
   // フック
