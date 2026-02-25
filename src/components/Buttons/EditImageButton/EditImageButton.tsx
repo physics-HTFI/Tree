@@ -23,7 +23,7 @@ export function EditImageButton() {
       const msg = JSON.parse(evt.data);
       if (msg.event == "init") {
         contentWindow.postMessage(
-          JSON.stringify({ action: "load", xmlsvg: svg ?? "" }),
+          JSON.stringify({ action: "load", xml: svg ?? "" }),
           "*",
         );
       } else if (msg.event == "export") {
