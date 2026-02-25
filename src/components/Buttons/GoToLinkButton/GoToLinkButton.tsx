@@ -2,7 +2,7 @@ import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
 import { ButtonBase } from "../ui/ButtonBase";
 
-export function LinkButton() {
+export function GoToLinkButton() {
   const settings = useAppSettingsValue();
   const item = useSelectedItemNodeValue()?.data ?? null;
 

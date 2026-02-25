@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Popper } from "@mui/material";
-import { TickPanel } from "./TickPanel";
+import { TickPanel } from "./Tick";
 import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { ButtonBase } from "../ui/ButtonBase";
 
-export function TickPanelButton() {
+export function ShowTickButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const settings = useAppSettingsValue();

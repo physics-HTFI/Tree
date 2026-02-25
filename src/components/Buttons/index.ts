@@ -1,5 +1,5 @@
-export { EditButton } from "./EditButton/EditButton";
-export { LinkButton } from "./LinkButton/LinkButton";
-export { TickPanelButton } from "./TickPanelButton/TickPanelButton";
-export { CloseButton } from "./CloseButton/CloseButton";
-export { ModelEnableButton } from "./ModelEnableButton/ModelEnableButton";
+export { EditImageButton as EditButton } from "./EditImageButton/EditImageButton";
+export { GoToLinkButton as LinkButton } from "./GoToLinkButton/GoToLinkButton";
+export { ShowTickButton as TickPanelButton } from "./ShowTickButton/ShowTickButton";
+export { UnselectButton as CloseButton } from "./UnselectButton/UnselectButton";
+export { ToggleModelViewButton as ModelEnableButton } from "./ToggleModelViewButton/ToggleModelViewButton";
