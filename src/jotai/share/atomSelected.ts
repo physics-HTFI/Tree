@@ -41,9 +41,10 @@ const atomSetSelectedSvgById = atom(
 export const atomSetSelectedSvgByBase64 = atom(
   (get) => get(_atomSelectedSvg),
   async (get, set, base64str: string | null) => {
+    const node = get(atomSelectedItemNode);
     await base64.saveBase64Async(
-      get(atomSelectedFolderNode)?.handle,
-      get(atomSelectedItemNode)?.entry?.title + ".svg",
+      node?.parent?.handle,
+      node?.entry?.title + ".svg",
       base64str ? base64str.replace(HEADER, "") : "",
     );
     // 保存されているか確認のためファイルから読み直す

@@ -20,7 +20,11 @@ export function ImageView() {
   if (!svg) return null;
   return (
     <Stack direction="row" onClick={toggleScroll}>
-      <img ref={ref} src={svg} />
+      <img
+        ref={ref}
+        src={svg}
+        style={{ objectFit: "none", alignSelf: "flex-start" }}
+      />
       <Chip
         label="自動スクロール"
         variant="outlined"
