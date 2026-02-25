@@ -20,7 +20,7 @@ export function TickPanel({ onClose }: { onClose: () => void }) {
 
   if (item !== selectedItem) {
     setItem(selectedItem);
-    setTicks(selectedItem?.data?.ticks ?? defaultTicks);
+    setTicks(selectedItem?.entry?.ticks ?? defaultTicks);
   }
 
   useEffect(() => {

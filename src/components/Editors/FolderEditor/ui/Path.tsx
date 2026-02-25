@@ -1,6 +1,6 @@
 import { OpenInNew } from "@mui/icons-material";
 import { IconButton, Stack, TextField, Typography } from "@mui/material";
-import { filterString } from "../../../utils/filterString";
+import { filterString } from "../../../../utils/filterString";
 
 export function Path({
   path,

@@ -1,11 +1,18 @@
+// 保存対象となるデータのインターフェース
+
 interface FolderData {
   path?: string;
   entries?: EntryData[];
 }
 
-type EntryData = { type: "folder"; title: string } | ItemData;
+type EntryData = FolderEntry | ItemEntry;
 
-interface ItemData {
+interface FolderEntry {
+  type: "folder";
+  title: string;
+}
+
+interface ItemEntry {
   type: "item";
   title?: string;
   path?: string;

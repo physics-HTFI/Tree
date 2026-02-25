@@ -14,8 +14,8 @@ import {
 } from "@mui/x-tree-view";
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { useAppSettingsValue } from "../../jotai/useAppSettings";
-import { useSetSelectedTreeNodeId } from "../../jotai/useSelectedTreeNode";
+import { useAppSettingsValue } from "../../../jotai/useAppSettings";
+import { useSetSelectedTreeNodeId } from "../../../jotai/useSelectedTreeNode";
 
 interface CustomTreeViewItemProps
   extends
@@ -45,16 +45,16 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   const node = useTreeItemModel<TreeNode>(itemId)!;
   const keyLabel =
     node.type === "item"
-      ? settings?.keys?.find((key) => key.key === node.data.key)?.label
+      ? settings?.keys?.find((key) => key.key === node.entry.key)?.label
       : undefined;
   const tier =
-    node.type === "item" ? settings?.tiers?.[node.data.tier ?? 0] : undefined;
+    node.type === "item" ? settings?.tiers?.[node.entry.tier ?? 0] : undefined;
   const sx = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
   };
   const color =
-    node.type === "item" && node?.data.highlighted ? "mistyrose" : undefined;
+    node.type === "item" && node?.entry.highlighted ? "mistyrose" : undefined;
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
@@ -89,8 +89,8 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
                 whiteSpace="nowrap"
               >
                 {node.hasSvg && "🖼️"}
-                {node.data.ticks !== undefined && "🕒"}
-                {!!node.data.notes && "📝"}
+                {node.entry.ticks !== undefined && "🕒"}
+                {!!node.entry.notes && "📝"}
                 {!!keyLabel && keyLabel}
               </Typography>
             ) : (

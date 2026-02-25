@@ -1,6 +1,6 @@
 export function getWheeledNumber(
   type: "start" | "ticks",
-  item: ItemData,
+  item: ItemEntry,
   settings: AppSettings,
   event: React.WheelEvent,
 ): number | undefined {

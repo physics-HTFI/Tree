@@ -1,9 +1,9 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { CustomTreeViewItem } from "./TreeViewItem";
-import { useFilteredTreeItemsValue } from "../../jotai/useTreeItems";
-import { useSelectedTreeNodeId } from "../../jotai/useSelectedTreeNode";
+import { useFilteredTreeItemsValue } from "../../../jotai/useTreeItems";
+import { useSelectedTreeNodeId } from "../../../jotai/useSelectedTreeNode";
 import { useState } from "react";
-import { useHiddenTiersValue } from "../../jotai/useHiddenTiers";
+import { useHiddenTiersValue } from "../../../jotai/useHiddenTiers";
 
 export function TreeView() {
   // フック
@@ -38,7 +38,7 @@ export function TreeView() {
       getItemId={(item) => item.nodeId}
       isItemSelectionDisabled={(item) => item.type === "folder"}
       getItemLabel={(item) =>
-        (item.type === "item" ? item.data.title : item.title) ?? "---"
+        (item.type === "item" ? item.entry.title : item.title) ?? "---"
       }
       onItemSelectionToggle={(_, itemId, isSelected) =>
         setSelectedItemId(isSelected ? itemId : null)

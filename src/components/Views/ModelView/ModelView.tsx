@@ -1,7 +1,7 @@
-import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
+import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
 import { useState } from "react";
-import { useModelEnabledValue } from "../../jotai/useModelEnabled";
-import { useAppSettingsValue } from "../../jotai/useAppSettings";
+import { useModelEnabledValue } from "../../../jotai/useModelEnabled";
+import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 
 export function ModelView() {
   const settings = useAppSettingsValue();
@@ -19,7 +19,7 @@ export function ModelView() {
   )
     return null;
 
-  const path = item?.data?.path;
+  const path = item?.entry?.path;
   const isUrl = path
     ? new RegExp(settings.expressions.is_url).test(path)
     : null;
@@ -30,7 +30,7 @@ export function ModelView() {
     return null;
   }
 
-  const isWindow = isUrl || (item?.data?.window ?? false);
+  const isWindow = isUrl || (item?.entry?.window ?? false);
   const expression = isWindow
     ? settings.expressions.pop
     : settings.expressions.frame;
@@ -38,7 +38,7 @@ export function ModelView() {
     ? path
     : expression
         .replace("{{ID}}", path)
-        .replace("{{START}}", (item?.data.start ?? 0).toString());
+        .replace("{{START}}", (item?.entry.start ?? 0).toString());
 
   if (src !== prevSrc) {
     setPrevSrc(src);

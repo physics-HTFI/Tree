@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
-import { useAppSettingsValue } from "../../../jotai/useAppSettings";
-import { filterString } from "../../../utils/filterString";
+import { useAppSettingsValue } from "../../../../jotai/useAppSettings";
+import { filterString } from "../../../../utils/filterString";
 
 const defaultForm = {};
 

@@ -1,3 +1,5 @@
+// ツリーの構築に必要なデータのインターフェース
+
 type TreeNode = FolderNode | ItemNode;
 
 type FolderNode = {
@@ -14,5 +16,5 @@ type ItemNode = {
   nodeId: string;
   parent: FolderNode;
   hasSvg: boolean;
-  data: ItemData;
+  entry: ItemEntry;
 };

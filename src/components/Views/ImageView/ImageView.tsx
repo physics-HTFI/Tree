@@ -1,5 +1,5 @@
 import { Chip, Stack } from "@mui/material";
-import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
+import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
 import { useState } from "react";
 import { getBase64 } from "./utils/getBase64";
 import { useScroll } from "./hooks/useScroll";
@@ -9,12 +9,12 @@ export function ImageView() {
   const [nodeId, setNodeId] = useState<string>();
   const [svg, setSvg] = useState<string | null>(null);
   const { ref, scrolling, toggleScroll, timerStart } = useScroll(
-    selectedItem?.data?.speed ?? 0,
+    selectedItem?.entry?.speed ?? 0,
     !!svg,
   );
 
   const handle = selectedItem?.parent?.handle ?? null;
-  const fileName = selectedItem ? selectedItem.data.title + ".svg" : null;
+  const fileName = selectedItem ? selectedItem.entry.title + ".svg" : null;
   if (!selectedItem || !handle || !fileName) return null;
 
   if (nodeId !== selectedItem.nodeId) {

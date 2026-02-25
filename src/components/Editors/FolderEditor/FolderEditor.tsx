@@ -9,17 +9,17 @@ import {
 import {
   useSelectedFolderNodeValue,
   useUnselect,
-} from "../../jotai/useSelectedTreeNode";
-import { useAppSettingsValue } from "../../jotai/useAppSettings";
+} from "../../../jotai/useSelectedTreeNode";
+import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { useState } from "react";
 import { Path } from "./ui/Path";
 import { TabPanel } from "./ui/TabPanel";
-import { useUpdateFolderNode } from "../../jotai/useTreeItems";
-import { useDebounce } from "../../hooks/useDebounce";
+import { useUpdateFolderNode } from "../../../jotai/useTreeItems";
 import { AddItem } from "./ui/AddItem";
-import { createId } from "../../utils/createId";
+import { createId } from "../../../utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
+import { useDebounce } from "../../../generics/hooks/useDebounce";
 
 export function FolderEditor() {
   const settings = useAppSettingsValue();
@@ -42,14 +42,14 @@ export function FolderEditor() {
     await updateAsync(newFolder);
   };
 
-  const addItem = async (item: ItemData) => {
+  const addItem = async (item: ItemEntry) => {
     const newFolder = { ...folder };
     const newItem: ItemNode = {
       type: "item",
       nodeId: createId({ type: "item", title: item.title }, folder.nodeId),
       parent: newFolder,
       hasSvg: false,
-      data: item,
+      entry: item,
     };
     newFolder.children = [newItem, ...newFolder.children];
     setFolder(newFolder);

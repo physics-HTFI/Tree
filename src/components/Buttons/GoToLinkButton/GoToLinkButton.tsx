@@ -4,7 +4,7 @@ import { ButtonBase } from "../ui/ButtonBase";
 
 export function GoToLinkButton() {
   const settings = useAppSettingsValue();
-  const item = useSelectedItemNodeValue()?.data ?? null;
+  const item = useSelectedItemNodeValue()?.entry ?? null;
 
   if (!settings.expressions?.link || !item?.title) return null;
   const linkUrl = settings.expressions.link.replace("{{key}}", item.title);

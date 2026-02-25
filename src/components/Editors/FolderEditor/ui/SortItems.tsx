@@ -83,7 +83,7 @@ export function SortItems({
             ) : null}
           </ListItemIcon>
           <ListItemText
-            primary={item.type === "folder" ? item.title : item.data.title}
+            primary={item.type === "folder" ? item.title : item.entry.title}
           />
         </ListItem>
       ))}

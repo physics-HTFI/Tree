@@ -17,7 +17,7 @@ const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
         if (filteredChild.children.length === 0 && hiddenTiers.has(0)) continue;
         children.push(filteredChild);
       } else {
-        if (hiddenTiers.has(item.data.tier ?? 0)) continue; // チェックが外れているティアは表示しない
+        if (hiddenTiers.has(item.entry.tier ?? 0)) continue; // チェックが外れているティアは表示しない
         children.push(item);
       }
     }
@@ -43,12 +43,12 @@ export const useUpdateFolderNode = () => {
       // SVGファイルの名前を変更（タイトルが変更された場合）
       if (
         itemNode.hasSvg &&
-        itemNode.data.title &&
-        newItemNode.data.title &&
-        itemNode.data.title !== newItemNode.data.title
+        itemNode.entry.title &&
+        newItemNode.entry.title &&
+        itemNode.entry.title !== newItemNode.entry.title
       ) {
-        const oldFileName = itemNode.data.title + ".svg";
-        const newFileName = newItemNode.data.title + ".svg";
+        const oldFileName = itemNode.entry.title + ".svg";
+        const newFileName = newItemNode.entry.title + ".svg";
         await fileSystem.renameAsync(
           folderNode.handle,
           oldFileName,
@@ -56,7 +56,7 @@ export const useUpdateFolderNode = () => {
         );
       }
       // itemNode を更新
-      itemNode.data = { ...itemNode.data, ...newItemNode.data };
+      itemNode.entry = { ...itemNode.entry, ...newItemNode.entry };
       await appFileSystem.saveFolderDataAsync(folderNode);
       setTreeItems({ ...treeItems });
     },

@@ -24,7 +24,7 @@ interface AppSettings {
     model_disabled?: string;
   };
   labels?: Record<
-    keyof ItemData | Exclude<keyof FolderData, "entries">,
+    keyof ItemEntry | Exclude<keyof FolderData, "entries">,
     string
   >;
   frame?: {

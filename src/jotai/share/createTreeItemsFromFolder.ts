@@ -40,7 +40,7 @@ export async function createTreeItemsFromFolder(
         nodeId: createId(data, folderNode.nodeId),
         parent: folderNode,
         hasSvg: true,
-        data,
+        entry: data,
       });
     }
   }
@@ -80,7 +80,7 @@ function sortChildren(
         nodeId: createId(entry, parentNode.nodeId),
         parent: parentNode,
         hasSvg: !!node,
-        data: entry,
+        entry: entry,
       });
     }
   }
@@ -92,6 +92,6 @@ function isSameTitle(entry: EntryData, node: TreeNode) {
   if (entry.type === "folder") {
     return node.type === "folder" ? entry.title === node.title : false;
   } else {
-    return node.type === "item" ? entry.title === node.data.title : false;
+    return node.type === "item" ? entry.title === node.entry.title : false;
   }
 }

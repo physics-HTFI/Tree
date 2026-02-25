@@ -2,15 +2,15 @@ import { useState } from "react";
 import { ItemForm } from "../../ui/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
 
-const defaultItem: ItemData = { type: "item" };
+const defaultItem: ItemEntry = { type: "item" };
 
-export function AddItem({ onAdd }: { onAdd: (item: ItemData) => void }) {
-  const [item, setItem] = useState<ItemData>(defaultItem);
+export function AddItem({ onAdd }: { onAdd: (item: ItemEntry) => void }) {
+  const [item, setItem] = useState<ItemEntry>(defaultItem);
 
   const canAdd = Boolean(item.title);
   const reset = () => setItem(defaultItem);
 
-  const update = (diff: Partial<ItemData>) => {
+  const update = (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
   };

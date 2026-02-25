@@ -1,27 +1,27 @@
-import { useSelectedItemNodeValue } from "../../jotai/useSelectedTreeNode";
-import { useUpdateFolderNode } from "../../jotai/useTreeItems";
+import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
+import { useUpdateFolderNode } from "../../../jotai/useTreeItems";
 import { useState } from "react";
-import { useDebounce } from "../../hooks/useDebounce";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
+import { useDebounce } from "../../../generics/hooks/useDebounce";
 
 export function ItemEditor() {
   // フック
   const selectedNode = useSelectedItemNodeValue();
   const { updateByItemDataAsync } = useUpdateFolderNode();
   const [nodeId, setNodeId] = useState<string>();
-  const [item, setItem] = useState<ItemData>();
+  const [item, setItem] = useState<ItemEntry>();
   const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);
 
   if (selectedNode?.nodeId !== nodeId) {
     setNodeId(selectedNode?.nodeId);
-    setItem(selectedNode?.data);
+    setItem(selectedNode?.entry);
   }
   if (!selectedNode || !item) return null;
 
-  const update = async (diff: Partial<ItemData>) => {
+  const update = async (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
-    const keysToDelay: (keyof ItemData)[] = [
+    const keysToDelay: (keyof ItemEntry)[] = [
       "title",
       "path",
       "start",
@@ -30,9 +30,9 @@ export function ItemEditor() {
     ];
     const delays = keysToDelay.some((key) => diff[key] !== undefined);
     if (delays) {
-      debouncedUpdate({ ...selectedNode, data: newItem }, 1000);
+      debouncedUpdate({ ...selectedNode, entry: newItem }, 1000);
     } else {
-      await updateByItemDataAsync({ ...selectedNode, data: newItem });
+      await updateByItemDataAsync({ ...selectedNode, entry: newItem });
     }
   };
 
