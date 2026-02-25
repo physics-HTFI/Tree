@@ -4,7 +4,7 @@ import { useState } from "react";
 import { getBase64 } from "./utils/getBase64";
 import { useScroll } from "./hooks/useScroll";
 
-export function Image() {
+export function ImageView() {
   const selectedItem: ItemNode | null = useSelectedItemNodeValue();
   const [nodeId, setNodeId] = useState<string>();
   const [svg, setSvg] = useState<string | null>(null);

@@ -12,7 +12,7 @@ import {
 } from "./components/Buttons";
 import { FolderEditor } from "./components/FolderEditor/FolderEditor";
 import { ModelView } from "./components/ModelView/ModelView";
-import { Image } from "./components/Image/Image";
+import { ImageView } from "./components/ImageView/ImageView";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
       <FolderEditor />
       <Stack direction="row" spacing={1}>
         <TreeView />
-        <Image />
+        <ImageView />
         <Stack
           sx={{
             alignItems: "flex-end",
