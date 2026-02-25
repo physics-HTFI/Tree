@@ -14,8 +14,8 @@ import {
 } from "@mui/x-tree-view";
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { useAppSettingsValue } from "../../../jotai/useAppSettings";
-import { useSelected } from "../../../jotai/useSelected";
+import { useAppSettingsValue } from "../../../../jotai/useAppSettings";
+import { useSelected } from "../../../../jotai/useSelected";
 
 interface CustomTreeViewItemProps
   extends

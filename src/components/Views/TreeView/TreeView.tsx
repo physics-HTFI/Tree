@@ -1,5 +1,5 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import { CustomTreeViewItem } from "./TreeViewItem";
+import { CustomTreeViewItem } from "./ui/TreeViewItem";
 import { useFilteredTreeItemsValue } from "../../../jotai/useTreeItems";
 import { useSelected } from "../../../jotai/useSelected";
 import { useState } from "react";
