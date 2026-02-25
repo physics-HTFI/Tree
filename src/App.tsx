@@ -1,6 +1,5 @@
 import { FolderPicker } from "./components/FolderPicker/FolderPicker";
 import { TierToggles } from "./components/TierToggles/TierToggles";
-import { TreeView } from "./components/TreeView/TreeView";
 import { Box, Stack } from "@mui/material";
 import {
   CloseButton,
@@ -9,9 +8,8 @@ import {
   ModelEnableButton,
   TickPanelButton,
 } from "./components/Buttons";
-import { ModelView } from "./components/ModelView/ModelView";
-import { ImageView } from "./components/ImageView/ImageView";
 import { FolderEditor, ItemEditor } from "./components/Editors";
+import { ImageView, ModelView, TreeView } from "./components/Views";
 
 function App() {
   return (
