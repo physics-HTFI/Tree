@@ -3,10 +3,11 @@ export function getTreeNode(
   nodeId: string | null,
 ): TreeNode | null {
   if (!treeNodes || !nodeId) return null;
-  for (const item of treeNodes.children) {
-    if (item.nodeId === nodeId) return item;
-    if (item.type === "folder") {
-      const found = getTreeNode(item, nodeId);
+  for (const node of treeNodes.children) {
+    if (node.nodeId === nodeId) return node;
+    if (node.type === "folder") {
+      if (!nodeId.startsWith(node.nodeId)) continue;
+      const found = getTreeNode(node, nodeId);
       if (found) return found;
     }
   }

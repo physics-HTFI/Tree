@@ -2,8 +2,8 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
   atomSelectedFolderNode,
   atomSelectedItemNode,
-  atomSelectedSvg,
   atomSelectedTreeNodeId,
+  atomSetSelectedSvgByBase64,
 } from "./share/atomSelected";
 
 const atomUnselect = atom(null, (_, set) => set(atomSelectedTreeNodeId, null));
@@ -14,5 +14,5 @@ export const useSelected = {
   useUnselectAsync: () => useSetAtom(atomUnselect),
   useFolderNodeValue: () => useAtomValue(atomSelectedFolderNode),
   useItemNodeValue: () => useAtomValue(atomSelectedItemNode),
-  useSvgValue: () => useAtomValue(atomSelectedSvg),
+  useSvgValue: () => useAtomValue(atomSetSelectedSvgByBase64),
 };
