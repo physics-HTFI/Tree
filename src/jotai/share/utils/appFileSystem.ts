@@ -4,6 +4,14 @@ const APP_SETTINGS_FILE_NAME = "app.settings.json";
 const FOLDER_DATA_FILE_NAME = "folder.data.json";
 
 export const appFileSystem = {
+  readAppSettingsAsync: async (
+    folder: FileSystemDirectoryHandle | null,
+  ): Promise<AppSettings> =>
+    (await fileSystem.parseJsonAsync<AppSettings>(
+      folder,
+      APP_SETTINGS_FILE_NAME,
+    )) ?? {},
+
   readFolderDataAsync: async (folder: FileSystemDirectoryHandle | null) =>
     (await fileSystem.parseJsonAsync<FolderData>(
       folder,
@@ -26,16 +34,9 @@ export const appFileSystem = {
       formatFolderData,
     );
   },
-
-  readAppSettingsAsync: async (
-    folder: FileSystemDirectoryHandle | null,
-  ): Promise<AppSettings> =>
-    (await fileSystem.parseJsonAsync<AppSettings>(
-      folder,
-      APP_SETTINGS_FILE_NAME,
-    )) ?? {},
 };
 
+/** 1項目を1行にまとめる */
 function formatFolderData(json: string) {
   return json.replace(/\n\s{4}\s*(?!\{)/g, " ");
 }
