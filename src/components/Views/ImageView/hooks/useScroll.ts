@@ -6,12 +6,20 @@ export function useScroll(speed: number, hasSvg: boolean) {
   const [scrolling, setScrolling] = useState<boolean>(true);
   const scrollTime = (240 - 30 * speed) * 1000;
 
+  const contained = () =>
+    window.innerHeight >= (ref.current?.clientHeight ?? 0);
+
   useEffect(() => {
     if (!hasSvg || !ref.current || !scrolling) return;
-    const ms_p_px = scrollTime / ref.current.clientHeight; // 1pxスクロールするのに要する時間（ms）
+    const smallImg = contained();
+    const ms_p_px = smallImg ? 0 : scrollTime / ref.current.clientHeight; // 1pxスクロールするのに要する時間（ms）
     const delay =
       (0.5 * scrollTime * window.innerHeight) / ref.current.clientHeight; // 画面の半分をスクロールするのにかかる時間（ms）
     const id = setInterval(() => {
+      if (smallImg) {
+        setScrolling(false);
+        return;
+      }
       setTime((t) => t + ms_p_px);
       if (delay < time) window.scrollBy(0, 1); // 1pxずつスクロールする
     }, ms_p_px);
@@ -24,7 +32,7 @@ export function useScroll(speed: number, hasSvg: boolean) {
   }, []);
 
   const toggleScroll = useCallback(() => {
-    setScrolling((s) => !s);
+    setScrolling((s) => !contained() && !s);
     setTime(scrollTime);
   }, [scrollTime]);
 
