@@ -14,5 +14,6 @@ export const useSelected = {
   useUnselectAsync: () => useSetAtom(atomUnselect),
   useFolderNodeValue: () => useAtomValue(atomSelectedFolderNode),
   useItemNodeValue: () => useAtomValue(atomSelectedItemNode),
+  useSvg: () => useAtom(atomSetSelectedSvgByBase64),
   useSvgValue: () => useAtomValue(atomSetSelectedSvgByBase64),
 };

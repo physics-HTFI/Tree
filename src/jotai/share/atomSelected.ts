@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import { _atomSelectedTreeNodeId } from "./backings/_atomSelectedTreeNodeId";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { getTreeNode } from "./utils/getTreeNode";
-import { getBase64 } from "./utils/getBase64";
+import { base64 } from "./utils/base64";
 import { _atomSelectedSvg } from "./backings/_atomSelectedSvg";
 
 export const atomSelectedTreeNode = atom((get) => {
@@ -21,6 +21,8 @@ export const atomSelectedItemNode = atom((get) => {
   return node?.type === "item" ? node : null;
 });
 
+const HEADER = "data:image/svg+xml;base64,";
+
 const atomSetSelectedSvgById = atom(
   null,
   async (get, set, id: string | null) => {
@@ -28,17 +30,26 @@ const atomSetSelectedSvgById = atom(
     const treeNode = getTreeNode(treeItems, id);
     const itemNode = treeNode?.type === "item" ? treeNode : null;
     const title = itemNode?.entry?.title;
-    const svg = await getBase64(
+    const svg = await base64.readBase64Async(
       itemNode?.parent?.handle,
       title ? title + ".svg" : undefined,
     );
-    set(_atomSelectedSvg, svg ? "data:image/svg+xml;base64," + svg : null);
+    set(_atomSelectedSvg, svg ? HEADER + svg : null);
   },
 );
 
 export const atomSetSelectedSvgByBase64 = atom(
   (get) => get(_atomSelectedSvg),
-  async (_, set, base64: string | null) => set(_atomSelectedTreeNodeId, base64),
+  async (get, set, base64str: string | null) => {
+    await base64.saveBase64Async(
+      get(atomSelectedFolderNode)?.handle,
+      get(atomSelectedItemNode)?.entry?.title + ".svg",
+      base64str ? base64str.replace(HEADER, "") : "",
+    );
+    // 保存されているか確認のためファイルから読み直す
+    const id = get(_atomSelectedTreeNodeId);
+    await set(atomSetSelectedSvgById, id);
+  },
 );
 
 export const atomSelectedTreeNodeId = atom(
