@@ -1,7 +1,7 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { CustomTreeViewItem } from "./TreeViewItem";
 import { useFilteredTreeItemsValue } from "../../../jotai/useTreeItems";
-import { useSelectedTreeNodeId } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 import { useState } from "react";
 import { useHiddenTiersValue } from "../../../jotai/useHiddenTiers";
 
@@ -9,7 +9,7 @@ export function TreeView() {
   // フック
   const hiddenTiers = useHiddenTiersValue();
   const tree = useFilteredTreeItemsValue();
-  const [selectedItemId, setSelectedItemId] = useSelectedTreeNodeId();
+  const [selectedItemId, setSelectedItemId] = useSelected.useTreeNodeId();
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [showsTier0, setShowsTier0] = useState(true);
 

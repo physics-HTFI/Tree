@@ -1,8 +1,8 @@
 import { ButtonBase } from "../ui/ButtonBase";
-import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 
 export function EditImageButton() {
-  const selectedItem = useSelectedItemNodeValue();
+  const selectedItem = useSelected.useItemNodeValue();
   if (!selectedItem) return null;
 
   const startEdit = () => {};

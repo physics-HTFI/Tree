@@ -1,7 +1,7 @@
-import { useUnselect } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function UnselectButton() {
-  const { unselect } = useUnselect();
-  return <ButtonBase type="close" onClick={unselect} />;
+  const unselectAsync = useSelected.useUnselectAsync();
+  return <ButtonBase type="close" onClick={unselectAsync} />;
 }

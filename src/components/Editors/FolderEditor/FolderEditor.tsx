@@ -6,10 +6,7 @@ import {
   Tab,
   Tabs,
 } from "@mui/material";
-import {
-  useSelectedFolderNodeValue,
-  useUnselect,
-} from "../../../jotai/useSelectedTreeNode";
+
 import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { useState } from "react";
 import { Path } from "./ui/Path";
@@ -20,11 +17,12 @@ import { createId } from "../../../utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
 import { useDebounce } from "../../../generics/hooks/useDebounce";
+import { useSelected } from "../../../jotai/useSelected";
 
 export function FolderEditor() {
   const settings = useAppSettingsValue();
-  const defaultFolder = useSelectedFolderNodeValue();
-  const { unselect } = useUnselect();
+  const defaultFolder = useSelected.useFolderNodeValue();
+  const unselectAsync = useSelected.useUnselectAsync();
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
   const { updateAsync } = useUpdateFolderNode();
@@ -88,7 +86,7 @@ export function FolderEditor() {
   };
 
   return (
-    <Dialog open={true} onClose={unselect}>
+    <Dialog open={true} onClose={unselectAsync}>
       <DialogTitle>{folder.title}</DialogTitle>
       <DialogContent sx={{ width: 400, minHeight: "60vh" }}>
         <Path

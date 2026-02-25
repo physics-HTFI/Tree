@@ -1,4 +1,4 @@
-import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 import { useUpdateFolderNode } from "../../../jotai/useTreeItems";
 import { useState } from "react";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
@@ -6,7 +6,7 @@ import { useDebounce } from "../../../generics/hooks/useDebounce";
 
 export function ItemEditor() {
   // フック
-  const selectedNode = useSelectedItemNodeValue();
+  const selectedNode = useSelected.useItemNodeValue();
   const { updateByItemDataAsync } = useUpdateFolderNode();
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();

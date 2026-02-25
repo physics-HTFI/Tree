@@ -1,11 +1,10 @@
-import { fileSystem } from "../../../../generics/utils/fileSystem";
+import { fileSystem } from "../../../generics/utils/fileSystem";
 
 export async function getBase64(
-  folder: FileSystemDirectoryHandle,
-  fileName: string,
+  folder?: FileSystemDirectoryHandle,
+  fileName?: string,
 ) {
-  const exists = await fileSystem.existsAsync(folder, fileName);
-  if (!exists) return null;
+  if (!folder || !fileName) return null;
   const svgText = await fileSystem.readTextAsync(folder, fileName);
   if (!svgText) return null;
   return utf8ToBase64(svgText);

@@ -1,12 +1,12 @@
-import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 import { useState } from "react";
-import { useModelEnabledValue } from "../../../jotai/useModelEnabled";
+import { useModelViewEnabledValue } from "../../../jotai/useModelViewEnabled";
 import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 
 export function ModelView() {
   const settings = useAppSettingsValue();
-  const item = useSelectedItemNodeValue();
-  const modelEnabled = useModelEnabledValue();
+  const item = useSelected.useItemNodeValue();
+  const modelEnabled = useModelViewEnabledValue();
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
 
   if (

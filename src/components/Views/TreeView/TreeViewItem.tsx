@@ -15,7 +15,7 @@ import {
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useAppSettingsValue } from "../../../jotai/useAppSettings";
-import { useSetSelectedTreeNodeId } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 
 interface CustomTreeViewItemProps
   extends
@@ -27,7 +27,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   ref: React.Ref<HTMLLIElement>,
 ) {
   const settings = useAppSettingsValue();
-  const setSelectedTreeNodeId = useSetSelectedTreeNodeId();
+  const setSelectedTreeNodeId = useSelected.useSetTreeNodeIdAsync();
   const { id, itemId, label, disabled, children, ...other } = props;
 
   const {
@@ -95,9 +95,9 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
               </Typography>
             ) : (
               <IconButton
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation();
-                  setSelectedTreeNodeId(node.nodeId);
+                  await setSelectedTreeNodeId(node.nodeId);
                 }}
                 sx={{
                   p: 0,

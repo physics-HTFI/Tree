@@ -1,34 +1,26 @@
 import { Chip, Stack } from "@mui/material";
-import { useSelectedItemNodeValue } from "../../../jotai/useSelectedTreeNode";
+import { useSelected } from "../../../jotai/useSelected";
 import { useState } from "react";
-import { getBase64 } from "./utils/getBase64";
 import { useScroll } from "./hooks/useScroll";
 
 export function ImageView() {
-  const selectedItem: ItemNode | null = useSelectedItemNodeValue();
+  const selectedItem: ItemNode | null = useSelected.useItemNodeValue();
   const [nodeId, setNodeId] = useState<string>();
-  const [svg, setSvg] = useState<string | null>(null);
+  const svg = useSelected.useSvgValue();
   const { ref, scrolling, toggleScroll, timerStart } = useScroll(
     selectedItem?.entry?.speed ?? 0,
     !!svg,
   );
 
-  const handle = selectedItem?.parent?.handle ?? null;
-  const fileName = selectedItem ? selectedItem.entry.title + ".svg" : null;
-  if (!selectedItem || !handle || !fileName) return null;
-
-  if (nodeId !== selectedItem.nodeId) {
+  if (nodeId !== selectedItem?.nodeId) {
     timerStart();
-    setNodeId(selectedItem.nodeId);
-    getBase64(handle, fileName)
-      .then(setSvg)
-      .catch(() => undefined);
+    setNodeId(selectedItem?.nodeId);
   }
 
   if (!svg) return null;
   return (
     <Stack direction="row" onClick={toggleScroll}>
-      <img ref={ref} src={"data:image/svg+xml;base64," + svg} />
+      <img ref={ref} src={svg} />
       <Chip
         label="自動スクロール"
         variant="outlined"
