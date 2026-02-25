@@ -1,46 +1,67 @@
-import { pickLocalFolderAsync } from "./pickLocalFolder";
-import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { useLastUsedFolderHandle } from "./useLastUsedFolderHandle";
+import { pickLocalFolderAsync } from "../../generics/utils/pickLocalFolder";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Stack,
+} from "@mui/material";
+import { useLastUsedFolderHandle } from "../../generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
 import { useFolder } from "../../jotai/useFolder";
 
 export function FolderPicker() {
   // フック
   const { isFolderSelected, setFolderAsync } = useFolder();
-  const { lastUsedFolder, setLastUsedFolderAsync } =
-    useLastUsedFolderHandle(setFolderAsync);
+  const { lastUsedFolderHandle, saveLastUsedFolderHandleAsync } =
+    useLastUsedFolderHandle();
+
+  const selectFolderAsync = async (
+    handle: FileSystemDirectoryHandle | null,
+  ) => {
+    if (!handle) return;
+    await setFolderAsync(handle);
+    await saveLastUsedFolderHandleAsync(handle);
+  };
 
   // イベントハンドラー
   const pickFolderAsync = async () =>
-    await setLastUsedFolderAsync(await pickLocalFolderAsync());
+    await selectFolderAsync(await pickLocalFolderAsync());
   const pickLastUsedAsync = async () =>
-    await setLastUsedFolderAsync(lastUsedFolder);
+    await selectFolderAsync(lastUsedFolderHandle);
 
   const open = !isFolderSelected;
   return (
     <Dialog open={open}>
       <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>
       <DialogContent>
-        <Button
-          onClick={pickFolderAsync}
-          variant="contained"
-          sx={{ mr: 2 }}
-          className="mr-50"
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          alignItems="center"
         >
-          フォルダーを
-          <br />
-          選択する
-        </Button>
-        {lastUsedFolder && (
           <Button
-            onClick={pickLastUsedAsync}
-            variant="outlined"
-            sx={{ textTransform: "none" }}
+            onClick={pickFolderAsync}
+            variant="contained"
+            sx={{ mr: 2 }}
+            className="mr-50"
           >
-            前回のフォルダー
+            フォルダーを
             <br />
-            {lastUsedFolder.name}
+            選択する
           </Button>
-        )}
+          {lastUsedFolderHandle && (
+            <Button
+              onClick={pickLastUsedAsync}
+              variant="outlined"
+              sx={{ textTransform: "none" }}
+            >
+              前回のフォルダー
+              <br />
+              {lastUsedFolderHandle.name}
+            </Button>
+          )}
+        </Stack>
       </DialogContent>
     </Dialog>
   );

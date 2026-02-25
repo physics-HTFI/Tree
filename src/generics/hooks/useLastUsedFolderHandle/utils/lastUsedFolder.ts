@@ -1,12 +1,17 @@
 import { openDB } from "idb";
 
 const DB_NAME = "tree-db";
-const DB_VERSION = 1;
 const STORE_NAME = "last-used";
 const STORE_KEY = "folder";
+const DB_VERSION = 1;
+
+export const lastUsedFolder = {
+  saveAsync: saveLastUsedFolderAsync,
+  loadAsync: loadLastUsedFolderAsync,
+};
 
 async function getDB() {
-  return openDB(DB_NAME, DB_VERSION, {
+  return await openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         db.createObjectStore(STORE_NAME);
@@ -15,7 +20,7 @@ async function getDB() {
   });
 }
 
-export async function saveLastUsedFolderAsync(
+async function saveLastUsedFolderAsync(
   handle: FileSystemDirectoryHandle,
 ): Promise<void> {
   if (!("indexedDB" in window)) return;
@@ -27,7 +32,7 @@ export async function saveLastUsedFolderAsync(
   }
 }
 
-export async function loadLastUsedFolderAsync(): Promise<FileSystemDirectoryHandle | null> {
+async function loadLastUsedFolderAsync(): Promise<FileSystemDirectoryHandle | null> {
   if (!("indexedDB" in window)) return null;
   try {
     const db = await getDB();
