@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useModelEnabledValue } from "../../jotai/useModelEnabled";
 import { useAppSettingsValue } from "../../jotai/useAppSettings";
 
-export function Model() {
+export function ModelView() {
   const settings = useAppSettingsValue();
   const item = useSelectedItemNodeValue();
   const modelEnabled = useModelEnabledValue();

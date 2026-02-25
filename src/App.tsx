@@ -11,7 +11,7 @@ import {
   TickPanelButton,
 } from "./components/Buttons";
 import { FolderEditor } from "./components/FolderEditor/FolderEditor";
-import { Model } from "./components/Model/Model";
+import { ModelView } from "./components/ModelView/ModelView";
 import { Image } from "./components/Image/Image";
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
           }}
         >
           <TierToggles />
-          <Model />
+          <ModelView />
           <Box sx={{ mt: "auto" }} />
           <Stack direction="row" sx={{ mb: 1 }}>
             <ModelEnableButton />
