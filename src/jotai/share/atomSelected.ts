@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import { _atomSelectedTreeNodeId } from "./backings/_atomSelectedTreeNodeId";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { getTreeNode } from "./utils/getTreeNode";
-import { base64 } from "./utils/base64";
+import { base64 } from "../../generics/utils/base64";
 import { _atomSelectedSvg } from "./backings/_atomSelectedSvg";
 
 export const atomSelectedTreeNode = atom((get) => {

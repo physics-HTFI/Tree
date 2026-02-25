@@ -1,4 +1,4 @@
-import { fileSystem } from "../../../generics/utils/fileSystem";
+import { fileSystem } from "./fileSystem";
 
 export const base64 = {
   readBase64Async,
