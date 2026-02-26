@@ -7,7 +7,7 @@ export function Counter() {
   const count = countFiles(filteredTreeItems);
 
   return (
-    <Typography variant="h5" sx={{ mr: 3 }}>
+    <Typography color="primary" variant="h5" sx={{ mr: 3 }}>
       {count}
     </Typography>
   );
