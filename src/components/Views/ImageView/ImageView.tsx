@@ -1,29 +1,30 @@
 import { Chip, Stack } from "@mui/material";
 import { useSelected } from "../../../jotai/useSelected";
-import { useState } from "react";
 import { useScroll } from "./hooks/useScroll";
 
 export function ImageView() {
-  const selectedItem: ItemNode | null = useSelected.useItemNodeValue();
-  const [nodeId, setNodeId] = useState<string>();
   const svg = useSelected.useSvgValue();
-  const { ref, scrolling, toggleScroll, timerStart } = useScroll(
-    selectedItem?.entry?.speed ?? 0,
-    !!svg,
+  const itemNode = useSelected.useItemNodeValue();
+  const { ref, scrolling, toggleScroll, timerStart, timerStop } = useScroll(
+    itemNode?.entry?.speed ?? 0,
   );
 
-  if (nodeId !== selectedItem?.nodeId) {
-    timerStart();
-    setNodeId(selectedItem?.nodeId);
+  if (!svg) {
+    timerStop();
+    return null;
   }
-
-  if (!svg) return null;
   return (
     <Stack direction="row" onClick={toggleScroll}>
       <img
         ref={ref}
         src={svg}
-        style={{ objectFit: "none", alignSelf: "flex-start" }}
+        onLoad={timerStart}
+        style={{
+          objectFit: "none",
+          alignSelf: "flex-start",
+          paddingTop: 8,
+          paddingBottom: 8,
+        }}
       />
       <Chip
         label="自動スクロール"
