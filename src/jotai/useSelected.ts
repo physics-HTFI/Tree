@@ -3,6 +3,8 @@ import {
   atomSelectedFolderNode,
   atomSelectedItemNode,
   atomSelectedTreeNodeId,
+  atomSetFolderNodeAsync,
+  atomSetFolderNodeByItemAsync,
   atomSetSelectedSvgByBase64,
 } from "./share/atomSelected";
 
@@ -16,4 +18,6 @@ export const useSelected = {
   useItemNodeValue: () => useAtomValue(atomSelectedItemNode),
   useSvgBase64: () => useAtom(atomSetSelectedSvgByBase64),
   useSvgValue: () => useAtomValue(atomSetSelectedSvgByBase64),
+  useUpdateByItemDataAsync: () => useSetAtom(atomSetFolderNodeByItemAsync),
+  useUpdateAsync: () => useSetAtom(atomSetFolderNodeAsync),
 };

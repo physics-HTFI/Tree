@@ -11,7 +11,6 @@ import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { useState } from "react";
 import { Path } from "./ui/Path";
 import { TabPanel } from "./ui/TabPanel";
-import { useUpdateFolderNode } from "../../../jotai/useFilteredTreeValue";
 import { AddItem } from "./ui/AddItem";
 import { createId } from "../../../utils/createId";
 import { AddFolder } from "./ui/AddFolder";
@@ -25,7 +24,7 @@ export function FolderEditor() {
   const unselectAsync = useSelected.useUnselectAsync();
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
-  const updateAsync = useUpdateFolderNode.useUpdateAsync();
+  const updateAsync = useSelected.useUpdateAsync();
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
   if (folder?.nodeId !== defaultFolder?.nodeId) {
