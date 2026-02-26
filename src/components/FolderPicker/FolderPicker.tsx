@@ -11,7 +11,7 @@ import { useFolder } from "../../jotai/useFolder";
 
 export function FolderPicker() {
   // フック
-  const { isFolderSelected, setFolderAsync } = useFolder();
+  const { isFolderSelectedValue, setFolderAsync } = useFolder();
   const { lastUsedFolderHandle, saveLastUsedFolderHandleAsync } =
     useLastUsedFolderHandle();
 
@@ -29,7 +29,7 @@ export function FolderPicker() {
   const pickLastUsedAsync = async () =>
     await selectFolderAsync(lastUsedFolderHandle);
 
-  const open = !isFolderSelected;
+  const open = !isFolderSelectedValue;
   return (
     <Dialog open={open}>
       <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>

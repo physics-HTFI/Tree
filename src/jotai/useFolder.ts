@@ -3,6 +3,8 @@ import { atomFolder } from "./share/atomFolder";
 
 export const useFolder = () => {
   const setFolderAsync = useSetAtom(atomFolder.atomSetFolder);
-  const isFolderSelected = useAtomValue(atomFolder.atomIsFolderSelected);
-  return { isFolderSelected, setFolderAsync };
+  const isFolderSelectedValue = useAtomValue(
+    atomFolder.atomIsFolderSelectedValue,
+  );
+  return { isFolderSelectedValue, setFolderAsync };
 };

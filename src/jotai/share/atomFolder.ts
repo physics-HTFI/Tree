@@ -24,5 +24,5 @@ const atomIsFolderSelected = atom((get) => !!get(_atomFolder));
 
 export const atomFolder = {
   atomSetFolder,
-  atomIsFolderSelected,
+  atomIsFolderSelectedValue: atomIsFolderSelected,
 };
