@@ -17,7 +17,8 @@ import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
-import { appFileSystem } from "@/jotai/utils/appFileSystem";
+import { createAndSaveFolderNode } from "./utils/createAndSaveFolderNode";
+import { existsSvg } from "@/utils/existsSvg";
 
 export function FolderEditor() {
   const settings = useAtomValue(atomAppSettingsValue);
@@ -47,7 +48,7 @@ export function FolderEditor() {
       type: "item",
       nodeId: createId({ type: "item", title: item.title }, folder.nodeId),
       parent: newFolder,
-      hasSvg: false,
+      hasSvg: await existsSvg(folder.handle, item.title),
       entry: item,
     };
     newFolder.children = [newItem, ...newFolder.children];
@@ -56,31 +57,14 @@ export function FolderEditor() {
   };
 
   const addFolder = async (title: string, path?: string) => {
-    if (!folder.handle) return;
-    try {
-      const subFolderHandle = await folder.handle.getDirectoryHandle(title, {
-        create: true,
-      });
-      const subFolder: FolderNode = {
-        type: "folder",
-        title,
-        path,
-        nodeId: createId({ type: "folder", title }, folder.nodeId),
-        handle: subFolderHandle,
-        children: [],
-      };
-      await appFileSystem.saveFolderDataAsync(subFolder);
-      const newFolder = { ...folder };
-      newFolder.children = [subFolder, ...newFolder.children];
-      setFolder(newFolder);
-      await updateAsync(newFolder);
-    } catch {
-      alert("フォルダの作成に失敗しました");
-      return;
-    }
+    const subFolder = await createAndSaveFolderNode(folder, title, path);
+    if (!subFolder) return;
+    const newFolder = { ...folder, children: [subFolder, ...folder.children] };
+    setFolder(newFolder);
+    await updateAsync(newFolder);
   };
 
-  const updateChildren = async (items: TreeNode[]) => {
+  const sortChildren = async (items: TreeNode[]) => {
     if (!folder) return;
     const newFolder = { ...folder, children: items };
     setFolder(newFolder);
@@ -114,7 +98,7 @@ export function FolderEditor() {
           <AddFolder onAdd={addFolder} />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <SortItems defaultList={folder.children} onChange={updateChildren} />
+          <SortItems defaultList={folder.children} onChange={sortChildren} />
         </TabPanel>
       </DialogContent>
     </Dialog>

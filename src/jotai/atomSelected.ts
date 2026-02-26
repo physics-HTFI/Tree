@@ -4,6 +4,7 @@ import { getTreeNode } from "./utils/getTreeNode";
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
 import { svgBase64 } from "./utils/svgBase64";
+import { existsSvg } from "@/utils/existsSvg";
 
 //|
 //| 選択されたノードに関するatom
@@ -55,14 +56,14 @@ const atomSetItemNodeAsync = atom(
       newItemEntry.title !== undefined &&
       selectedItemNode.entry.title !== newItemEntry.title
     ) {
-      const duplicated = parentOrSelf.children.some(
+      const overwriting = parentOrSelf.children.some(
         (c) =>
           c.type === "item" &&
           c.entry.title?.toLowerCase() === newItemEntry.title?.toLowerCase() &&
           c.nodeId !== selectedItemNode.nodeId &&
           c.hasSvg,
       );
-      if (!duplicated) {
+      if (!overwriting) {
         const oldFileName = selectedItemNode.entry.title + ".svg";
         const newFileName = newItemEntry.title + ".svg";
         const isOk = await fileSystem.renameAsync(
@@ -74,10 +75,7 @@ const atomSetItemNodeAsync = atom(
       }
     }
     // selectedItemNode を更新
-    const hasSvg = await fileSystem.existsAsync(
-      parentOrSelf.handle,
-      newItemEntry.title + ".svg",
-    );
+    const hasSvg = await existsSvg(parentOrSelf.handle, newItemEntry.title);
     for (const child of parentOrSelf.children) {
       // 同じタイトルでSVGを持つアイテムがある場合、画像のリンク切れを防ぐため、一緒に改名する
       if (

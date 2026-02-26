@@ -26,8 +26,7 @@ export function SortItems({
   const [index, setIndex] = useState<number | null>(null);
 
   const disabledToMove = index === null;
-  const disabledToRemove =
-    disabledToMove || list[index].type === "folder" || list[index].hasSvg;
+  const disabledToRemove = disabledToMove || list[index].type === "folder";
 
   const move = (
     from: number,
