@@ -40,9 +40,7 @@ export function TreeView() {
       getItemLabel={(item) =>
         (item.type === "item" ? item.entry.title : item.title) ?? "---"
       }
-      onItemSelectionToggle={(_, itemId, isSelected) =>
-        setSelectedItemId(isSelected ? itemId : null)
-      }
+      onSelectedItemsChange={(_, id) => setSelectedItemId(id)}
       onExpandedItemsChange={(_, ids) =>
         setExpandedIds(showsTier0 ? trimIds(expandedIds, ids) : ids)
       }
