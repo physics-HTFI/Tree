@@ -32,11 +32,12 @@ export const appFileSystem = {
     const formatFolderData = (json: string) =>
       json.replace(/\n\s{4}\s*(?!\{)/g, " ");
 
-    await fileSystem.saveAsJsonAsync<FolderData>(
+    const isOk = await fileSystem.saveAsJsonAsync<FolderData>(
       folder.handle ?? null,
       FOLDER_DATA_FILE_NAME,
       folderData,
       formatFolderData,
     );
+    if (!isOk) alert("フォルダデータの保存に失敗しました");
   },
 };

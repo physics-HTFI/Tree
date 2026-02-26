@@ -78,11 +78,12 @@ const atomSetItemNodeAsync = atom(
     ) {
       const oldFileName = selectedItemNode.entry.title + ".svg";
       const newFileName = newItemEntry.title + ".svg";
-      await fileSystem.renameAsync(
+      const isOk = await fileSystem.renameAsync(
         parentOrSelf.handle,
         oldFileName,
         newFileName,
       );
+      if (!isOk) alert("SVGファイルの名前変更に失敗しました");
     }
     // selectedItemNode を更新
     selectedItemNode.entry = {

@@ -31,7 +31,6 @@ async function parseJsonAsync<T>(
     if (!text) return null;
     return JSON.parse(text) as T;
   } catch {
-    alert(`JSONファイルが壊れています: ${fileName}`);
     return null;
   }
 }
@@ -41,7 +40,7 @@ async function saveTextAsync(
   fileName: string,
   text: string,
 ) {
-  if (!folder) return;
+  if (!folder) return false;
   try {
     const fileHandle = await folder.getFileHandle(fileName, {
       create: true,
@@ -49,9 +48,9 @@ async function saveTextAsync(
     const writable = await fileHandle.createWritable();
     await writable.write(text);
     await writable.close();
+    return true;
   } catch {
-    alert(`ファイルの保存に失敗しました: ${fileName}`);
-    return;
+    return false;
   }
 }
 
@@ -61,14 +60,14 @@ async function saveAsJsonAsync<T>(
   value: T,
   format?: (json: string) => string,
 ) {
-  if (!folder) return;
+  if (!folder) return false;
   try {
     let json = JSON.stringify(value, null, 2);
     if (format) json = format(json);
     await saveTextAsync(folder, fileName, json);
+    return true;
   } catch {
-    alert(`JSONファイルの保存に失敗しました: ${fileName}`);
-    return;
+    return false;
   }
 }
 
@@ -77,15 +76,15 @@ async function renameAsync(
   oldName: string,
   newName: string,
 ) {
-  if (!folder) return;
+  if (!folder) return false;
   try {
     const text = await readTextAsync(folder, oldName);
-    if (text === null) throw new Error();
+    if (text === null) return false;
     await saveTextAsync(folder, newName, text);
     await folder.removeEntry(oldName);
+    return true;
   } catch {
-    alert(`ファイルの名前変更に失敗しました: ${oldName} → ${newName}`);
-    return;
+    return false;
   }
 }
 
