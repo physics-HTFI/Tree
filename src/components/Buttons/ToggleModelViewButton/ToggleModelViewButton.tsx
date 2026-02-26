@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { atomModelViewEnabled } from "../../../jotai/atomModelViewEnabled";
+import { atomModelViewEnabled } from "@/jotai/atomModelViewEnabled";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function ToggleModelViewButton() {

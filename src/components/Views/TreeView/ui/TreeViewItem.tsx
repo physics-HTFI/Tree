@@ -15,8 +15,8 @@ import {
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomAppSettingsValue } from "../../../../jotai/atomAppSettings";
-import { atomsSelected } from "../../../../jotai/atomSelected";
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { atomsSelected } from "@/jotai/atomSelected";
 
 interface CustomTreeViewItemProps
   extends

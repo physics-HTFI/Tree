@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
-import { filterString } from "../../../../utils/filterString";
+import { filterString } from "@/utils/filterString";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
-import { atomAppSettingsValue } from "../../../../jotai/atomAppSettings";
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
 
 export function ItemForm({

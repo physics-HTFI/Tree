@@ -1,4 +1,4 @@
-import { pickLocalFolderAsync } from "../../generics/utils/pickLocalFolder";
+import { pickLocalFolderAsync } from "@/generics/utils/pickLocalFolder";
 import {
   Button,
   Dialog,
@@ -6,8 +6,8 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
-import { useLastUsedFolderHandle } from "../../generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
-import { atomsFolder } from "../../jotai/atomFolder";
+import { useLastUsedFolderHandle } from "@/generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
+import { atomsFolder } from "@/jotai/atomFolder";
 import { useAtomValue, useSetAtom } from "jotai";
 
 export function FolderPicker() {

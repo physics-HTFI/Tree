@@ -1,6 +1,6 @@
 import { ButtonBase } from "../ui/ButtonBase";
 import { useEffect, useRef, useState } from "react";
-import { atomsSelected } from "../../../jotai/atomSelected";
+import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtom, useAtomValue } from "jotai";
 
 // ref

@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { atomAppSettingsValue } from "../../../jotai/atomAppSettings";
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
 
 export function ButtonBase({

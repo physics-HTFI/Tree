@@ -10,13 +10,13 @@ import { useState } from "react";
 import { Path } from "./ui/Path";
 import { TabPanel } from "./ui/TabPanel";
 import { AddItem } from "./ui/AddItem";
-import { createId } from "../../../utils/createId";
+import { createId } from "@/utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
-import { useDebounce } from "../../../generics/hooks/useDebounce";
-import { atomAppSettingsValue } from "../../../jotai/atomAppSettings";
+import { useDebounce } from "@/generics/hooks/useDebounce";
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomsSelected } from "../../../jotai/atomSelected";
+import { atomsSelected } from "@/jotai/atomSelected";
 
 export function FolderEditor() {
   const settings = useAtomValue(atomAppSettingsValue);

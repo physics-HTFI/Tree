@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAtomValue } from "jotai";
-import { atomAppSettingsValue } from "../../../jotai/atomAppSettings";
-import { atomModelViewEnabled } from "../../../jotai/atomModelViewEnabled";
-import { atomsSelected } from "../../../jotai/atomSelected";
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { atomModelViewEnabled } from "@/jotai/atomModelViewEnabled";
+import { atomsSelected } from "@/jotai/atomSelected";
 
 export function ModelView() {
   const settings = useAtomValue(atomAppSettingsValue);

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
-import { useDebounce } from "../../../generics/hooks/useDebounce";
-import { atomsSelected } from "../../../jotai/atomSelected";
+import { useDebounce } from "@/generics/hooks/useDebounce";
+import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
 
 export function ItemEditor() {
