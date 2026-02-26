@@ -13,7 +13,13 @@ import {
   type UseTreeItemParameters,
 } from "@mui/x-tree-view";
 import React from "react";
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Stack,
+  Typography,
+  type SxProps,
+} from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { atomsSelected } from "@/jotai/atomSelected";
@@ -50,7 +56,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
       : undefined;
   const tier =
     node.type === "item" ? settings?.tiers?.[node.entry.tier ?? 0] : undefined;
-  const sx = {
+  const sx: SxProps = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
   };
@@ -88,6 +94,12 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
                 variant="caption"
                 color="textSecondary"
                 whiteSpace="nowrap"
+                sx={{
+                  visibility: "hidden",
+                  "#tree-view:hover &": {
+                    visibility: "visible",
+                  },
+                }}
               >
                 {node.hasSvg && "🖼️"}
                 {node.entry.ticks !== undefined && "🕒"}
