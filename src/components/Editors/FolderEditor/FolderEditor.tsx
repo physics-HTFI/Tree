@@ -17,6 +17,7 @@ import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
+import { appFileSystem } from "@/jotai/utils/appFileSystem";
 
 export function FolderEditor() {
   const settings = useAtomValue(atomAppSettingsValue);
@@ -57,7 +58,7 @@ export function FolderEditor() {
   const addFolder = async (title: string, path?: string) => {
     if (!folder.handle) return;
     try {
-      const subFolderHandle = await folder.handle?.getDirectoryHandle(title, {
+      const subFolderHandle = await folder.handle.getDirectoryHandle(title, {
         create: true,
       });
       const subFolder: FolderNode = {
@@ -68,10 +69,10 @@ export function FolderEditor() {
         handle: subFolderHandle,
         children: [],
       };
+      await appFileSystem.saveFolderDataAsync(subFolder);
       const newFolder = { ...folder };
       newFolder.children = [subFolder, ...newFolder.children];
       setFolder(newFolder);
-      await updateAsync(subFolder);
       await updateAsync(newFolder);
     } catch {
       alert("フォルダの作成に失敗しました");
