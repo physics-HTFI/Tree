@@ -1,4 +1,4 @@
 import { useAtomValue } from "jotai";
-import { atomAppSettings } from "./share/atomAppSettings";
+import { atomAppSettingsValue } from "./share/atomAppSettings";
 
-export const useAppSettingsValue = () => useAtomValue(atomAppSettings);
+export const useAppSettingsValue = () => useAtomValue(atomAppSettingsValue);

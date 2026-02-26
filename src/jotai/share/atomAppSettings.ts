@@ -1,3 +1,4 @@
 import { atom } from "jotai";
+import { _atomAppSettings } from "./backings/_atomAppSettings";
 
-export const atomAppSettings = atom<AppSettings>({});
+export const atomAppSettingsValue = atom((get) => get(_atomAppSettings));
