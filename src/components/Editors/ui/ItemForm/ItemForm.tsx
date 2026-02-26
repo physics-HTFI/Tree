@@ -11,8 +11,9 @@ import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 import { filterString } from "../../../../utils/filterString";
 import { usePreventScroll } from "./hooks/usePreventScroll";
-import { useAppSettingsValue } from "../../../../jotai/useAppSettings";
 import { Header } from "./ui/Header";
+import { atomAppSettingsValue } from "../../../../jotai/share/atomAppSettings";
+import { useAtomValue } from "jotai";
 
 export function ItemForm({
   item,
@@ -22,7 +23,7 @@ export function ItemForm({
   onChange: (itemDiff: Partial<ItemEntry>) => void;
 }) {
   // フック
-  const settings = useAppSettingsValue();
+  const settings = useAtomValue(atomAppSettingsValue);
   const ref = usePreventScroll();
 
   const labels = settings.labels;

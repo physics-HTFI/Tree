@@ -6,8 +6,6 @@ import {
   Tab,
   Tabs,
 } from "@mui/material";
-
-import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { useState } from "react";
 import { Path } from "./ui/Path";
 import { TabPanel } from "./ui/TabPanel";
@@ -17,9 +15,11 @@ import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
 import { useDebounce } from "../../../generics/hooks/useDebounce";
 import { useSelected } from "../../../jotai/useSelected";
+import { atomAppSettingsValue } from "../../../jotai/share/atomAppSettings";
+import { useAtomValue } from "jotai";
 
 export function FolderEditor() {
-  const settings = useAppSettingsValue();
+  const settings = useAtomValue(atomAppSettingsValue);
   const defaultFolder = useSelected.useFolderNodeValue();
   const unselectAsync = useSelected.useUnselectAsync();
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);

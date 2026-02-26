@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
-import { useAppSettingsValue } from "../../../../jotai/useAppSettings";
 import { filterString } from "../../../../utils/filterString";
+import { atomAppSettingsValue } from "../../../../jotai/share/atomAppSettings";
+import { useAtomValue } from "jotai";
 
 const defaultForm = {};
 
@@ -10,7 +11,7 @@ export function AddFolder({
 }: {
   onAdd: (title: string, path?: string) => void;
 }) {
-  const settings = useAppSettingsValue();
+  const settings = useAtomValue(atomAppSettingsValue);
   const [folder, setFolder] = useState<{ title?: string; path?: string }>(
     defaultForm,
   );

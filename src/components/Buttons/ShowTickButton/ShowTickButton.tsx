@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Popper } from "@mui/material";
 import { TickPanel } from "./Tick";
-import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { ButtonBase } from "../ui/ButtonBase";
+import { useAtomValue } from "jotai";
+import { atomAppSettingsValue } from "../../../jotai/share/atomAppSettings";
 
 export function ShowTickButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  const settings = useAppSettingsValue();
+  const settings = useAtomValue(atomAppSettingsValue);
   const icon = settings.buttons?.tick;
   if (!icon) return null;
 

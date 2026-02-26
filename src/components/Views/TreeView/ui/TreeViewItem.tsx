@@ -14,8 +14,9 @@ import {
 } from "@mui/x-tree-view";
 import React from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { useAppSettingsValue } from "../../../../jotai/useAppSettings";
 import { useSelected } from "../../../../jotai/useSelected";
+import { useAtomValue } from "jotai";
+import { atomAppSettingsValue } from "../../../../jotai/share/atomAppSettings";
 
 interface CustomTreeViewItemProps
   extends
@@ -26,7 +27,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   props: CustomTreeViewItemProps,
   ref: React.Ref<HTMLLIElement>,
 ) {
-  const settings = useAppSettingsValue();
+  const settings = useAtomValue(atomAppSettingsValue);
   const setSelectedTreeNodeId = useSelected.useSetTreeNodeIdAsync();
   const { id, itemId, label, disabled, children, ...other } = props;
 
