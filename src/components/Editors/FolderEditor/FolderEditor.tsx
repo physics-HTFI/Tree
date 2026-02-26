@@ -11,7 +11,7 @@ import { useAppSettingsValue } from "../../../jotai/useAppSettings";
 import { useState } from "react";
 import { Path } from "./ui/Path";
 import { TabPanel } from "./ui/TabPanel";
-import { useUpdateFolderNode } from "../../../jotai/useTreeItems";
+import { useUpdateFolderNode } from "../../../jotai/useFilteredTreeValue";
 import { AddItem } from "./ui/AddItem";
 import { createId } from "../../../utils/createId";
 import { AddFolder } from "./ui/AddFolder";

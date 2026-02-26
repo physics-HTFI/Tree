@@ -1,5 +1,5 @@
 import { useSelected } from "../../../jotai/useSelected";
-import { useUpdateFolderNode } from "../../../jotai/useTreeItems";
+import { useUpdateFolderNode } from "../../../jotai/useFilteredTreeValue";
 import { useState } from "react";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
 import { useDebounce } from "../../../generics/hooks/useDebounce";
