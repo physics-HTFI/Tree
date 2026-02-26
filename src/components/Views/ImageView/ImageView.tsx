@@ -1,6 +1,6 @@
 import { Chip, Stack } from "@mui/material";
 import { useScroll } from "./hooks/useScroll";
-import { atomsSelected } from "../../../jotai/share/atomSelected";
+import { atomsSelected } from "../../../jotai/atomSelected";
 import { useAtomValue } from "jotai";
 
 export function ImageView() {

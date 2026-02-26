@@ -4,7 +4,7 @@ import { _atomAppSettings } from "./backings/_atomAppSettings";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { createTreeItemsFromFolder } from "./utils/createTreeItemsFromFolder";
 
-export const _atomFolder = atom<FileSystemDirectoryHandle | null>(null);
+const _atomFolder = atom<FileSystemDirectoryHandle | null>(null);
 
 const setAsync = atom(
   null,

@@ -1,8 +1,8 @@
 import { atom } from "jotai";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { getTreeNode } from "./utils/getTreeNode";
-import { base64 } from "../../generics/utils/base64";
-import { fileSystem } from "../../generics/utils/fileSystem";
+import { base64 } from "../generics/utils/base64";
+import { fileSystem } from "../generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
 
 export const _atomSelectedTreeNodeId = atom<string | null>(null);

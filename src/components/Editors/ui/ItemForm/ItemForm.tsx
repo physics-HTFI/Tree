@@ -12,7 +12,7 @@ import { CloseButton } from "./ui/CloseButton";
 import { filterString } from "../../../../utils/filterString";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
-import { atomAppSettingsValue } from "../../../../jotai/share/atomAppSettings";
+import { atomAppSettingsValue } from "../../../../jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
 
 export function ItemForm({

@@ -2,8 +2,8 @@ import { FormGroup, Stack } from "@mui/material";
 import { CheckboxTier } from "./ui/CheckboxTier";
 import { Counter } from "./ui/Counter";
 import { useAtom, useAtomValue } from "jotai";
-import { atomAppSettingsValue } from "../../../jotai/share/atomAppSettings";
-import { atomHiddenTiers } from "../../../jotai/share/atomHiddenTiers";
+import { atomAppSettingsValue } from "../../../jotai/atomAppSettings";
+import { atomHiddenTiers } from "../../../jotai/atomHiddenTiers";
 
 export function TierEditor() {
   // フック

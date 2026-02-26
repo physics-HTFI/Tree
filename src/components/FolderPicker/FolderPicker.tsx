@@ -7,7 +7,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useLastUsedFolderHandle } from "../../generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
-import { atomsFolder } from "../../jotai/share/atomFolder";
+import { atomsFolder } from "../../jotai/atomFolder";
 import { useAtomValue, useSetAtom } from "jotai";
 
 export function FolderPicker() {

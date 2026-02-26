@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { atomsSelected } from "../../../jotai/share/atomSelected";
+import { atomsSelected } from "../../../jotai/atomSelected";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function UnselectButton() {
