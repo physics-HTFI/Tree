@@ -10,7 +10,7 @@ export function TreeView() {
   // フック
   const hiddenTiers = useAtomValue(atomHiddenTiers);
   const tree = useAtomValue(atomFilteredTreeValue);
-  const [selectedItemId, setSelectedItemId] = useAtom(atomsSelected.treeNodeId);
+  const [selectedItemId, setSelectedItemId] = useAtom(atomsSelected.nodeId);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [showsTier0, setShowsTier0] = useState(true);
 

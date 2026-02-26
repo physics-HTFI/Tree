@@ -28,7 +28,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   ref: React.Ref<HTMLLIElement>,
 ) {
   const settings = useAtomValue(atomAppSettingsValue);
-  const setSelectedTreeNodeId = useSetAtom(atomsSelected.treeNodeId);
+  const setSelectedTreeNodeId = useSetAtom(atomsSelected.nodeId);
   const { id, itemId, label, disabled, children, ...other } = props;
 
   const {

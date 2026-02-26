@@ -9,10 +9,10 @@ import { appFileSystem } from "./utils/appFileSystem";
 //| 選択されたノードに関するatom
 //|
 
-const atomTreeNodeId = atom<string | null>(null);
+const atomNodeId = atom<string | null>(null);
 
 const atomTreeNode = atom((get) => {
-  const selectedId = get(atomTreeNodeId);
+  const selectedId = get(atomNodeId);
   const treeItems = get(_atomTreeItems);
   return getTreeNode(treeItems, selectedId);
 });
@@ -106,8 +106,8 @@ const atomSetFolderNodeAsync = atom(
 //|
 
 export const atomsSelected = {
-  treeNodeId: atomTreeNodeId,
-  unselectAsync: atom(null, (_, set) => set(atomTreeNodeId, null)),
+  nodeId: atomNodeId,
+  unselectAsync: atom(null, (_, set) => set(atomNodeId, null)),
 
   nodeValue: atomTreeNode,
 

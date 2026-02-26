@@ -2,15 +2,25 @@ import { Chip, Stack } from "@mui/material";
 import { useScroll } from "./hooks/useScroll";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtomValue } from "jotai";
+import { useState } from "react";
 
 export function ImageView() {
   const svg = useAtomValue(atomsSelected.svgBase64);
+  const id = useAtomValue(atomsSelected.nodeId);
+  const [currentId, setCurrentId] = useState<string | null>(null);
   const itemNode = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const { ref, scrolling, toggleScroll, timerStart, timerStop } = useScroll(
     itemNode?.entry?.speed ?? 0,
   );
 
-  if (!svg) {
+  if (id !== currentId) {
+    // 画像読み込み失敗時に「自動スクロール」が残らないようにする。
+    // （onErrorだと遅延が発生するためここで行う。）
+    timerStop();
+    setCurrentId(id);
+  }
+
+  if (!svg || itemNode?.hasSvg !== true) {
     timerStop();
     return null;
   }
