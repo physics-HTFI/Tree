@@ -17,6 +17,7 @@ export function Path({
       <TextField
         value={path ?? ""}
         variant="standard"
+        autoComplete="off"
         fullWidth
         onChange={(e) => onChange(filterString(e.currentTarget.value))}
       />

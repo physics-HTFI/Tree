@@ -31,6 +31,12 @@ export function TreeView() {
     }
   }
 
+  const getLabel = (item: TreeNode) => {
+    const label = item.type === "item" ? item.entry.title : item.title;
+    if (!label) return "---";
+    return label;
+  };
+
   return (
     <RichTreeView
       items={tree?.children ?? []}
@@ -38,9 +44,7 @@ export function TreeView() {
       expandedItems={expandedIds}
       getItemId={(item) => item.nodeId}
       isItemSelectionDisabled={(item) => item.type === "folder"}
-      getItemLabel={(item) =>
-        (item.type === "item" ? item.entry.title : item.title) ?? "---"
-      }
+      getItemLabel={getLabel}
       onSelectedItemsChange={(_, id) => setSelectedItemId(id)}
       onExpandedItemsChange={(_, ids) =>
         setExpandedIds(showsTier0 ? trimIds(expandedIds, ids) : ids)

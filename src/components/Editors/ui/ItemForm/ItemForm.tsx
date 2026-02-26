@@ -51,9 +51,7 @@ export function ItemForm({
           size="small"
           fullWidth
           autoComplete="off"
-          onChange={(e) =>
-            onChange({ title: filterString(e.currentTarget.value) })
-          }
+          onChange={(e) => onChange({ title: e.currentTarget.value })}
         />
       </Grid>
 

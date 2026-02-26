@@ -30,7 +30,7 @@ const atomSvgBase64 = atom(
     const { selectedItemNode } = get(atomTreeNode);
     const handle = selectedItemNode?.parent?.handle;
     const title = selectedItemNode?.entry?.title;
-    if (!handle || !title) return null;
+    if (!handle || title === undefined) return null;
     const svg = await base64.readBase64Async(handle, title + ".svg");
     return HEADER + svg;
   },
@@ -38,7 +38,7 @@ const atomSvgBase64 = atom(
     const { selectedItemNode } = get(atomTreeNode);
     const handle = selectedItemNode?.parent?.handle;
     const title = selectedItemNode?.entry?.title;
-    if (!handle || !title) {
+    if (!handle || title === undefined) {
       alert("SVGファイルを保存できません");
       return;
     }
@@ -59,26 +59,26 @@ const atomSetItemNodeAsync = atom(
   null,
   async (get, set, newItemEntry: ItemEntry) => {
     const treeItems = get(_atomTreeItems);
-    const { selectedFolderNode, selectedItemNode } = get(atomTreeNode);
-    if (!treeItems || !selectedFolderNode?.handle || !selectedItemNode) return;
+    const { parentOrSelf, selectedItemNode } = get(atomTreeNode);
+    if (!treeItems || !parentOrSelf?.handle || !selectedItemNode) return;
     // SVGファイルの名前を変更（タイトルが変更された場合）
     if (
       selectedItemNode.hasSvg &&
-      selectedItemNode.entry.title &&
-      newItemEntry.title &&
+      selectedItemNode.entry.title !== undefined &&
+      newItemEntry.title !== undefined &&
       selectedItemNode.entry.title !== newItemEntry.title
     ) {
       const oldFileName = selectedItemNode.entry.title + ".svg";
       const newFileName = newItemEntry.title + ".svg";
       await fileSystem.renameAsync(
-        selectedFolderNode.handle,
+        parentOrSelf.handle,
         oldFileName,
         newFileName,
       );
     }
     // selectedItemNode を更新
     selectedItemNode.entry = { ...selectedItemNode.entry, ...newItemEntry };
-    await appFileSystem.saveFolderDataAsync(selectedFolderNode);
+    await appFileSystem.saveFolderDataAsync(parentOrSelf);
     set(_atomTreeItems, { ...treeItems });
   },
 );
