@@ -51,6 +51,7 @@ export function ItemForm({
           size="small"
           fullWidth
           autoComplete="off"
+          spellCheck="false"
           onChange={(e) => onChange({ title: e.currentTarget.value })}
         />
       </Grid>
@@ -66,6 +67,7 @@ export function ItemForm({
           size="small"
           fullWidth
           autoComplete="off"
+          spellCheck="false"
           onChange={(e) => {
             const regexp = new RegExp(
               settings.expressions?.search_id ?? "(?!)",
@@ -122,6 +124,7 @@ export function ItemForm({
           value={item.start ?? ""}
           variant="standard"
           autoComplete="off"
+          spellCheck="false"
           size="small"
           sx={{ width: 60 }}
           onWheel={(e) =>
@@ -140,6 +143,7 @@ export function ItemForm({
           value={item.ticks ?? ""}
           variant="standard"
           autoComplete="off"
+          spellCheck="false"
           sx={{ width: 60 }}
           size="small"
           onWheel={(e) =>
@@ -235,6 +239,7 @@ export function ItemForm({
             multiline
             fullWidth
             autoComplete="off"
+            spellCheck="false"
             size="small"
             onChange={(e) =>
               onChange({ notes: filterString(e.currentTarget.value) })

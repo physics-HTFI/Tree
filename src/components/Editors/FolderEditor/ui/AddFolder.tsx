@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
-import { filterString } from "@/utils/filterString";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
+import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 
-const defaultForm = {};
+type Value = {
+  title: string;
+  path?: string;
+};
+
+const defaultValues: Value = { title: "" };
 
 export function AddFolder({
   onAdd,
@@ -13,26 +18,21 @@ export function AddFolder({
   onAdd: (title: string, path?: string) => void;
 }) {
   const settings = useAtomValue(atomAppSettingsValue);
-  const [folder, setFolder] = useState<{ title?: string; path?: string }>(
-    defaultForm,
-  );
-  const duplicated = useAtomValue(
-    atomsSelected.nodeValue,
-  ).selectedFolderNode?.children?.some(
-    (child) =>
-      child.type === "folder" &&
-      child.title.toLowerCase() === folder.title?.toLowerCase(),
-  );
+  const [folder, setFolder] = useState<Value>(defaultValues);
+  const parent = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
 
-  const canAdd = Boolean(folder.title) && !duplicated;
+  const canAdd = modifierFolderNode.canAdd(folder, parent);
 
-  const reset = () => setFolder(defaultForm);
-  const update = (diff: { title?: string; path?: string }) => {
+  const reset = () => setFolder(defaultValues);
+
+  const update = (diff: Partial<Value>) => {
     const newFolder = { ...folder, ...diff };
+    modifierFolderNode.modify(newFolder);
     setFolder(newFolder);
   };
+
   const addFolder = async () => {
-    if (!folder.title) return;
+    if (!canAdd) return;
     onAdd(folder.title, folder.path);
     reset();
   };
@@ -58,10 +58,9 @@ export function AddFolder({
             value={folder.title ?? ""}
             variant="standard"
             autoComplete="off"
+            spellCheck="false"
             fullWidth
-            onChange={(e) =>
-              update({ title: filterString(e.currentTarget.value) })
-            }
+            onChange={(e) => update({ title: e.currentTarget.value })}
           />
         </Grid>
 
@@ -76,10 +75,9 @@ export function AddFolder({
             value={folder.path ?? ""}
             variant="standard"
             autoComplete="off"
+            spellCheck="false"
             fullWidth
-            onChange={(e) =>
-              update({ path: filterString(e.currentTarget.value) })
-            }
+            onChange={(e) => update({ path: e.currentTarget.value })}
           />
         </Grid>
       </Grid>

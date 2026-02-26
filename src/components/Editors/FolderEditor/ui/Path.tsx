@@ -18,6 +18,7 @@ export function Path({
         value={path ?? ""}
         variant="standard"
         autoComplete="off"
+        spellCheck="false"
         fullWidth
         onChange={(e) => onChange(filterString(e.currentTarget.value))}
       />
