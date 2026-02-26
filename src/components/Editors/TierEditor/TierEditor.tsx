@@ -1,14 +1,14 @@
 import { FormGroup, Stack } from "@mui/material";
 import { CheckboxTier } from "./ui/CheckboxTier";
-import { useHiddenTiers } from "../../../jotai/useHiddenTiers";
 import { Counter } from "./ui/Counter";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { atomAppSettingsValue } from "../../../jotai/share/atomAppSettings";
+import { atomHiddenTiers } from "../../../jotai/share/atomHiddenTiers";
 
 export function TierEditor() {
   // フック
   const settings = useAtomValue(atomAppSettingsValue);
-  const [hiddenTiers, setHiddenTiers] = useHiddenTiers();
+  const [hiddenTiers, setHiddenTiers] = useAtom(atomHiddenTiers);
 
   const tiers = settings.tiers;
   if (!tiers) return null;

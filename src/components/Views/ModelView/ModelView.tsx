@@ -1,13 +1,13 @@
 import { useSelected } from "../../../jotai/useSelected";
 import { useState } from "react";
-import { useModelViewEnabledValue } from "../../../jotai/useModelViewEnabled";
 import { useAtomValue } from "jotai";
 import { atomAppSettingsValue } from "../../../jotai/share/atomAppSettings";
+import { atomModelViewEnabled } from "../../../jotai/share/atomModelViewEnabled";
 
 export function ModelView() {
   const settings = useAtomValue(atomAppSettingsValue);
   const item = useSelected.useItemNodeValue();
-  const modelEnabled = useModelViewEnabledValue();
+  const modelEnabled = useAtomValue(atomModelViewEnabled);
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
 
   if (

@@ -1,8 +1,9 @@
-import { useModelViewEnabled } from "../../../jotai/useModelViewEnabled";
+import { useAtom } from "jotai";
+import { atomModelViewEnabled } from "../../../jotai/share/atomModelViewEnabled";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function ToggleModelViewButton() {
-  const [modelEnabled, setModelEnabled] = useModelViewEnabled();
+  const [modelEnabled, setModelEnabled] = useAtom(atomModelViewEnabled);
   return (
     <ButtonBase
       type={modelEnabled ? "model_enabled" : "model_disabled"}

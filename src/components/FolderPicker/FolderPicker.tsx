@@ -7,11 +7,13 @@ import {
   Stack,
 } from "@mui/material";
 import { useLastUsedFolderHandle } from "../../generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
-import { useFolder } from "../../jotai/useFolder";
+import { atomFolder } from "../../jotai/share/atomFolder";
+import { useAtomValue, useSetAtom } from "jotai";
 
 export function FolderPicker() {
   // フック
-  const { isFolderSelectedValue, setFolderAsync } = useFolder();
+  const isSelected = useAtomValue(atomFolder.atomIsFolderSelectedValue);
+  const setFolderAsync = useSetAtom(atomFolder.atomSetFolder);
   const { lastUsedFolderHandle, saveLastUsedFolderHandleAsync } =
     useLastUsedFolderHandle();
 
@@ -29,7 +31,7 @@ export function FolderPicker() {
   const pickLastUsedAsync = async () =>
     await selectFolderAsync(lastUsedFolderHandle);
 
-  const open = !isFolderSelectedValue;
+  const open = !isSelected;
   return (
     <Dialog open={open}>
       <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>
