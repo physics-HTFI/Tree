@@ -1,11 +1,12 @@
 import { atom } from "jotai";
-import { _atomFolder } from "./backings/_atomFolder";
 import { appFileSystem } from "./utils/appFileSystem";
 import { _atomAppSettings } from "./backings/_atomAppSettings";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { createTreeItemsFromFolder } from "./utils/createTreeItemsFromFolder";
 
-const atomSetFolderAsync = atom(
+export const _atomFolder = atom<FileSystemDirectoryHandle | null>(null);
+
+const setAsync = atom(
   null,
   async (_, set, folder: FileSystemDirectoryHandle | null) => {
     set(_atomFolder, folder);
@@ -20,9 +21,9 @@ const atomSetFolderAsync = atom(
   },
 );
 
-const atomIsFolderSelectedValue = atom((get) => !!get(_atomFolder));
+const isSelectedValue = atom((get) => !!get(_atomFolder));
 
-export const atomFolder = {
-  atomSetFolderAsync,
-  atomIsFolderSelectedValue,
+export const atomsFolder = {
+  setAsync,
+  isSelectedValue,
 };

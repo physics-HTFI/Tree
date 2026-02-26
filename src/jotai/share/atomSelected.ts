@@ -1,11 +1,11 @@
 import { atom } from "jotai";
-import { _atomSelectedTreeNodeId } from "./backings/_atomSelectedTreeNodeId";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { getTreeNode } from "./utils/getTreeNode";
 import { base64 } from "../../generics/utils/base64";
-import { _atomSelectedSvg } from "./backings/_atomSelectedSvg";
 import { fileSystem } from "../../generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
+
+export const _atomSelectedTreeNodeId = atom<string | null>(null);
 
 export const atomSelectedTreeNode = atom((get) => {
   const selectedId = get(_atomSelectedTreeNodeId);
@@ -13,17 +13,18 @@ export const atomSelectedTreeNode = atom((get) => {
   return getTreeNode(treeItems, selectedId);
 });
 
-export const atomSelectedFolderNode = atom((get) => {
+export const atomFolderNodeValue = atom((get) => {
   const node = get(atomSelectedTreeNode);
   return node?.type === "folder" ? node : null;
 });
 
-export const atomSelectedItemNode = atom((get) => {
+export const atomItemNodeValue = atom((get) => {
   const node = get(atomSelectedTreeNode);
   return node?.type === "item" ? node : null;
 });
 
 const HEADER = "data:image/svg+xml;base64,";
+export const _atomSelectedSvg = atom<string | null>(null);
 
 const atomSetSelectedSvgById = atom(
   null,
@@ -40,10 +41,10 @@ const atomSetSelectedSvgById = atom(
   },
 );
 
-export const atomSetSelectedSvgByBase64 = atom(
+export const atomSvgBase64 = atom(
   (get) => get(_atomSelectedSvg),
   async (get, set, base64str: string | null) => {
-    const node = get(atomSelectedItemNode);
+    const node = get(atomItemNodeValue);
     await base64.saveBase64Async(
       node?.parent?.handle,
       node?.entry?.title + ".svg",
@@ -55,13 +56,15 @@ export const atomSetSelectedSvgByBase64 = atom(
   },
 );
 
-export const atomSelectedTreeNodeId = atom(
+export const atomTreeNodeId = atom(
   (get) => get(_atomSelectedTreeNodeId),
   async (_, set, id: string | null) => {
     set(_atomSelectedTreeNodeId, id);
     await set(atomSetSelectedSvgById, id);
   },
 );
+
+const atomUnselectAsync = atom(null, (_, set) => set(atomTreeNodeId, null));
 
 export const atomSetFolderNodeByItemAsync = atom(
   null,
@@ -141,3 +144,13 @@ function getItemNode(
   }
   return null;
 }
+
+export const atomsSelected = {
+  treeNodeId: atomTreeNodeId,
+  unselectAsync: atomUnselectAsync,
+  folderNodeValue: atomFolderNodeValue,
+  itemNodeValue: atomItemNodeValue,
+  svgBase64: atomSvgBase64,
+  setItemNodeAsync: atomSetFolderNodeByItemAsync,
+  setFolderNodeAsync: atomSetFolderNodeAsync,
+};

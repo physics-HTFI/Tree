@@ -1,10 +1,11 @@
 import { Chip, Stack } from "@mui/material";
-import { useSelected } from "../../../jotai/useSelected";
 import { useScroll } from "./hooks/useScroll";
+import { atomsSelected } from "../../../jotai/share/atomSelected";
+import { useAtomValue } from "jotai";
 
 export function ImageView() {
-  const svg = useSelected.useSvgValue();
-  const itemNode = useSelected.useItemNodeValue();
+  const svg = useAtomValue(atomsSelected.svgBase64);
+  const itemNode = useAtomValue(atomsSelected.itemNodeValue);
   const { ref, scrolling, toggleScroll, timerStart, timerStop } = useScroll(
     itemNode?.entry?.speed ?? 0,
   );

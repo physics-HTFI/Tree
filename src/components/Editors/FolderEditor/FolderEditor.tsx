@@ -14,17 +14,17 @@ import { createId } from "../../../utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
 import { useDebounce } from "../../../generics/hooks/useDebounce";
-import { useSelected } from "../../../jotai/useSelected";
 import { atomAppSettingsValue } from "../../../jotai/share/atomAppSettings";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
+import { atomsSelected } from "../../../jotai/share/atomSelected";
 
 export function FolderEditor() {
   const settings = useAtomValue(atomAppSettingsValue);
-  const defaultFolder = useSelected.useFolderNodeValue();
-  const unselectAsync = useSelected.useUnselectAsync();
+  const defaultFolder = useAtomValue(atomsSelected.folderNodeValue);
+  const unselectAsync = useSetAtom(atomsSelected.unselectAsync);
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
-  const updateAsync = useSelected.useUpdateAsync();
+  const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
   if (folder?.nodeId !== defaultFolder?.nodeId) {

@@ -1,12 +1,13 @@
-import { useSelected } from "../../../jotai/useSelected";
 import { useState } from "react";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
 import { useDebounce } from "../../../generics/hooks/useDebounce";
+import { atomsSelected } from "../../../jotai/share/atomSelected";
+import { useAtomValue, useSetAtom } from "jotai";
 
 export function ItemEditor() {
   // フック
-  const selectedNode = useSelected.useItemNodeValue();
-  const updateByItemDataAsync = useSelected.useUpdateByItemDataAsync();
+  const selectedNode = useAtomValue(atomsSelected.itemNodeValue);
+  const updateByItemDataAsync = useSetAtom(atomsSelected.setItemNodeAsync);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
   const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);

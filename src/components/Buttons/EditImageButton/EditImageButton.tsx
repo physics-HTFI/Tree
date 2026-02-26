@@ -1,6 +1,7 @@
 import { ButtonBase } from "../ui/ButtonBase";
-import { useSelected } from "../../../jotai/useSelected";
 import { useEffect, useRef, useState } from "react";
+import { atomsSelected } from "../../../jotai/share/atomSelected";
+import { useAtom, useAtomValue } from "jotai";
 
 // ref
 // [Embed mode](https://www.drawio.com/doc/faq/embed-mode)
@@ -10,8 +11,8 @@ const SRC =
   "https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&proto=json&noSaveBtn=1";
 
 export function EditImageButton() {
-  const selectedItem = useSelected.useItemNodeValue();
-  const [svg, setSvgAsync] = useSelected.useSvgBase64();
+  const selectedItem = useAtomValue(atomsSelected.itemNodeValue);
+  const [svg, setSvgAsync] = useAtom(atomsSelected.svgBase64);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLIFrameElement>(null);
 

@@ -7,13 +7,13 @@ import {
   Stack,
 } from "@mui/material";
 import { useLastUsedFolderHandle } from "../../generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
-import { atomFolder } from "../../jotai/share/atomFolder";
+import { atomsFolder } from "../../jotai/share/atomFolder";
 import { useAtomValue, useSetAtom } from "jotai";
 
 export function FolderPicker() {
   // フック
-  const isSelected = useAtomValue(atomFolder.atomIsFolderSelectedValue);
-  const setFolderAsync = useSetAtom(atomFolder.atomSetFolderAsync);
+  const isSelected = useAtomValue(atomsFolder.isSelectedValue);
+  const setFolderAsync = useSetAtom(atomsFolder.setAsync);
   const { lastUsedFolderHandle, saveLastUsedFolderHandleAsync } =
     useLastUsedFolderHandle();
 
