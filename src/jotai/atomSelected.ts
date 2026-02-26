@@ -55,7 +55,7 @@ const atomSvgBase64 = atom(
 //| 選択されたノードの更新に関するatom
 //|
 
-const atomSetFolderNodeByItemAsync = atom(
+const atomSetItemNodeAsync = atom(
   null,
   async (get, set, newItemEntry: ItemEntry) => {
     const treeItems = get(_atomTreeItems);
@@ -113,6 +113,6 @@ export const atomsSelected = {
 
   svgBase64: atomSvgBase64,
 
-  setItemNodeAsync: atomSetFolderNodeByItemAsync,
+  setItemNodeAsync: atomSetItemNodeAsync,
   setFolderNodeAsync: atomSetFolderNodeAsync,
 };
