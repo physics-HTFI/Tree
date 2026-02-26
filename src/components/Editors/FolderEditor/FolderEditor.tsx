@@ -74,6 +74,7 @@ export function FolderEditor() {
       await updateAsync(subFolder);
       await updateAsync(newFolder);
     } catch {
+      alert("フォルダの作成に失敗しました");
       return;
     }
   };

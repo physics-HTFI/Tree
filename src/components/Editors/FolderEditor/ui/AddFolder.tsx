@@ -3,6 +3,7 @@ import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import { filterString } from "@/utils/filterString";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
+import { atomsSelected } from "@/jotai/atomSelected";
 
 const defaultForm = {};
 
@@ -15,8 +16,15 @@ export function AddFolder({
   const [folder, setFolder] = useState<{ title?: string; path?: string }>(
     defaultForm,
   );
+  const duplicated = useAtomValue(
+    atomsSelected.nodeValue,
+  ).selectedFolderNode?.children?.some(
+    (child) =>
+      child.type === "folder" &&
+      child.title.toLowerCase() === folder.title?.toLowerCase(),
+  );
 
-  const canAdd = Boolean(folder.title);
+  const canAdd = Boolean(folder.title) && !duplicated;
 
   const reset = () => setFolder(defaultForm);
   const update = (diff: { title?: string; path?: string }) => {
@@ -49,6 +57,7 @@ export function AddFolder({
           <TextField
             value={folder.title ?? ""}
             variant="standard"
+            autoComplete="off"
             fullWidth
             onChange={(e) =>
               update({ title: filterString(e.currentTarget.value) })
@@ -66,6 +75,7 @@ export function AddFolder({
           <TextField
             value={folder.path ?? ""}
             variant="standard"
+            autoComplete="off"
             fullWidth
             onChange={(e) =>
               update({ path: filterString(e.currentTarget.value) })
