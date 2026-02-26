@@ -13,7 +13,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 export function FolderPicker() {
   // フック
   const isSelected = useAtomValue(atomFolder.atomIsFolderSelectedValue);
-  const setFolderAsync = useSetAtom(atomFolder.atomSetFolder);
+  const setFolderAsync = useSetAtom(atomFolder.atomSetFolderAsync);
   const { lastUsedFolderHandle, saveLastUsedFolderHandleAsync } =
     useLastUsedFolderHandle();
 

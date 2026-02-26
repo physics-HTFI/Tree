@@ -5,7 +5,7 @@ import { _atomAppSettings } from "./backings/_atomAppSettings";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { createTreeItemsFromFolder } from "./utils/createTreeItemsFromFolder";
 
-const atomSetFolder = atom(
+const atomSetFolderAsync = atom(
   null,
   async (_, set, folder: FileSystemDirectoryHandle | null) => {
     set(_atomFolder, folder);
@@ -20,9 +20,9 @@ const atomSetFolder = atom(
   },
 );
 
-const atomIsFolderSelected = atom((get) => !!get(_atomFolder));
+const atomIsFolderSelectedValue = atom((get) => !!get(_atomFolder));
 
 export const atomFolder = {
-  atomSetFolder,
-  atomIsFolderSelectedValue: atomIsFolderSelected,
+  atomSetFolderAsync,
+  atomIsFolderSelectedValue,
 };
