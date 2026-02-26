@@ -9,10 +9,10 @@ import { appFileSystem } from "./utils/appFileSystem";
 //| 選択されたノードに関するatom
 //|
 
-const _atomTreeNodeId = atom<string | null>(null);
+const atomTreeNodeId = atom<string | null>(null);
 
 const atomTreeNode = atom((get) => {
-  const selectedId = get(_atomTreeNodeId);
+  const selectedId = get(atomTreeNodeId);
   const treeItems = get(_atomTreeItems);
   return getTreeNode(treeItems, selectedId);
 });
@@ -22,51 +22,38 @@ const atomTreeNode = atom((get) => {
 //|
 
 const HEADER = "data:image/svg+xml;base64,";
-const _atomSvgBase64 = atom<string | null>(null);
-
-const atomSetSelectedSvgById = atom(
-  null,
-  async (get, set, id: string | null) => {
-    const treeItems = get(_atomTreeItems);
-    const treeNode = getTreeNode(treeItems, id);
-    const { selectedItemNode } = treeNode;
-    const title = selectedItemNode?.entry?.title;
-    const svg = await base64.readBase64Async(
-      selectedItemNode?.parent?.handle,
-      title ? title + ".svg" : undefined,
-    );
-    set(_atomSvgBase64, svg ? HEADER + svg : null);
-  },
-);
+const atomSvgUpdateTrigger = atom(0); // SVGの更新をトリガーするためのatom
 
 const atomSvgBase64 = atom(
-  (get) => get(_atomSvgBase64),
+  async (get) => {
+    get(atomSvgUpdateTrigger);
+    const { selectedItemNode } = get(atomTreeNode);
+    const handle = selectedItemNode?.parent?.handle;
+    const title = selectedItemNode?.entry?.title;
+    if (!handle || !title) return null;
+    const svg = await base64.readBase64Async(handle, title + ".svg");
+    return HEADER + svg;
+  },
   async (get, set, base64str: string) => {
     const { selectedItemNode } = get(atomTreeNode);
-    if (!selectedItemNode?.parent?.handle || !selectedItemNode?.entry?.title) {
+    const handle = selectedItemNode?.parent?.handle;
+    const title = selectedItemNode?.entry?.title;
+    if (!handle || !title) {
       alert("SVGファイルを保存できません");
       return;
     }
     await base64.saveBase64Async(
-      selectedItemNode?.parent?.handle,
-      selectedItemNode?.entry?.title + ".svg",
+      handle,
+      title + ".svg",
       base64str.replace(HEADER, ""),
     );
-    set(_atomSvgBase64, base64str);
+    set(atomSvgUpdateTrigger, (prev) => prev + 1);
   },
 );
 
 //|
 //| 選択されたノードの更新に関するatom
 //|
-
-const atomTreeNodeId = atom(
-  (get) => get(_atomTreeNodeId),
-  async (_, set, id: string | null) => {
-    set(_atomTreeNodeId, id);
-    await set(atomSetSelectedSvgById, id);
-  },
-);
 
 const atomSetFolderNodeByItemAsync = atom(
   null,
