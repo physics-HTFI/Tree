@@ -25,7 +25,7 @@ export function FolderEditor() {
   const unselectAsync = useSelected.useUnselectAsync();
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
-  const { updateAsync } = useUpdateFolderNode();
+  const updateAsync = useUpdateFolderNode.useUpdateAsync();
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
   if (folder?.nodeId !== defaultFolder?.nodeId) {

@@ -7,7 +7,7 @@ import { useDebounce } from "../../../generics/hooks/useDebounce";
 export function ItemEditor() {
   // フック
   const selectedNode = useSelected.useItemNodeValue();
-  const { updateByItemDataAsync } = useUpdateFolderNode();
+  const updateByItemDataAsync = useUpdateFolderNode.useUpdateByItemDataAsync();
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
   const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);

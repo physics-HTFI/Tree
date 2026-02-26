@@ -1,4 +1,4 @@
-import { atom, useAtom, useAtomValue } from "jotai";
+import { atom, useAtomValue, useSetAtom } from "jotai";
 import { _atomTreeItems } from "./share/backings/_atomTreeItems";
 import { atomHiddenTiers } from "./share/atomHiddenTiers";
 import { appFileSystem } from "./share/utils/appFileSystem";
@@ -27,53 +27,58 @@ const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
   return filterTree(tree);
 });
 
+const atomSetFolderNodeByItemAsync = atom(
+  null,
+  async (get, set, newItemNode: ItemNode) => {
+    const treeItems = get(_atomTreeItems);
+    const nodeId = newItemNode.nodeId ?? null;
+    const folderNode = getFolderNode(treeItems, nodeId);
+    const itemNode = getItemNode(treeItems, nodeId);
+    if (!treeItems || !folderNode?.handle || !itemNode) return;
+    // SVGファイルの名前を変更（タイトルが変更された場合）
+    if (
+      itemNode.hasSvg &&
+      itemNode.entry.title &&
+      newItemNode.entry.title &&
+      itemNode.entry.title !== newItemNode.entry.title
+    ) {
+      const oldFileName = itemNode.entry.title + ".svg";
+      const newFileName = newItemNode.entry.title + ".svg";
+      await fileSystem.renameAsync(folderNode.handle, oldFileName, newFileName);
+    }
+    // itemNode を更新
+    itemNode.entry = { ...itemNode.entry, ...newItemNode.entry };
+    await appFileSystem.saveFolderDataAsync(folderNode);
+    set(_atomTreeItems, { ...treeItems });
+  },
+);
+
+const atomSetFolderNodeAsync = atom(
+  null,
+  async (get, set, newFolder: FolderNode) => {
+    const treeItems = get(_atomTreeItems);
+    const folderNode = getFolderNode(treeItems, newFolder.nodeId ?? null);
+    if (
+      !treeItems ||
+      !folderNode?.handle ||
+      newFolder.nodeId !== folderNode.nodeId
+    )
+      return;
+    folderNode.path = newFolder.path;
+    folderNode.children = newFolder.children;
+    await appFileSystem.saveFolderDataAsync(folderNode);
+    set(_atomTreeItems, { ...treeItems });
+  },
+);
+
 export const useTreeItemsValue = () => useAtomValue(_atomTreeItems);
 export const useFilteredTreeItemsValue = () =>
   useAtomValue(atomFilteredTreeItems);
 
-/** nodeId を持つ（含む） FolderNode の内容を保存し、ツリービューを更新する */
-export const useUpdateFolderNode = () => {
-  const [treeItems, setTreeItems] = useAtom(_atomTreeItems);
-  return {
-    updateByItemDataAsync: async (newItemNode: ItemNode) => {
-      const nodeId = newItemNode.nodeId ?? null;
-      const folderNode = getFolderNode(treeItems, nodeId);
-      const itemNode = getItemNode(treeItems, nodeId);
-      if (!treeItems || !folderNode?.handle || !itemNode) return;
-      // SVGファイルの名前を変更（タイトルが変更された場合）
-      if (
-        itemNode.hasSvg &&
-        itemNode.entry.title &&
-        newItemNode.entry.title &&
-        itemNode.entry.title !== newItemNode.entry.title
-      ) {
-        const oldFileName = itemNode.entry.title + ".svg";
-        const newFileName = newItemNode.entry.title + ".svg";
-        await fileSystem.renameAsync(
-          folderNode.handle,
-          oldFileName,
-          newFileName,
-        );
-      }
-      // itemNode を更新
-      itemNode.entry = { ...itemNode.entry, ...newItemNode.entry };
-      await appFileSystem.saveFolderDataAsync(folderNode);
-      setTreeItems({ ...treeItems });
-    },
-    updateAsync: async (newFolder: FolderNode) => {
-      const folderNode = getFolderNode(treeItems, newFolder.nodeId ?? null);
-      if (
-        !treeItems ||
-        !folderNode?.handle ||
-        newFolder.nodeId !== folderNode.nodeId
-      )
-        return;
-      folderNode.path = newFolder.path;
-      folderNode.children = newFolder.children;
-      await appFileSystem.saveFolderDataAsync(folderNode);
-      setTreeItems({ ...treeItems });
-    },
-  };
+/** FolderNode の内容を保存し、ツリービューを更新する */
+export const useUpdateFolderNode = {
+  useUpdateByItemDataAsync: () => useSetAtom(atomSetFolderNodeByItemAsync),
+  useUpdateAsync: () => useSetAtom(atomSetFolderNodeAsync),
 };
 
 /**  nodeId がフォルダーの場合、そのノードを返す。
