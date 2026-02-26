@@ -62,11 +62,19 @@ const atomSetItemNodeAsync = atom(
     const { parentOrSelf, selectedItemNode } = get(atomTreeNode);
     if (!treeItems || !parentOrSelf?.handle || !selectedItemNode) return;
     // SVGファイルの名前を変更（タイトルが変更された場合）
+    const duplicated = parentOrSelf.children.some(
+      (c) =>
+        c.type === "item" &&
+        c.entry.title?.toLowerCase() === newItemEntry.title?.toLowerCase() &&
+        c.nodeId !== selectedItemNode.nodeId &&
+        c.hasSvg,
+    );
     if (
       selectedItemNode.hasSvg &&
       selectedItemNode.entry.title !== undefined &&
       newItemEntry.title !== undefined &&
-      selectedItemNode.entry.title !== newItemEntry.title
+      selectedItemNode.entry.title !== newItemEntry.title &&
+      !duplicated
     ) {
       const oldFileName = selectedItemNode.entry.title + ".svg";
       const newFileName = newItemEntry.title + ".svg";
@@ -77,7 +85,14 @@ const atomSetItemNodeAsync = atom(
       );
     }
     // selectedItemNode を更新
-    selectedItemNode.entry = { ...selectedItemNode.entry, ...newItemEntry };
+    selectedItemNode.entry = {
+      ...selectedItemNode.entry,
+      ...newItemEntry,
+    };
+    selectedItemNode.hasSvg = await fileSystem.existsAsync(
+      parentOrSelf.handle,
+      newItemEntry.title + ".svg",
+    );
     await appFileSystem.saveFolderDataAsync(parentOrSelf);
     set(_atomTreeItems, { ...treeItems });
   },

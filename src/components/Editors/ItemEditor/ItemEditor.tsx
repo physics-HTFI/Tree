@@ -21,6 +21,14 @@ export function ItemEditor() {
   const update = async (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
     setItem(newItem);
+    const duplicated = selectedItemNode.parent?.children.some(
+      (c) =>
+        c.type === "item" &&
+        c.entry.title?.toLowerCase() === newItem.title?.toLowerCase() &&
+        c.nodeId !== selectedItemNode.nodeId &&
+        c.hasSvg,
+    );
+    if (selectedItemNode.hasSvg && duplicated) return; // SVGが重複する場合、上書きしないために更新しない
     const keysToDelay: (keyof ItemEntry)[] = [
       "title",
       "path",
