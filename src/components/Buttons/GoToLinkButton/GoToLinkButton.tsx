@@ -5,7 +5,8 @@ import { atomsSelected } from "@/jotai/atomSelected";
 
 export function GoToLinkButton() {
   const settings = useAtomValue(atomAppSettingsValue);
-  const item = useAtomValue(atomsSelected.itemNodeValue)?.entry ?? null;
+  const item =
+    useAtomValue(atomsSelected.nodeValue).selectedItemNode?.entry ?? null;
 
   if (!settings.expressions?.link || !item?.title) return null;
   const linkUrl = settings.expressions.link.replace("{{key}}", item.title);

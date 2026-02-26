@@ -6,7 +6,7 @@ import { atomsSelected } from "@/jotai/atomSelected";
 
 export function ModelView() {
   const settings = useAtomValue(atomAppSettingsValue);
-  const item = useAtomValue(atomsSelected.itemNodeValue);
+  const item = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const modelEnabled = useAtomValue(atomModelViewEnabled);
   const [prevSrc, setPrevSrc] = useState<string | null>(null);
 

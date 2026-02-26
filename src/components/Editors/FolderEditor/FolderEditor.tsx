@@ -20,7 +20,8 @@ import { atomsSelected } from "@/jotai/atomSelected";
 
 export function FolderEditor() {
   const settings = useAtomValue(atomAppSettingsValue);
-  const defaultFolder = useAtomValue(atomsSelected.folderNodeValue);
+  const defaultFolder =
+    useAtomValue(atomsSelected.nodeValue).selectedFolderNode || null;
   const unselectAsync = useSetAtom(atomsSelected.unselectAsync);
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);

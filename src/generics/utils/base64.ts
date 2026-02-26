@@ -20,7 +20,7 @@ async function saveBase64Async(
   fileName?: string,
   base64?: string,
 ) {
-  if (!folder || !fileName || !base64) return null;
+  if (!folder || !fileName || !base64) return;
   const svgText = base64ToUtf8(base64);
   await fileSystem.saveTextAsync(folder, fileName, svgText);
 }

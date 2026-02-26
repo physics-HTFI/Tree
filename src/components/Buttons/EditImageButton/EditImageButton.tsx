@@ -11,7 +11,7 @@ const SRC =
   "https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&proto=json&noSaveBtn=1";
 
 export function EditImageButton() {
-  const selectedItem = useAtomValue(atomsSelected.itemNodeValue);
+  const selectedItem = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const [svg, setSvgAsync] = useAtom(atomsSelected.svgBase64);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLIFrameElement>(null);

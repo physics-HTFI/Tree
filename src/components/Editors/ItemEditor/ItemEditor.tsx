@@ -6,17 +6,17 @@ import { useAtomValue, useSetAtom } from "jotai";
 
 export function ItemEditor() {
   // フック
-  const selectedNode = useAtomValue(atomsSelected.itemNodeValue);
+  const { selectedItemNode } = useAtomValue(atomsSelected.nodeValue);
   const updateByItemDataAsync = useSetAtom(atomsSelected.setItemNodeAsync);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
   const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);
 
-  if (selectedNode?.nodeId !== nodeId) {
-    setNodeId(selectedNode?.nodeId);
-    setItem(selectedNode?.entry);
+  if (selectedItemNode?.nodeId !== nodeId) {
+    setNodeId(selectedItemNode?.nodeId);
+    setItem(selectedItemNode?.entry);
   }
-  if (!selectedNode || !item) return null;
+  if (!selectedItemNode || !item) return null;
 
   const update = async (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
@@ -30,9 +30,9 @@ export function ItemEditor() {
     ];
     const delays = keysToDelay.some((key) => diff[key] !== undefined);
     if (delays) {
-      debouncedUpdate({ ...selectedNode, entry: newItem }, 1000);
+      debouncedUpdate(newItem, 1000);
     } else {
-      await updateByItemDataAsync({ ...selectedNode, entry: newItem });
+      await updateByItemDataAsync(newItem);
     }
   };
 

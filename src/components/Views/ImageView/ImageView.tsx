@@ -5,7 +5,7 @@ import { useAtomValue } from "jotai";
 
 export function ImageView() {
   const svg = useAtomValue(atomsSelected.svgBase64);
-  const itemNode = useAtomValue(atomsSelected.itemNodeValue);
+  const itemNode = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const { ref, scrolling, toggleScroll, timerStart, timerStop } = useScroll(
     itemNode?.entry?.speed ?? 0,
   );
