@@ -143,11 +143,9 @@ function getItemNode(
   return null;
 }
 
-const atomUnselectAsync = atom(null, (_, set) => set(atomTreeNodeId, null));
-
 export const atomsSelected = {
   treeNodeId: atomTreeNodeId,
-  unselectAsync: atomUnselectAsync,
+  unselectAsync: atom(null, (_, set) => set(atomTreeNodeId, null)),
 
   folderNodeValue: atomFolderNodeValue,
   itemNodeValue: atomItemNodeValue,
