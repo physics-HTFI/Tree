@@ -5,26 +5,26 @@ import { base64 } from "../generics/utils/base64";
 import { fileSystem } from "../generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
 
-export const _atomSelectedTreeNodeId = atom<string | null>(null);
+const _atomSelectedTreeNodeId = atom<string | null>(null);
 
-export const atomSelectedTreeNode = atom((get) => {
+const atomSelectedTreeNode = atom((get) => {
   const selectedId = get(_atomSelectedTreeNodeId);
   const treeItems = get(_atomTreeItems);
   return getTreeNode(treeItems, selectedId);
 });
 
-export const atomFolderNodeValue = atom((get) => {
+const atomFolderNodeValue = atom((get) => {
   const node = get(atomSelectedTreeNode);
   return node?.type === "folder" ? node : null;
 });
 
-export const atomItemNodeValue = atom((get) => {
+const atomItemNodeValue = atom((get) => {
   const node = get(atomSelectedTreeNode);
   return node?.type === "item" ? node : null;
 });
 
 const HEADER = "data:image/svg+xml;base64,";
-export const _atomSelectedSvg = atom<string | null>(null);
+const _atomSelectedSvg = atom<string | null>(null);
 
 const atomSetSelectedSvgById = atom(
   null,
@@ -41,7 +41,7 @@ const atomSetSelectedSvgById = atom(
   },
 );
 
-export const atomSvgBase64 = atom(
+const atomSvgBase64 = atom(
   (get) => get(_atomSelectedSvg),
   async (get, set, base64str: string | null) => {
     const node = get(atomItemNodeValue);
@@ -56,7 +56,7 @@ export const atomSvgBase64 = atom(
   },
 );
 
-export const atomTreeNodeId = atom(
+const atomTreeNodeId = atom(
   (get) => get(_atomSelectedTreeNodeId),
   async (_, set, id: string | null) => {
     set(_atomSelectedTreeNodeId, id);
@@ -64,9 +64,7 @@ export const atomTreeNodeId = atom(
   },
 );
 
-const atomUnselectAsync = atom(null, (_, set) => set(atomTreeNodeId, null));
-
-export const atomSetFolderNodeByItemAsync = atom(
+const atomSetFolderNodeByItemAsync = atom(
   null,
   async (get, set, newItemNode: ItemNode) => {
     const treeItems = get(_atomTreeItems);
@@ -92,7 +90,7 @@ export const atomSetFolderNodeByItemAsync = atom(
   },
 );
 
-export const atomSetFolderNodeAsync = atom(
+const atomSetFolderNodeAsync = atom(
   null,
   async (get, set, newFolder: FolderNode) => {
     const treeItems = get(_atomTreeItems);
@@ -145,12 +143,17 @@ function getItemNode(
   return null;
 }
 
+const atomUnselectAsync = atom(null, (_, set) => set(atomTreeNodeId, null));
+
 export const atomsSelected = {
   treeNodeId: atomTreeNodeId,
   unselectAsync: atomUnselectAsync,
+
   folderNodeValue: atomFolderNodeValue,
   itemNodeValue: atomItemNodeValue,
+
   svgBase64: atomSvgBase64,
+
   setItemNodeAsync: atomSetFolderNodeByItemAsync,
   setFolderNodeAsync: atomSetFolderNodeAsync,
 };
