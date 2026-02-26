@@ -3,6 +3,7 @@ import { appFileSystem } from "./utils/appFileSystem";
 import { _atomAppSettings } from "./backings/_atomAppSettings";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { createTreeItemsFromFolder } from "./utils/createTreeItemsFromFolder";
+import { _atomDefaultSvgBase64 } from "./backings/_atomDefaultSvgBase64";
 
 const _atomFolder = atom<FileSystemDirectoryHandle | null>(null);
 
@@ -18,6 +19,10 @@ const setAsync = atom(
     // フォルダからTreeItemsを生成してatomにセットする
     if (!settings?.tiers) return;
     set(_atomTreeItems, await createTreeItemsFromFolder(folder));
+
+    // デフォルトSVGを読み込んでatomにセットする
+    const svg = await appFileSystem.readDefaultSvgBase64Async(folder);
+    set(_atomDefaultSvgBase64, svg);
   },
 );
 

@@ -1,6 +1,6 @@
 export const fileName = {
   isSvgFile: (name: string) => {
-    return name.toLocaleLowerCase().endsWith(".svg");
+    return name[0] !== "." && name.toLocaleLowerCase().endsWith(".svg");
   },
   baseName: (name: string) => {
     const match = name.match(/^(.*?)(\.[^.]+)?$/);

@@ -1,6 +1,8 @@
 import { fileSystem } from "@/generics/utils/fileSystem";
+import { svgBase64 } from "./svgBase64";
 
 const APP_SETTINGS_FILE_NAME = ".settings.json";
+const DEFAULT_SVG_FILE_NAME = ".default.svg";
 const FOLDER_DATA_FILE_NAME = ".folder.json";
 
 export const appFileSystem = {
@@ -11,6 +13,11 @@ export const appFileSystem = {
       folder,
       APP_SETTINGS_FILE_NAME,
     )) ?? {},
+
+  readDefaultSvgBase64Async: async (
+    folder: FileSystemDirectoryHandle | null,
+  ): Promise<string | null> =>
+    await svgBase64.readFromFileAsync(folder, DEFAULT_SVG_FILE_NAME),
 
   readFolderDataAsync: async (folder: FileSystemDirectoryHandle | null) =>
     (await fileSystem.parseJsonAsync<FolderData>(

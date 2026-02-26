@@ -1,9 +1,9 @@
 import { atom } from "jotai";
 import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { getTreeNode } from "./utils/getTreeNode";
-import { base64 } from "@/generics/utils/base64";
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
+import { svgBase64 } from "./utils/svgBase64";
 
 //|
 //| 選択されたノードに関するatom
@@ -21,36 +21,18 @@ const atomTreeNode = atom((get) => {
 //| SVGファイルの読み書きに関するatom
 //|
 
-const HEADER = "data:image/svg+xml;base64,";
 const atomSvgUpdateTrigger = atom(0); // SVGの更新をトリガーするためのatom
 
 const atomSvgBase64 = atom(
   async (get) => {
     get(atomSvgUpdateTrigger);
     const { selectedItemNode } = get(atomTreeNode);
-    const handle = selectedItemNode?.parent?.handle;
-    const title = selectedItemNode?.entry?.title;
-    if (!handle || title === undefined) return null;
-    const svg = await base64.readBase64Async(handle, title + ".svg");
-    return HEADER + svg;
+    return await svgBase64.readAsync(selectedItemNode);
   },
   async (get, set, base64str: string) => {
     const { selectedItemNode } = get(atomTreeNode);
-    const handle = selectedItemNode?.parent?.handle;
-    const title = selectedItemNode?.entry?.title;
-    if (!handle || title === undefined) {
-      alert("SVGファイルを保存できません");
-      return;
-    }
-    const isOk = await base64.saveBase64Async(
-      handle,
-      title + ".svg",
-      base64str.replace(HEADER, ""),
-    );
-    if (!isOk) {
-      alert("SVGファイルの保存に失敗しました");
-      return;
-    }
+    if (!selectedItemNode) return;
+    await svgBase64.saveAsync(selectedItemNode, base64str);
     set(atomSvgUpdateTrigger, (prev) => prev + 1);
     await set(atomSetItemNodeAsync, selectedItemNode.entry); // hasSvgフラグの更新
   },
