@@ -20,10 +20,9 @@ async function saveBase64Async(
   fileName?: string,
   base64?: string,
 ) {
-  if (!folder || !fileName || !base64) return;
+  if (!folder || !fileName || !base64) return false;
   const svgText = base64ToUtf8(base64);
-  const isOk = await fileSystem.saveTextAsync(folder, fileName, svgText);
-  if (!isOk) alert("SVGファイルの保存に失敗しました");
+  return await fileSystem.saveTextAsync(folder, fileName, svgText);
 }
 
 function utf8ToBase64(str: string) {

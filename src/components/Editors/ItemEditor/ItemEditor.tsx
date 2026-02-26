@@ -28,7 +28,12 @@ export function ItemEditor() {
         c.nodeId !== selectedItemNode.nodeId &&
         c.hasSvg,
     );
-    if (selectedItemNode.hasSvg && duplicated) return; // SVGが重複する場合、上書きしないために更新しない
+    if (
+      selectedItemNode.hasSvg &&
+      newItem.title !== selectedItemNode.entry.title &&
+      duplicated
+    )
+      return; // SVGが重複する場合、上書きを防ぐため更新しない
     const keysToDelay: (keyof ItemEntry)[] = [
       "title",
       "path",

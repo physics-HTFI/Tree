@@ -42,12 +42,17 @@ const atomSvgBase64 = atom(
       alert("SVGファイルを保存できません");
       return;
     }
-    await base64.saveBase64Async(
+    const isOk = await base64.saveBase64Async(
       handle,
       title + ".svg",
       base64str.replace(HEADER, ""),
     );
+    if (!isOk) {
+      alert("SVGファイルの保存に失敗しました");
+      return;
+    }
     set(atomSvgUpdateTrigger, (prev) => prev + 1);
+    await set(atomSetItemNodeAsync, selectedItemNode.entry); // hasSvgフラグの更新
   },
 );
 
@@ -62,38 +67,51 @@ const atomSetItemNodeAsync = atom(
     const { parentOrSelf, selectedItemNode } = get(atomTreeNode);
     if (!treeItems || !parentOrSelf?.handle || !selectedItemNode) return;
     // SVGファイルの名前を変更（タイトルが変更された場合）
-    const duplicated = parentOrSelf.children.some(
-      (c) =>
-        c.type === "item" &&
-        c.entry.title?.toLowerCase() === newItemEntry.title?.toLowerCase() &&
-        c.nodeId !== selectedItemNode.nodeId &&
-        c.hasSvg,
-    );
     if (
       selectedItemNode.hasSvg &&
       selectedItemNode.entry.title !== undefined &&
       newItemEntry.title !== undefined &&
-      selectedItemNode.entry.title !== newItemEntry.title &&
-      !duplicated
+      selectedItemNode.entry.title !== newItemEntry.title
     ) {
-      const oldFileName = selectedItemNode.entry.title + ".svg";
-      const newFileName = newItemEntry.title + ".svg";
-      const isOk = await fileSystem.renameAsync(
-        parentOrSelf.handle,
-        oldFileName,
-        newFileName,
+      const duplicated = parentOrSelf.children.some(
+        (c) =>
+          c.type === "item" &&
+          c.entry.title?.toLowerCase() === newItemEntry.title?.toLowerCase() &&
+          c.nodeId !== selectedItemNode.nodeId &&
+          c.hasSvg,
       );
-      if (!isOk) alert("SVGファイルの名前変更に失敗しました");
+      if (!duplicated) {
+        const oldFileName = selectedItemNode.entry.title + ".svg";
+        const newFileName = newItemEntry.title + ".svg";
+        const isOk = await fileSystem.renameAsync(
+          parentOrSelf.handle,
+          oldFileName,
+          newFileName,
+        );
+        if (!isOk) alert("SVGファイルの名前変更に失敗しました");
+      }
     }
     // selectedItemNode を更新
+    const hasSvg = await fileSystem.existsAsync(
+      parentOrSelf.handle,
+      newItemEntry.title + ".svg",
+    );
+    for (const child of parentOrSelf.children) {
+      // 同じタイトルでSVGを持つアイテムがある場合、画像のリンク切れを防ぐため、一緒に改名する
+      if (
+        hasSvg &&
+        child.type === "item" &&
+        child.entry.title === selectedItemNode.entry.title
+      ) {
+        child.entry.title = newItemEntry.title;
+        child.hasSvg = hasSvg;
+      }
+    }
     selectedItemNode.entry = {
       ...selectedItemNode.entry,
       ...newItemEntry,
     };
-    selectedItemNode.hasSvg = await fileSystem.existsAsync(
-      parentOrSelf.handle,
-      newItemEntry.title + ".svg",
-    );
+    selectedItemNode.hasSvg = hasSvg;
     await appFileSystem.saveFolderDataAsync(parentOrSelf);
     set(_atomTreeItems, { ...treeItems });
   },
