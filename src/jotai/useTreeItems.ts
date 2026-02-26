@@ -1,31 +1,8 @@
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { _atomTreeItems } from "./share/backings/_atomTreeItems";
-import { atomHiddenTiers } from "./share/atomHiddenTiers";
 import { appFileSystem } from "./share/utils/appFileSystem";
 import { fileSystem } from "../generics/utils/fileSystem";
-
-const atomFilteredTreeItems = atom<FolderNode | null>((get) => {
-  const tree = structuredClone(get(_atomTreeItems));
-  const hiddenTiers = get(atomHiddenTiers);
-  if (!tree) return null;
-
-  const filterTree = (items: FolderNode): FolderNode => {
-    const children: TreeNode[] = [];
-    for (const item of items.children) {
-      if (item.type === "folder") {
-        const filteredChild = filterTree(item);
-        if (filteredChild.children.length === 0 && hiddenTiers.has(0)) continue;
-        children.push(filteredChild);
-      } else {
-        if (hiddenTiers.has(item.entry.tier ?? 0)) continue; // チェックが外れているティアは表示しない
-        children.push(item);
-      }
-    }
-    return { ...items, children };
-  };
-
-  return filterTree(tree);
-});
+import { atomFilteredTreeValue } from "./share/atomFIlteredTree";
 
 const atomSetFolderNodeByItemAsync = atom(
   null,
@@ -71,9 +48,7 @@ const atomSetFolderNodeAsync = atom(
   },
 );
 
-export const useTreeItemsValue = () => useAtomValue(_atomTreeItems);
-export const useFilteredTreeItemsValue = () =>
-  useAtomValue(atomFilteredTreeItems);
+export const useFilteredTreeValue = () => useAtomValue(atomFilteredTreeValue);
 
 /** FolderNode の内容を保存し、ツリービューを更新する */
 export const useUpdateFolderNode = {

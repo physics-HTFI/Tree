@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
-import { useFilteredTreeItemsValue } from "../../../../jotai/useTreeItems";
+import { useFilteredTreeValue } from "../../../../jotai/useTreeItems";
 
 export function Counter() {
-  const filteredTreeItems = useFilteredTreeItemsValue();
+  const filteredTreeItems = useFilteredTreeValue();
   const count = countFiles(filteredTreeItems);
 
   return (
