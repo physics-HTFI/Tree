@@ -101,24 +101,6 @@ const atomSetItemNodeAsync = atom(
   },
 );
 
-const atomAddItemEntryAsync = atom(null, async (get, set, item: ItemEntry) => {
-  const treeItems = get(_atomTreeItems);
-  const { selectedFolderNode: folder } = get(atomTreeNode);
-  if (!treeItems || !folder?.handle) return;
-  if (!modifierItemNode.isValidItem(item)) return;
-
-  const newItem: ItemNode = {
-    type: "item",
-    nodeId: createId({ type: "item", title: item.title }, folder.nodeId),
-    parent: folder,
-    hasSvg: await existsSvg(folder.handle, item.title),
-    entry: item,
-  };
-  folder.children = [newItem, ...folder.children];
-  await appFileSystem.saveFolderDataAsync(folder);
-  set(_atomTreeItems, { ...treeItems });
-});
-
 const atomSetFolderNodeAsync = atom(
   null,
   async (get, set, newFolder: FolderNode) => {
@@ -134,6 +116,22 @@ const atomSetFolderNodeAsync = atom(
     set(_atomTreeItems, { ...treeItems });
   },
 );
+
+const atomAddItemEntryAsync = atom(null, async (get, set, item: ItemEntry) => {
+  const { selectedFolderNode: folder } = get(atomTreeNode);
+  if (!folder) return;
+  if (!modifierItemNode.isValidItem(item)) return;
+
+  const newItem: ItemNode = {
+    type: "item",
+    nodeId: createId({ type: "item", title: item.title }, folder.nodeId),
+    parent: folder,
+    hasSvg: await existsSvg(folder.handle, item.title),
+    entry: item,
+  };
+  folder.children = [newItem, ...folder.children];
+  await set(atomSetFolderNodeAsync, folder);
+});
 
 const atomAddNewFolderNodeAsync = atom(
   null,
