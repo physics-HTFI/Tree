@@ -17,7 +17,6 @@ import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
-import { createAndSaveFolderNode } from "./utils/createAndSaveFolderNode";
 import { existsSvg } from "@/utils/existsSvg";
 
 export function FolderEditor() {
@@ -56,14 +55,6 @@ export function FolderEditor() {
     await updateAsync(newFolder);
   };
 
-  const addFolder = async (title: string, path?: string) => {
-    const subFolder = await createAndSaveFolderNode(folder, title, path);
-    if (!subFolder) return;
-    const newFolder = { ...folder, children: [subFolder, ...folder.children] };
-    setFolder(newFolder);
-    await updateAsync(newFolder);
-  };
-
   const sortChildren = async (items: TreeNode[]) => {
     if (!folder) return;
     const newFolder = { ...folder, children: items };
@@ -95,7 +86,7 @@ export function FolderEditor() {
           <AddItem onAdd={addItem} />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <AddFolder onAdd={addFolder} />
+          <AddFolder />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
           <SortItems defaultList={folder.children} onChange={sortChildren} />

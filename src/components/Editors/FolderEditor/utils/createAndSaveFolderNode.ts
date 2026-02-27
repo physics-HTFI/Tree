@@ -1,27 +1,30 @@
 import { appFileSystem } from "@/jotai/utils/appFileSystem";
+import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 import { createId } from "@/utils/createId";
 
 export async function createAndSaveFolderNode(
-  folder: FolderNode,
-  title: string,
-  path?: string,
+  folder: NewFolderNode,
+  parent: FolderNode,
 ) {
-  if (!folder.handle || !title) return null;
+  if (!modifierFolderNode.canAdd(folder, parent)) return null;
+  if (!parent.handle) return null;
   try {
-    const handle = await folder.handle.getDirectoryHandle(title, {
+    const { title, path } = folder;
+    const handle = await parent.handle.getDirectoryHandle(title, {
       create: true,
     });
     const folderNode: FolderNode = {
       type: "folder",
       title,
       path,
-      nodeId: createId({ type: "folder", title }, folder.nodeId),
+      nodeId: createId({ type: "folder", title }, parent.nodeId),
       handle: handle,
       children: [],
     };
     await appFileSystem.saveFolderDataAsync(folderNode);
     return folderNode;
   } catch {
+    alert("フォルダの作成に失敗しました"); // フォルダ名に使えない文字が含まれている場合など
     return null;
   }
 }

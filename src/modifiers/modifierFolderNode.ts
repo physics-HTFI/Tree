@@ -1,11 +1,9 @@
-type Value = {
-  title: string;
-  path?: string;
-};
-
 export const modifierFolderNode = {
-  canAdd: (folder?: Value, parent?: FolderNode) => {
-    if (!folder || !parent) return false;
+  canAdd: (
+    folder: NewFolderNode,
+    parent?: FolderNode,
+  ): parent is FolderNode => {
+    if (!parent) return false;
 
     // title
     if (folder.title === "") return false;
@@ -22,7 +20,7 @@ export const modifierFolderNode = {
     return true;
   },
 
-  modify: (folder: Value) => {
+  modify: (folder: NewFolderNode) => {
     if (folder.path === "") folder.path = undefined;
   },
 };

@@ -18,3 +18,8 @@ type ItemNode = {
   hasSvg: boolean;
   entry: ItemEntry;
 };
+
+type NewFolderNode = {
+  title: string;
+  path?: string;
+};

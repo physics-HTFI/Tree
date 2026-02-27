@@ -1,39 +1,30 @@
 import { useState } from "react";
 import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 
-type Value = {
-  title: string;
-  path?: string;
-};
+const defaultValues: NewFolderNode = { title: "" };
 
-const defaultValues: Value = { title: "" };
-
-export function AddFolder({
-  onAdd,
-}: {
-  onAdd: (title: string, path?: string) => void;
-}) {
+export function AddFolder() {
   const settings = useAtomValue(atomAppSettingsValue);
-  const [folder, setFolder] = useState<Value>(defaultValues);
+  const [folder, setFolder] = useState<NewFolderNode>(defaultValues);
   const parent = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
+  const addFolderAsync = useSetAtom(atomsSelected.addNewFolderNodeAsync);
 
   const canAdd = modifierFolderNode.canAdd(folder, parent);
 
-  const reset = () => setFolder(defaultValues);
-
-  const update = (diff: Partial<Value>) => {
+  const update = (diff: Partial<NewFolderNode>) => {
     const newFolder = { ...folder, ...diff };
     modifierFolderNode.modify(newFolder);
     setFolder(newFolder);
   };
 
+  const reset = () => setFolder(defaultValues);
+
   const addFolder = async () => {
-    if (!canAdd) return;
-    onAdd(folder.title, folder.path);
+    await addFolderAsync(folder);
     reset();
   };
 

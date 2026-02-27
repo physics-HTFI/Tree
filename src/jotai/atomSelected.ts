@@ -5,6 +5,8 @@ import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
 import { svgBase64 } from "./utils/svgBase64";
 import { existsSvg } from "@/utils/existsSvg";
+import { createAndSaveFolderNode } from "@/components/Editors/FolderEditor/utils/createAndSaveFolderNode";
+import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 
 //|
 //| 選択されたノードに関するatom
@@ -115,6 +117,24 @@ const atomSetFolderNodeAsync = atom(
   },
 );
 
+const atomAddNewFolderNodeAsync = atom(
+  null,
+  async (get, set, folder: NewFolderNode) => {
+    const treeItems = get(_atomTreeItems);
+    const { selectedFolderNode: parent } = get(atomTreeNode);
+    if (!treeItems || !parent?.handle) return;
+    // フォルダの作成と保存
+    if (!modifierFolderNode.canAdd(folder, parent)) return;
+    modifierFolderNode.modify(folder);
+    const subFolder = await createAndSaveFolderNode(folder, parent);
+    if (!subFolder) return;
+    // 親フォルダの更新
+    parent.children = [subFolder, ...parent.children];
+    await appFileSystem.saveFolderDataAsync(parent);
+    set(_atomTreeItems, { ...treeItems });
+  },
+);
+
 //|
 //| export
 //|
@@ -129,4 +149,5 @@ export const atomsSelected = {
 
   setItemNodeAsync: atomSetItemNodeAsync,
   setFolderNodeAsync: atomSetFolderNodeAsync,
+  addNewFolderNodeAsync: atomAddNewFolderNodeAsync,
 };
