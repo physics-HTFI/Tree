@@ -10,40 +10,17 @@ import { useState } from "react";
 import { Path } from "./ui/Path";
 import { TabPanel } from "./ui/TabPanel";
 import { AddItem } from "./ui/AddItem";
-import { createId } from "@/utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
-import { existsSvg } from "@/utils/existsSvg";
 
 export function FolderEditor() {
-  const defaultFolder =
-    useAtomValue(atomsSelected.nodeValue).selectedFolderNode || null;
+  const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const unselectAsync = useSetAtom(atomsSelected.unselectAsync);
-  const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
-  const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
-
-  if (folder?.nodeId !== defaultFolder?.nodeId) {
-    setFolder(defaultFolder);
-  }
 
   if (!folder?.handle) return null;
-
-  const addItem = async (item: ItemEntry) => {
-    const newFolder = { ...folder };
-    const newItem: ItemNode = {
-      type: "item",
-      nodeId: createId({ type: "item", title: item.title }, folder.nodeId),
-      parent: newFolder,
-      hasSvg: await existsSvg(folder.handle, item.title),
-      entry: item,
-    };
-    newFolder.children = [newItem, ...newFolder.children];
-    setFolder(newFolder);
-    await updateAsync(newFolder);
-  };
 
   return (
     <Dialog open={true} onClose={unselectAsync}>
@@ -62,7 +39,7 @@ export function FolderEditor() {
           </Tabs>
         </Box>
         <TabPanel value={tabValue} index={0}>
-          <AddItem onAdd={addItem} />
+          <AddItem />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
           <AddFolder />
