@@ -1,26 +1,35 @@
 import { OpenInNew } from "@mui/icons-material";
 import { IconButton, Stack, TextField, Typography } from "@mui/material";
-import { filterString } from "@/utils/filterString";
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { useAtomValue, useSetAtom } from "jotai";
+import { atomsSelected } from "@/jotai/atomSelected";
+import { useState } from "react";
+import { useDebounce } from "@/generics/hooks/useDebounce";
 
-export function Path({
-  path,
-  label,
-  onChange,
-}: {
-  path?: string;
-  label?: string;
-  onChange: (path?: string) => void;
-}) {
+export function Path() {
+  const settings = useAtomValue(atomAppSettingsValue);
+  const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
+  const [path, setPath] = useState<string>(folder?.path ?? "");
+  const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
+  const { debounced: debouncedUpdate } = useDebounce(updateAsync);
+
+  if (!folder) return null;
+
+  const updatePathAsync = async (path: string) => {
+    setPath(path);
+    debouncedUpdate({ ...folder, path }, 1000);
+  };
+
   return (
     <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-      <Typography variant="body1">{label ?? "Path"}</Typography>
+      <Typography variant="body1">{settings.labels?.path ?? "Path"}</Typography>
       <TextField
         value={path ?? ""}
         variant="standard"
         autoComplete="off"
         spellCheck="false"
         fullWidth
-        onChange={(e) => onChange(filterString(e.currentTarget.value))}
+        onChange={(e) => updatePathAsync(e.currentTarget.value)}
       />
       <IconButton
         disabled={!path}

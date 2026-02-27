@@ -103,16 +103,14 @@ const atomSetFolderNodeAsync = atom(
   null,
   async (get, set, newFolder: FolderNode) => {
     const treeItems = get(_atomTreeItems);
-    const { parentOrSelf } = get(atomTreeNode);
-    if (
-      !treeItems ||
-      !parentOrSelf?.handle ||
-      newFolder.nodeId !== parentOrSelf.nodeId
-    )
-      return;
-    parentOrSelf.path = newFolder.path;
-    parentOrSelf.children = newFolder.children;
-    await appFileSystem.saveFolderDataAsync(parentOrSelf);
+    const { selectedFolderNode: folder } = get(atomTreeNode);
+    if (!treeItems || !folder?.handle) return;
+    if (newFolder.nodeId !== folder.nodeId) return;
+
+    modifierFolderNode.modify(newFolder);
+    folder.path = newFolder.path;
+    folder.children = newFolder.children;
+    await appFileSystem.saveFolderDataAsync(folder);
     set(_atomTreeItems, { ...treeItems });
   },
 );

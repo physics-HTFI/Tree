@@ -14,13 +14,11 @@ import { createId } from "@/utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
 import { useDebounce } from "@/generics/hooks/useDebounce";
-import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { existsSvg } from "@/utils/existsSvg";
 
 export function FolderEditor() {
-  const settings = useAtomValue(atomAppSettingsValue);
   const defaultFolder =
     useAtomValue(atomsSelected.nodeValue).selectedFolderNode || null;
   const unselectAsync = useSetAtom(atomsSelected.unselectAsync);
@@ -34,12 +32,6 @@ export function FolderEditor() {
   }
 
   if (!folder?.handle) return null;
-
-  const updatePath = async (path?: string) => {
-    const newFolder = { ...folder, path };
-    setFolder(newFolder);
-    await updateAsync(newFolder);
-  };
 
   const addItem = async (item: ItemEntry) => {
     const newFolder = { ...folder };
@@ -66,11 +58,7 @@ export function FolderEditor() {
     <Dialog open={true} onClose={unselectAsync}>
       <DialogTitle>{folder.title}</DialogTitle>
       <DialogContent sx={{ width: 400, minHeight: "60vh" }}>
-        <Path
-          path={folder?.path}
-          label={settings.labels?.path}
-          onChange={updatePath}
-        />
+        <Path />
         <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
           <Tabs
             value={tabValue}
