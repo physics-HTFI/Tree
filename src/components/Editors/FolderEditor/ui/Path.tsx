@@ -1,10 +1,11 @@
 import { OpenInNew } from "@mui/icons-material";
-import { IconButton, Stack, TextField, Typography } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useState } from "react";
 import { useDebounce } from "@/generics/hooks/useDebounce";
+import { TextField } from "@/components/share/TextField";
 
 export function Path() {
   const settings = useAtomValue(atomAppSettingsValue);
@@ -23,14 +24,7 @@ export function Path() {
   return (
     <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
       <Typography variant="body1">{settings.labels?.path ?? "Path"}</Typography>
-      <TextField
-        value={path ?? ""}
-        variant="standard"
-        autoComplete="off"
-        spellCheck="false"
-        fullWidth
-        onChange={(e) => updatePathAsync(e.currentTarget.value)}
-      />
+      <TextField value={path} onChange={(value) => updatePathAsync(value)} />
       <IconButton
         disabled={!path}
         color="primary"

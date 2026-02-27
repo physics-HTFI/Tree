@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
+import { TextField } from "@/components/share/TextField";
 
 const defaultValues: NewFolderNode = { title: "" };
 
@@ -46,12 +47,8 @@ export function AddFolder() {
         </Grid>
         <Grid size={9}>
           <TextField
-            value={folder.title ?? ""}
-            variant="standard"
-            autoComplete="off"
-            spellCheck="false"
-            fullWidth
-            onChange={(e) => update({ title: e.currentTarget.value })}
+            value={folder.title}
+            onChange={(value) => update({ title: value })}
           />
         </Grid>
 
@@ -63,12 +60,8 @@ export function AddFolder() {
         </Grid>
         <Grid size={9}>
           <TextField
-            value={folder.path ?? ""}
-            variant="standard"
-            autoComplete="off"
-            spellCheck="false"
-            fullWidth
-            onChange={(e) => update({ path: e.currentTarget.value })}
+            value={folder.path}
+            onChange={(value) => update({ path: value })}
           />
         </Grid>
       </Grid>

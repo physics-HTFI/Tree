@@ -4,7 +4,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
@@ -14,6 +13,7 @@ import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
+import { TextField } from "@/components/share/TextField";
 
 export function ItemForm({
   item,
@@ -46,13 +46,8 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <TextField
-          value={item.title ?? ""}
-          variant="standard"
-          size="small"
-          fullWidth
-          autoComplete="off"
-          spellCheck="false"
-          onChange={(e) => onChange({ title: e.currentTarget.value })}
+          value={item.title}
+          onChange={(value) => onChange({ title: value })}
         />
       </Grid>
 
@@ -62,17 +57,11 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <TextField
-          value={item.path ?? ""}
-          variant="standard"
-          size="small"
-          fullWidth
-          autoComplete="off"
-          spellCheck="false"
-          onChange={(e) => {
+          value={item.path}
+          onChange={(value) => {
             const regexp = new RegExp(
               settings.expressions?.search_id ?? "(?!)",
             ); // "(?!)" は何にもマッチしない
-            const value = e.currentTarget.value;
             const { id, start } = value.match(regexp)?.groups ?? {};
             onChange({
               path: id ?? filterString(value),
@@ -121,11 +110,7 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <TextField
-          value={item.start ?? ""}
-          variant="standard"
-          autoComplete="off"
-          spellCheck="false"
-          size="small"
+          value={item.start}
           sx={{ width: 60 }}
           onWheel={(e) =>
             onChange({ start: getWheeledNumber("start", item, settings, e) })
@@ -140,12 +125,8 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <TextField
-          value={item.ticks ?? ""}
-          variant="standard"
-          autoComplete="off"
-          spellCheck="false"
+          value={item.ticks}
           sx={{ width: 60 }}
-          size="small"
           onWheel={(e) =>
             onChange({ ticks: getWheeledNumber("ticks", item, settings, e) })
           }
@@ -234,16 +215,9 @@ export function ItemForm({
       <Grid size={9}>
         <Stack direction="row" alignItems="center">
           <TextField
-            value={item.notes ?? ""}
-            variant="standard"
+            value={item.notes}
             multiline
-            fullWidth
-            autoComplete="off"
-            spellCheck="false"
-            size="small"
-            onChange={(e) =>
-              onChange({ notes: filterString(e.currentTarget.value) })
-            }
+            onChange={(value) => onChange({ notes: filterString(value) })}
           />
           <CloseButton onClick={() => onChange({ notes: undefined })} />
         </Stack>
