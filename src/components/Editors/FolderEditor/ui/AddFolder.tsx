@@ -13,11 +13,11 @@ export function AddFolder() {
   const parent = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const addFolderAsync = useSetAtom(atomsSelected.addNewFolderNodeAsync);
 
-  const canAdd = modifierFolderNode.canAdd(folder, parent);
+  const canAdd = modifierFolderNode.canAddFolder(folder, parent);
 
   const update = (diff: Partial<NewFolderNode>) => {
     const newFolder = { ...folder, ...diff };
-    modifierFolderNode.modify(newFolder);
+    modifierFolderNode.modifyNewFolder(newFolder);
     setFolder(newFolder);
   };
 

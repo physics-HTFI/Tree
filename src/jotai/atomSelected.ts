@@ -107,7 +107,7 @@ const atomSetFolderNodeAsync = atom(
     if (!treeItems || !folder?.handle) return;
     if (newFolder.nodeId !== folder.nodeId) return;
 
-    modifierFolderNode.modify(newFolder);
+    modifierFolderNode.modifyNewFolder(newFolder);
     folder.path = newFolder.path;
     folder.children = newFolder.children;
     await appFileSystem.saveFolderDataAsync(folder);
@@ -122,8 +122,8 @@ const atomAddNewFolderNodeAsync = atom(
     const { selectedFolderNode: parent } = get(atomTreeNode);
     if (!treeItems || !parent?.handle) return;
     // フォルダの作成と保存
-    if (!modifierFolderNode.canAdd(folder, parent)) return;
-    modifierFolderNode.modify(folder);
+    if (!modifierFolderNode.canAddFolder(folder, parent)) return;
+    modifierFolderNode.modifyNewFolder(folder);
     const subFolder = await createAndSaveFolderNode(folder, parent);
     if (!subFolder) return;
     // 親フォルダの更新

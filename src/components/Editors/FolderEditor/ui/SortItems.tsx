@@ -1,3 +1,6 @@
+import { useDebounce } from "@/generics/hooks/useDebounce";
+import { atomsSelected } from "@/jotai/atomSelected";
+import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 import {
   Delete,
   Folder,
@@ -13,60 +16,58 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 
-export function SortItems({
-  defaultList,
-  onChange,
-}: {
-  defaultList: TreeNode[];
-  onChange: (list: TreeNode[]) => void;
-}) {
-  const [list, setList] = useState(defaultList);
-  const [index, setIndex] = useState<number | null>(null);
+export function SortItems() {
+  const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
+  const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
+  const { debounced: debouncedUpdate } = useDebounce(updateAsync);
+  const [list, setList] = useState(folder?.children || []);
+  const [id, setId] = useState<string | null>(null);
 
-  const disabledToMove = index === null;
-  const disabledToRemove = disabledToMove || list[index].type === "folder";
+  if (!folder) return null;
 
   const move = (
     from: number,
     to: number | null, // nullの場合は削除
-    e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     if (to !== null && (to < 0 || to >= list.length)) return;
     const newList = [...list];
     const [moved] = newList.splice(from, 1);
     if (to !== null) newList.splice(to, 0, moved);
     setList(newList);
-    setIndex(to);
-    e.stopPropagation();
-    onChange(newList);
+
+    const newFolder = { ...folder, children: newList };
+    debouncedUpdate(newFolder, 1000);
   };
 
   return (
     <List dense={true}>
       {list.map((item, i) => (
         <ListItem
-          key={i}
+          key={item.nodeId}
+          onClick={() => setId(item.nodeId)}
           sx={{
-            bgcolor: i === index ? "grey.300" : undefined,
+            bgcolor: item.nodeId === id ? "grey.300" : undefined,
             ":hover": { bgcolor: "grey.100", cursor: "pointer" },
           }}
-          onClick={() => setIndex(i)}
           secondaryAction={
-            i === index && (
+            item.nodeId === id && (
               <Stack direction="row" spacing={1}>
-                <IconButton size="small" onClick={(e) => move(i, i + 1, e)}>
+                <IconButton size="small" onClick={() => move(i, i + 1)}>
                   <KeyboardArrowDown />
                 </IconButton>
-                <IconButton size="small" onClick={(e) => move(i, i - 1, e)}>
+                <IconButton size="small" onClick={() => move(i, i - 1)}>
                   <KeyboardArrowUp />
                 </IconButton>
                 <IconButton
-                  disabled={disabledToRemove}
+                  disabled={
+                    !modifierFolderNode.canRemoveChild(item.nodeId, list)
+                  }
                   size="small"
                   color="error"
-                  onClick={(e) => move(i, null, e)}
+                  onClick={() => move(i, null)}
                 >
                   <Delete />
                 </IconButton>

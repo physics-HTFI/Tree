@@ -6,7 +6,7 @@ export async function createAndSaveFolderNode(
   folder: NewFolderNode,
   parent: FolderNode,
 ) {
-  if (!modifierFolderNode.canAdd(folder, parent)) return null;
+  if (!modifierFolderNode.canAddFolder(folder, parent)) return null;
   if (!parent.handle) return null;
   try {
     const { title, path } = folder;

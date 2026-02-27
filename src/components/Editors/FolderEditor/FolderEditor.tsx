@@ -13,7 +13,6 @@ import { AddItem } from "./ui/AddItem";
 import { createId } from "@/utils/createId";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
-import { useDebounce } from "@/generics/hooks/useDebounce";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { existsSvg } from "@/utils/existsSvg";
@@ -25,7 +24,6 @@ export function FolderEditor() {
   const [folder, setFolder] = useState<FolderNode | null>(defaultFolder);
   const [tabValue, setTabValue] = useState(0);
   const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
-  const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
   if (folder?.nodeId !== defaultFolder?.nodeId) {
     setFolder(defaultFolder);
@@ -45,13 +43,6 @@ export function FolderEditor() {
     newFolder.children = [newItem, ...newFolder.children];
     setFolder(newFolder);
     await updateAsync(newFolder);
-  };
-
-  const sortChildren = async (items: TreeNode[]) => {
-    if (!folder) return;
-    const newFolder = { ...folder, children: items };
-    setFolder(newFolder);
-    debouncedUpdate(newFolder, 1000);
   };
 
   return (
@@ -77,7 +68,7 @@ export function FolderEditor() {
           <AddFolder />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <SortItems defaultList={folder.children} onChange={sortChildren} />
+          <SortItems />
         </TabPanel>
       </DialogContent>
     </Dialog>
