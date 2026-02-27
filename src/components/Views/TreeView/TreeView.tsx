@@ -39,7 +39,6 @@ export function TreeView() {
 
   return (
     <RichTreeView
-      id="tree-view"
       items={tree?.children ?? []}
       selectedItems={selectedItemId}
       expandedItems={expandedIds}

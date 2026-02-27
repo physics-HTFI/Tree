@@ -96,7 +96,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
                 whiteSpace="nowrap"
                 sx={{
                   visibility: "hidden",
-                  "#tree-view:hover &": {
+                  "#root:hover &": {
                     visibility: "visible",
                   },
                 }}

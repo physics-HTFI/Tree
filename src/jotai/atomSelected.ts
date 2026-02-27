@@ -51,52 +51,53 @@ const atomSetItemNodeAsync = atom(
   null,
   async (get, set, newItemEntry: ItemEntry) => {
     const treeItems = get(_atomTreeItems);
-    const { parentOrSelf, selectedItemNode } = get(atomTreeNode);
-    if (!treeItems || !parentOrSelf?.handle || !selectedItemNode) return;
-    // SVGファイルの名前を変更（タイトルが変更された場合）
-    if (
-      selectedItemNode.hasSvg &&
+    const { parentOrSelf: parent, selectedItemNode } = get(atomTreeNode);
+    if (!treeItems || !parent?.handle || !selectedItemNode) return;
+    modifierItemNode.modifyItemNode(newItemEntry);
+    const titleChanged =
       selectedItemNode.entry.title !== undefined &&
       newItemEntry.title !== undefined &&
-      selectedItemNode.entry.title !== newItemEntry.title
-    ) {
-      const overwriting = parentOrSelf.children.some(
-        (c) =>
-          c.type === "item" &&
-          c.entry.title?.toLowerCase() === newItemEntry.title?.toLowerCase() &&
-          c.nodeId !== selectedItemNode.nodeId &&
-          c.hasSvg,
+      selectedItemNode.entry.title !== newItemEntry.title;
+
+    // SVGファイルの名前を変更（タイトルが変更された場合）
+    const canOverwrite = modifierItemNode.canOverwrite(
+      newItemEntry,
+      selectedItemNode,
+    );
+    if (!canOverwrite) return;
+    if (titleChanged && selectedItemNode.hasSvg) {
+      const oldFileName = selectedItemNode.entry.title + ".svg";
+      const newFileName = newItemEntry.title + ".svg";
+      const isOk = await fileSystem.renameAsync(
+        parent.handle,
+        oldFileName,
+        newFileName,
       );
-      if (!overwriting) {
-        const oldFileName = selectedItemNode.entry.title + ".svg";
-        const newFileName = newItemEntry.title + ".svg";
-        const isOk = await fileSystem.renameAsync(
-          parentOrSelf.handle,
-          oldFileName,
-          newFileName,
-        );
-        if (!isOk) alert("SVGファイルの名前変更に失敗しました");
-      }
+      if (!isOk) alert("SVGファイルの名前変更に失敗しました");
     }
-    // selectedItemNode を更新
-    const hasSvg = await existsSvg(parentOrSelf.handle, newItemEntry.title);
-    for (const child of parentOrSelf.children) {
-      // 同じタイトルでSVGを持つアイテムがある場合、画像のリンク切れを防ぐため、一緒に改名する
-      if (
-        hasSvg &&
-        child.type === "item" &&
-        child.entry.title === selectedItemNode.entry.title
-      ) {
+
+    // 同じタイトルのSVGを持つアイテムがある場合、画像のリンク切れを防ぐため、一緒に改名する
+    const hasSvg = await existsSvg(parent.handle, newItemEntry.title);
+    const preTitle = selectedItemNode.entry.title;
+    for (const child of parent.children) {
+      if (!hasSvg || !titleChanged) break;
+      if (child.type === "item" && child.entry.title === preTitle) {
         child.entry.title = newItemEntry.title;
-        child.hasSvg = hasSvg;
       }
     }
+
+    // selectedItemNode を更新
     selectedItemNode.entry = {
       ...selectedItemNode.entry,
       ...newItemEntry,
     };
-    selectedItemNode.hasSvg = hasSvg;
-    await appFileSystem.saveFolderDataAsync(parentOrSelf);
+    if (titleChanged) {
+      for (const child of parent.children) {
+        if (child.type !== "item") continue;
+        child.hasSvg = await existsSvg(parent.handle, child.entry.title);
+      }
+    }
+    await appFileSystem.saveFolderDataAsync(parent);
     set(_atomTreeItems, { ...treeItems });
   },
 );

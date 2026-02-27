@@ -3,6 +3,7 @@ import { ItemForm } from "../../ui/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
+import { modifierItemNode } from "@/modifiers/modifierItemNode";
 
 const defaultItem: ItemEntry = { type: "item" };
 
@@ -15,8 +16,9 @@ export function AddItem() {
 
   const canAdd = Boolean(item.title);
 
-  const update = (diff: Partial<ItemEntry>) => {
+  const updateItem = (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
+    modifierItemNode.modifyItemNode(newItem);
     setItem(newItem);
   };
 
@@ -30,7 +32,7 @@ export function AddItem() {
 
   return (
     <Stack spacing={2}>
-      <ItemForm item={item} onChange={update} />
+      <ItemForm item={item} onChange={updateItem} />
       <Stack direction="row" spacing={1} justifyContent="flex-end">
         <Button variant="contained" onClick={addItem} disabled={!canAdd}>
           追加

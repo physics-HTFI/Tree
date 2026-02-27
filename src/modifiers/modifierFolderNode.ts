@@ -21,6 +21,8 @@ export const modifierFolderNode = {
   },
 
   modifyNewFolder: (folder: NewFolderNode) => {
+    folder.title = folder.title.trim();
+    folder.path = folder.path?.trim();
     if (folder.path === "") folder.path = undefined;
   },
 

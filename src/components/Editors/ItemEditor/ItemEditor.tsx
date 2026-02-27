@@ -3,6 +3,7 @@ import { ItemForm } from "../ui/ItemForm/ItemForm";
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
+import { modifierItemNode } from "@/modifiers/modifierItemNode";
 
 export function ItemEditor() {
   // フック
@@ -20,33 +21,21 @@ export function ItemEditor() {
 
   const update = async (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
+    modifierItemNode.modifyItemNode(newItem);
     setItem(newItem);
-    const duplicated = selectedItemNode.parent?.children.some(
-      (c) =>
-        c.type === "item" &&
-        c.entry.title?.toLowerCase() === newItem.title?.toLowerCase() &&
-        c.nodeId !== selectedItemNode.nodeId &&
-        c.hasSvg,
+
+    // 更新の可否をチェック
+    const canOverwrite = modifierItemNode.canOverwrite(
+      newItem,
+      selectedItemNode,
     );
-    if (
-      selectedItemNode.hasSvg &&
-      newItem.title !== selectedItemNode.entry.title &&
-      duplicated
-    )
-      return; // SVGが重複する場合、上書きを防ぐため更新しない
-    const keysToDelay: (keyof ItemEntry)[] = [
-      "title",
-      "path",
-      "start",
-      "ticks",
-      "notes",
-    ];
-    const delays = keysToDelay.some((key) => diff[key] !== undefined);
-    if (delays) {
-      debouncedUpdate(newItem, 1000);
-    } else {
-      await updateByItemDataAsync(newItem);
-    }
+    if (!canOverwrite) return;
+
+    // 更新
+    const delays = ["title", "path", "start", "ticks", "notes"].some((key) =>
+      Object.hasOwn(diff, key),
+    );
+    debouncedUpdate(newItem, delays ? 1000 : 10);
   };
 
   return <ItemForm item={item} onChange={update} />;

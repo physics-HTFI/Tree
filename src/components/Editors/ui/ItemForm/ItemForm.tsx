@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
-import { filterString } from "@/utils/filterString";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
+import { modifierItemNode } from "@/modifiers/modifierItemNode";
 
 export function ItemForm({
   item,
@@ -28,7 +28,7 @@ export function ItemForm({
 
   const labels = settings.labels;
   if (!item) return null;
-  const isUrl = item.path?.startsWith("https://") ?? false;
+  const isUrl = modifierItemNode.isUrl(item);
   return (
     <Grid
       container
@@ -64,8 +64,8 @@ export function ItemForm({
             ); // "(?!)" は何にもマッチしない
             const { id, start } = value.match(regexp)?.groups ?? {};
             onChange({
-              path: id ?? filterString(value),
-              start: start ? filterNumber(start, [0]) : undefined,
+              path: id ?? value,
+              start: toNumber(start),
             });
           }}
         />
@@ -78,9 +78,7 @@ export function ItemForm({
       <Grid size={9}>
         <Select
           value={item.tier ?? 0}
-          onChange={(e) =>
-            onChange({ tier: filterNumber(e.target.value, [0]) })
-          }
+          onChange={(e) => onChange({ tier: toNumber(e.target.value) })}
           variant="standard"
           size="small"
           fullWidth
@@ -141,7 +139,7 @@ export function ItemForm({
       <Grid size={9}>
         <Select
           value={item.key ?? ""}
-          onChange={(e) => onChange({ key: filterNumber(e.target.value) })}
+          onChange={(e) => onChange({ key: toNumber(e.target.value) })}
           variant="standard"
           size="small"
           sx={{ width: 90 }}
@@ -162,7 +160,7 @@ export function ItemForm({
       <Grid size={9}>
         <Select
           value={item.speed ?? ""}
-          onChange={(e) => onChange({ speed: filterNumber(e.target.value) })}
+          onChange={(e) => onChange({ speed: toNumber(e.target.value) })}
           variant="standard"
           sx={{ width: 90 }}
           size="small"
@@ -182,12 +180,10 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <Checkbox
-          checked={item.highlighted ?? false}
+          checked={item.highlighted || false}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
-          onChange={(e) =>
-            onChange({ highlighted: e.target.checked ? true : undefined })
-          }
+          onChange={(e) => onChange({ highlighted: e.target.checked })}
         />
       </Grid>
 
@@ -197,14 +193,11 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <Checkbox
-          checked={isUrl || (item.window ?? false)}
+          checked={isUrl || item.window || false}
           disabled={isUrl}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
-          onChange={(e) => {
-            if (isUrl) return;
-            onChange({ window: e.target.checked ? true : undefined });
-          }}
+          onChange={(e) => onChange({ window: e.target.checked })}
         />
       </Grid>
 
@@ -217,7 +210,7 @@ export function ItemForm({
           <TextField
             value={item.notes}
             multiline
-            onChange={(value) => onChange({ notes: filterString(value) })}
+            onChange={(value) => onChange({ notes: value })}
           />
           <CloseButton onClick={() => onChange({ notes: undefined })} />
         </Stack>
@@ -227,9 +220,8 @@ export function ItemForm({
 }
 
 /** 文字列を数値に変換する。できない場合はundefined。 */
-function filterNumber(value: string | number, ignore: number[] = []) {
+function toNumber(value: string | number) {
   if (value === "") return undefined;
   const num = Number(value);
-  if (ignore.includes(num)) return undefined;
   return isNaN(num) ? undefined : num;
 }
