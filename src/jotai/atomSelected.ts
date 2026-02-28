@@ -3,7 +3,7 @@ import { _atomTreeItems } from "./backings/_atomTreeItems";
 import { getTreeNode } from "./utils/getTreeNode";
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
-import { svgBase64 } from "./utils/svgBase64";
+import { itemBase64 } from "./utils/itemBase64";
 import { existsSvg } from "@/utils/existsSvg";
 import { createAndSaveFolderNode } from "@/components/Editors/FolderEditor/utils/createAndSaveFolderNode";
 import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
@@ -32,12 +32,12 @@ const atomSvgBase64 = atom(
   async (get) => {
     get(atomSvgUpdateTrigger);
     const { selectedItemNode } = get(atomTreeNode);
-    return await svgBase64.readAsync(selectedItemNode);
+    return await itemBase64.readSvgAsync(selectedItemNode);
   },
   async (get, set, base64str: string) => {
     const { selectedItemNode } = get(atomTreeNode);
     if (!selectedItemNode) return;
-    await svgBase64.saveAsync(selectedItemNode, base64str);
+    await itemBase64.saveSvgAsync(selectedItemNode, base64str);
     set(atomSvgUpdateTrigger, (prev) => prev + 1);
     await set(atomSetItemNodeAsync, selectedItemNode.entry); // hasSvgフラグの更新
   },

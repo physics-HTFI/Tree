@@ -4,6 +4,8 @@ export const fileSystem = {
   renameAsync,
   existsAsync,
 
+  readBinaryAsync,
+
   parseJsonAsync,
   saveAsJsonAsync,
 };
@@ -17,6 +19,20 @@ async function readTextAsync(
     const fileHandle = await folder.getFileHandle(fileName);
     const file = await fileHandle.getFile();
     return await file.text();
+  } catch {
+    return null;
+  }
+}
+
+async function readBinaryAsync(
+  folder: FileSystemDirectoryHandle | null,
+  fileName: string,
+): Promise<ArrayBuffer | null> {
+  if (!folder) return null;
+  try {
+    const fileHandle = await folder.getFileHandle(fileName);
+    const file = await fileHandle.getFile();
+    return await file.arrayBuffer();
   } catch {
     return null;
   }

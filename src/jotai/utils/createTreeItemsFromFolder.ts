@@ -1,6 +1,6 @@
 import { createId } from "@/utils/createId";
 import { appFileSystem } from "./appFileSystem";
-import { fileName } from "./fileName";
+import { fileName } from "../../utils/fileName";
 
 export async function createTreeItemsFromFolder(
   handle: FileSystemDirectoryHandle | null,
@@ -33,7 +33,7 @@ export async function createTreeItemsFromFolder(
       );
       children.push(node);
     } else {
-      if (!fileName.isSvgFile(entry.name)) continue;
+      if (!fileName.isItemFile(entry.name)) continue;
       const data = {
         type: "item",
         title: fileName.baseName(entry.name),
@@ -42,7 +42,7 @@ export async function createTreeItemsFromFolder(
         type: "item",
         nodeId: createId(data, folderNode.nodeId),
         parent: folderNode,
-        hasSvg: true,
+        hasSvg: fileName.isSvgFile(entry.name),
         entry: data,
       });
     }
@@ -82,7 +82,7 @@ function sortChildren(
         type: "item",
         nodeId: createId(entry, parentNode.nodeId),
         parent: parentNode,
-        hasSvg: !!node,
+        hasSvg: node?.type === "item" ? node.hasSvg : false,
         entry: entry,
       });
     }
