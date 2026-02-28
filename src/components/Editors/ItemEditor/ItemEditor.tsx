@@ -11,11 +11,14 @@ export function ItemEditor() {
   const updateByItemDataAsync = useSetAtom(atomsSelected.setItemNodeAsync);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
-  const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);
+  const { debounced: debouncedUpdate, cancel: cancelUpdate } = useDebounce(
+    updateByItemDataAsync,
+  );
 
   if (selectedItemNode?.nodeId !== nodeId) {
     setNodeId(selectedItemNode?.nodeId);
     setItem(selectedItemNode?.entry);
+    cancelUpdate(); // ノード切替時に更新をキャンセル（古いアイテムの変更が新しいアイテムに反映されるのを防ぐ）
   }
   if (!selectedItemNode || !item) return null;
 
