@@ -21,6 +21,7 @@ export function FolderPicker() {
     handle: FileSystemDirectoryHandle | null,
   ) => {
     if (!handle) return;
+    await handle.requestPermission();
     await setFolderAsync(handle);
     await saveLastUsedFolderHandleAsync(handle);
   };
