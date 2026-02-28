@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { atomModelViewEnabled } from "@/jotai/atomModelViewEnabled";
 import { atomsSelected } from "@/jotai/atomSelected";
+import { isUrl } from "@/generics/utils/isUrl";
 
 export function ModelView() {
   const settings = useAtomValue(atomAppSettingsValue);
@@ -13,7 +14,6 @@ export function ModelView() {
   if (
     !settings.expressions?.pop ||
     !settings.expressions?.frame ||
-    !settings.expressions?.is_url ||
     !settings.expressions?.is_id ||
     !settings.frame?.width ||
     !settings.frame?.height
@@ -21,21 +21,19 @@ export function ModelView() {
     return null;
 
   const path = item?.entry?.path;
-  const isUrl = path
-    ? new RegExp(settings.expressions.is_url).test(path)
-    : null;
-  const isId = path ? new RegExp(settings.expressions.is_id).test(path) : null;
+  const hasUrl = isUrl(path);
+  const hasId = path ? new RegExp(settings.expressions.is_id).test(path) : null;
 
-  if (!modelEnabled || !path || (!isUrl && !isId)) {
+  if (!modelEnabled || !path || (!hasUrl && !hasId)) {
     if (prevSrc) setPrevSrc(null);
     return null;
   }
 
-  const isWindow = isUrl || (item?.entry?.window ?? false);
+  const isWindow = hasUrl || (item?.entry?.window ?? false);
   const expression = isWindow
     ? settings.expressions.pop
     : settings.expressions.frame;
-  const src = isUrl
+  const src = hasUrl
     ? path
     : expression
         .replace("{{ID}}", path)
@@ -45,7 +43,7 @@ export function ModelView() {
     setPrevSrc(src);
     if (!isWindow) return;
     const features = `width=${settings.frame.width},height=${settings.frame.height},top=0,left=${window.parent.screen.width - settings.frame.width}`;
-    window.open(src, "_blank", features); // note: YouTube blocks programmatic closing even when the window isn’t opened via _blank.
+    window.open(src, "_blank", features); // note: YouTube blocks programmatic closing (even when the window isn’t opened via _blank).
   }
 
   if (isWindow) return null;

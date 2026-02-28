@@ -1,3 +1,5 @@
+import { isUrl } from "@/generics/utils/isUrl";
+
 export const modifierItemNode = {
   isValidItem: (item: ItemEntry) => {
     if (item.title === undefined) return false;
@@ -39,13 +41,3 @@ export const modifierItemNode = {
     if (isUrl(item.path)) item.window = undefined;
   },
 };
-
-function isUrl(path: string | undefined): boolean {
-  if (!path) return false;
-  try {
-    const url = new URL(path);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
