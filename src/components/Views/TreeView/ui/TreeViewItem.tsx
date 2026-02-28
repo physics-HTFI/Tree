@@ -59,6 +59,9 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   const sx: SxProps = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
+    maxWidth: settings?.max_item_width,
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   };
   const color =
     node.type === "item" && node?.entry.highlighted ? "mistyrose" : undefined;

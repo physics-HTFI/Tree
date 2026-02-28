@@ -1,0 +1,16 @@
+import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { useAtomValue } from "jotai";
+import { useState } from "react";
+
+export function Window({ src }: { src: string }) {
+  const settings = useAtomValue(atomAppSettingsValue);
+  const [prevSrc, setPrevSrc] = useState<string | null>(null);
+  if (!settings.frame?.width || !settings.frame?.height) return null;
+
+  if (src !== prevSrc) {
+    setPrevSrc(src);
+    const features = `width=${settings.frame.width},height=${settings.frame.height},top=0,left=${window.parent.screen.width - settings.frame.width}`;
+    window.open(src, "_blank", features); // note: YouTube blocks programmatic closing (even when the window isn’t opened via _blank).
+  }
+  return <></>;
+}

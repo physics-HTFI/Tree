@@ -3,6 +3,7 @@ interface AppSettings {
   keys?: { key?: number; label?: string }[];
   speeds?: { speed?: number; label?: string }[];
   ignore?: string[];
+  max_item_width?: number;
   expressions?: {
     link?: string;
     pop?: string;

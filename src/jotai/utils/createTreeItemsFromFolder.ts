@@ -33,7 +33,7 @@ export async function createTreeItemsFromFolder(
       );
       children.push(node);
     } else {
-      if (!fileName.isItemFile(entry.name)) continue;
+      if (!fileName.isSvgFile(entry.name)) continue;
       const data = {
         type: "item",
         title: fileName.baseName(entry.name),

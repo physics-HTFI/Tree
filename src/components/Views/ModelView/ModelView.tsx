@@ -1,60 +1,45 @@
-import { useState } from "react";
 import { useAtomValue } from "jotai";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { atomModelViewEnabled } from "@/jotai/atomModelViewEnabled";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { isUrl } from "@/generics/utils/isUrl";
+import { fileName } from "@/utils/fileName";
+import { Audio } from "./ui/Audio";
+import { Frame } from "./ui/Frame";
+import { Window } from "./ui/Window";
 
 export function ModelView() {
-  const settings = useAtomValue(atomAppSettingsValue);
-  const item = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
+  const { pop, frame, is_id } =
+    useAtomValue(atomAppSettingsValue).expressions ?? {};
+  const node = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
+  const { path, window, start } = node?.entry ?? {};
   const modelEnabled = useAtomValue(atomModelViewEnabled);
-  const [prevSrc, setPrevSrc] = useState<string | null>(null);
 
-  if (
-    !settings.expressions?.pop ||
-    !settings.expressions?.frame ||
-    !settings.expressions?.is_id ||
-    !settings.frame?.width ||
-    !settings.frame?.height
-  )
-    return null;
+  if (!pop || !frame || !is_id) return null;
+  if (!node || !path) return null;
+  if (!modelEnabled) return null;
 
-  const path = item?.entry?.path;
-  const hasUrl = isUrl(path);
-  const hasId = path ? new RegExp(settings.expressions.is_id).test(path) : null;
+  const type = isUrl(path)
+    ? "url"
+    : new RegExp(is_id).test(path)
+      ? "id"
+      : fileName.isMp3File(path)
+        ? "mp3"
+        : null;
+  if (!type) return null;
 
-  if (!modelEnabled || !path || (!hasUrl && !hasId)) {
-    if (prevSrc) setPrevSrc(null);
-    return null;
+  if (type === "mp3") {
+    return <Audio fileName={path} folder={node.parent.handle} />;
   }
 
-  const isWindow = hasUrl || (item?.entry?.window ?? false);
-  const expression = isWindow
-    ? settings.expressions.pop
-    : settings.expressions.frame;
-  const src = hasUrl
-    ? path
-    : expression
-        .replace("{{ID}}", path)
-        .replace("{{START}}", (item?.entry.start ?? 0).toString());
+  const isFrame = type === "id" && !window;
+  const expression = isFrame ? frame : pop;
+  const src =
+    type === "url"
+      ? path
+      : expression
+          .replace("{{ID}}", path)
+          .replace("{{START}}", (start ?? 0).toString());
 
-  if (src !== prevSrc) {
-    setPrevSrc(src);
-    if (!isWindow) return;
-    const features = `width=${settings.frame.width},height=${settings.frame.height},top=0,left=${window.parent.screen.width - settings.frame.width}`;
-    window.open(src, "_blank", features); // note: YouTube blocks programmatic closing (even when the window isn’t opened via _blank).
-  }
-
-  if (isWindow) return null;
-  return (
-    <iframe
-      width={settings.frame.width}
-      height={settings.frame.height}
-      src={src}
-      allow={settings.frame.allow}
-      referrerPolicy={settings.frame.referrerPolicy}
-      allowFullScreen
-    />
-  );
+  return isFrame ? <Frame src={src} /> : <Window src={src} />;
 }
