@@ -2,6 +2,7 @@ interface AppSettings {
   tiers?: TierSettings[];
   keys?: { key?: number; label?: string }[];
   speeds?: { speed?: number; label?: string }[];
+  ignore?: string[];
   expressions?: {
     link?: string;
     pop?: string;

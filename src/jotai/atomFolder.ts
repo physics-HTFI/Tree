@@ -18,7 +18,10 @@ const setAsync = atom(
 
     // フォルダからTreeItemsを生成してatomにセットする
     if (!settings?.tiers) return;
-    set(_atomTreeItems, await createTreeItemsFromFolder(folder));
+    set(
+      _atomTreeItems,
+      await createTreeItemsFromFolder(folder, settings.ignore),
+    );
 
     // デフォルトSVGを読み込んでatomにセットする
     const svg = await appFileSystem.readDefaultSvgBase64Async(folder);

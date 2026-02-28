@@ -4,6 +4,7 @@ import { fileName } from "./fileName";
 
 export async function createTreeItemsFromFolder(
   handle: FileSystemDirectoryHandle | null,
+  ignoreList?: string[],
   parentId: string = "",
 ): Promise<FolderNode> {
   if (!handle)
@@ -24,8 +25,10 @@ export async function createTreeItemsFromFolder(
   const children: TreeNode[] = [];
   for await (const entry of handle.values()) {
     if (entry.kind === "directory") {
+      if (ignoreList?.includes(entry.name)) continue;
       const node = await createTreeItemsFromFolder(
         entry as FileSystemDirectoryHandle,
+        ignoreList,
         folderNode.nodeId,
       );
       children.push(node);
