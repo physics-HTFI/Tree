@@ -12,12 +12,16 @@ export function TreeView() {
   const tree = useAtomValue(atomFilteredTreeValue);
   const [selectedItemId, setSelectedItemId] = useAtom(atomsSelected.nodeId);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
-  const [showsTier0, setShowsTier0] = useState(true);
+  const [curHiddenTiers, setCurHiddenTiers] = useState<Set<number>>(new Set());
 
   // ティア変更時の自動開閉
-  if (showsTier0 === hiddenTiers.has(0)) {
-    setShowsTier0(!showsTier0);
-    if (showsTier0) {
+  const isSame =
+    hiddenTiers.size === curHiddenTiers.size &&
+    [...curHiddenTiers].every((x) => hiddenTiers.has(x));
+  if (!isSame) {
+    const isTier0Hidden = hiddenTiers?.has(0);
+    setCurHiddenTiers(new Set(hiddenTiers));
+    if (isTier0Hidden) {
       const getIds = (subTree: TreeNode | null, ids: string[]) => {
         if (subTree?.type === "folder") {
           ids.push(subTree.nodeId);
@@ -47,7 +51,7 @@ export function TreeView() {
       getItemLabel={getLabel}
       onSelectedItemsChange={(_, id) => setSelectedItemId(id)}
       onExpandedItemsChange={(_, ids) =>
-        setExpandedIds(showsTier0 ? trimIds(expandedIds, ids) : ids)
+        setExpandedIds(curHiddenTiers ? trimIds(expandedIds, ids) : ids)
       }
       slots={{ item: CustomTreeViewItem }}
       sx={{
