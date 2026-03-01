@@ -1,8 +1,8 @@
 import { atom } from "jotai";
 import { appFileSystem } from "./utils/appFileSystem";
 import { _atomAppSettings } from "./backings/_atomAppSettings";
-import { _atomTreeItems } from "./backings/_atomTreeItems";
-import { createTreeItemsFromFolder } from "./utils/createTreeItemsFromFolder";
+import { _atomTree } from "./backings/_atomTree";
+import { createTreeItems } from "./utils/createTreeItems";
 import { _atomDefaultSvgBase64 } from "./backings/_atomDefaultSvgBase64";
 
 const _atomFolders = atom<{
@@ -32,8 +32,13 @@ const setAsync = atom(
     // フォルダからTreeItemsを生成してatomにセットする
     if (!settings?.tiers) return;
     set(
-      _atomTreeItems,
-      await createTreeItemsFromFolder(folders.data, settings.ignore),
+      _atomTree.dataTree,
+      await createTreeItems.fromDataFolder(folders.data, settings.ignore),
+    );
+    console.log(await createTreeItems.fromReferenceFolder(folders.reference));
+    set(
+      _atomTree.referenceTree,
+      await createTreeItems.fromReferenceFolder(folders.reference),
     );
 
     // デフォルトSVGを読み込んでatomにセットする

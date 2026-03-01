@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { _atomTreeItems } from "./backings/_atomTreeItems";
+import { _atomTree } from "./backings/_atomTree";
 import { getTreeNode } from "./utils/getTreeNode";
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
@@ -18,7 +18,7 @@ const atomNodeId = atom<string | null>(null);
 
 const atomTreeNode = atom((get) => {
   const selectedId = get(atomNodeId);
-  const treeItems = get(_atomTreeItems);
+  const treeItems = get(_atomTree.fullTree);
   return getTreeNode(treeItems, selectedId);
 });
 
@@ -50,7 +50,7 @@ const atomSvgBase64 = atom(
 const atomSetItemNodeAsync = atom(
   null,
   async (get, set, newItemEntry: ItemEntry) => {
-    const treeItems = get(_atomTreeItems);
+    const treeItems = get(_atomTree.dataTree);
     const { parentOrSelf: parent, selectedItemNode } = get(atomTreeNode);
     if (!treeItems || !parent?.handle || !selectedItemNode) return;
     modifierItemNode.modifyItemNode(newItemEntry);
@@ -98,14 +98,14 @@ const atomSetItemNodeAsync = atom(
       }
     }
     await appFileSystem.saveFolderDataAsync(parent);
-    set(_atomTreeItems, { ...treeItems });
+    set(_atomTree.dataTree, { ...treeItems });
   },
 );
 
 const atomSetFolderNodeAsync = atom(
   null,
   async (get, set, newFolder: FolderNode) => {
-    const treeItems = get(_atomTreeItems);
+    const treeItems = get(_atomTree.dataTree);
     const { selectedFolderNode: folder } = get(atomTreeNode);
     if (!treeItems || !folder?.handle) return;
     if (newFolder.nodeId !== folder.nodeId) return;
@@ -114,7 +114,7 @@ const atomSetFolderNodeAsync = atom(
     folder.path = newFolder.path;
     folder.children = newFolder.children;
     await appFileSystem.saveFolderDataAsync(folder);
-    set(_atomTreeItems, { ...treeItems });
+    set(_atomTree.dataTree, { ...treeItems });
   },
 );
 
@@ -137,7 +137,7 @@ const atomAddItemEntryAsync = atom(null, async (get, set, item: ItemEntry) => {
 const atomAddNewFolderNodeAsync = atom(
   null,
   async (get, set, folder: NewFolderNode) => {
-    const treeItems = get(_atomTreeItems);
+    const treeItems = get(_atomTree.dataTree);
     const { selectedFolderNode: parent } = get(atomTreeNode);
     if (!treeItems || !parent?.handle) return;
     // フォルダの作成と保存
@@ -148,7 +148,7 @@ const atomAddNewFolderNodeAsync = atom(
     // 親フォルダの更新
     parent.children = [subFolder, ...parent.children];
     await appFileSystem.saveFolderDataAsync(parent);
-    set(_atomTreeItems, { ...treeItems });
+    set(_atomTree.dataTree, { ...treeItems });
   },
 );
 

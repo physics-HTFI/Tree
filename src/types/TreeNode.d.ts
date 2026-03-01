@@ -8,6 +8,7 @@ type FolderNode = {
   title: string;
   handle?: FileSystemDirectoryHandle;
   path?: string;
+  readonly?: boolean;
   children: TreeNode[];
 };
 
@@ -16,6 +17,7 @@ type ItemNode = {
   nodeId: string;
   parent: FolderNode;
   hasSvg: boolean;
+  readonly?: boolean;
   entry: ItemEntry;
 };
 

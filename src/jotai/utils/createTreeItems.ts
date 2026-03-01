@@ -2,7 +2,59 @@ import { createId } from "@/utils/createId";
 import { appFileSystem } from "./appFileSystem";
 import { fileName } from "../../utils/fileName";
 
-export async function createTreeItemsFromFolder(
+export const createTreeItems = {
+  fromDataFolder: createTreeItemsFromDataFolder,
+  fromReferenceFolder: createTreeItemsFromReferenceFolder,
+};
+
+async function createTreeItemsFromReferenceFolder(
+  handle: FileSystemDirectoryHandle | null,
+  parentId: string = "",
+): Promise<FolderNode> {
+  if (!handle)
+    return { type: "folder", nodeId: "---", title: "---", children: [] };
+
+  // FolderNodeを作成する
+  const folderNode: FolderNode = {
+    type: "folder",
+    title: handle.name,
+    nodeId: createId({ type: "folder", title: handle.name }, parentId),
+    handle,
+    readonly: true,
+    children: [],
+  };
+
+  // フォルダ内のエントリを取得し、TreeNodeの配列を作成する
+  for await (const entry of handle.values()) {
+    if (entry.kind === "directory") {
+      const node = await createTreeItemsFromReferenceFolder(
+        entry as FileSystemDirectoryHandle,
+        folderNode.nodeId,
+      );
+      if (!node.children.length) continue;
+      folderNode.children.push(node);
+    } else {
+      if (!fileName.isMp3File(entry.name)) continue;
+      const data = {
+        type: "item",
+        title: fileName.baseName(entry.name),
+        path: entry.name,
+      } as const;
+      folderNode.children.push({
+        type: "item",
+        nodeId: createId(data, folderNode.nodeId),
+        parent: folderNode,
+        hasSvg: false,
+        entry: data,
+        readonly: true,
+      });
+    }
+  }
+
+  return folderNode;
+}
+
+async function createTreeItemsFromDataFolder(
   handle: FileSystemDirectoryHandle | null,
   ignoreList?: string[],
   parentId: string = "",
@@ -26,7 +78,7 @@ export async function createTreeItemsFromFolder(
   for await (const entry of handle.values()) {
     if (entry.kind === "directory") {
       if (ignoreList?.includes(entry.name)) continue;
-      const node = await createTreeItemsFromFolder(
+      const node = await createTreeItemsFromDataFolder(
         entry as FileSystemDirectoryHandle,
         ignoreList,
         folderNode.nodeId,

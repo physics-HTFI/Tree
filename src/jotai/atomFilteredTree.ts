@@ -1,17 +1,17 @@
 import { atom } from "jotai";
-import { _atomTreeItems } from "./backings/_atomTreeItems";
+import { _atomTree } from "./backings/_atomTree";
 import { atomHiddenTiers } from "./atomHiddenTiers";
 
 export const atomFilteredTreeValue = atom<FolderNode | null>((get) => {
-  const tree = structuredClone(get(_atomTreeItems));
+  const tree = get(_atomTree.fullTree);
   const hiddenTiers = get(atomHiddenTiers);
   if (!tree) return null;
   return filterTree(tree, hiddenTiers);
 });
 
-function filterTree(items: FolderNode, hiddenTiers: Set<number>): FolderNode {
+function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
   const children: TreeNode[] = [];
-  for (const item of items.children) {
+  for (const item of folder.children) {
     if (item.type === "folder") {
       const filteredChild = filterTree(item, hiddenTiers);
       if (filteredChild.children.length === 0 && hiddenTiers.has(0)) continue;
@@ -21,5 +21,5 @@ function filterTree(items: FolderNode, hiddenTiers: Set<number>): FolderNode {
       children.push(item);
     }
   }
-  return { ...items, children };
+  return { ...folder, children };
 }

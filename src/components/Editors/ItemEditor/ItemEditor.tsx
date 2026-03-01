@@ -20,7 +20,7 @@ export function ItemEditor() {
     setItem(selectedItemNode?.entry);
     cancelUpdate(); // ノード切替時に更新をキャンセル（古いアイテムの変更が新しいアイテムに反映されるのを防ぐ）
   }
-  if (!selectedItemNode || !item) return null;
+  if (!selectedItemNode || selectedItemNode.readonly || !item) return null;
 
   const update = async (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };

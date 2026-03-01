@@ -92,7 +92,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
           >
             <TreeItemCheckbox {...getCheckboxProps()} />
             <TreeItemLabel {...getLabelProps()} sx={sx} />
-            {node.type === "item" ? (
+            {node.readonly ? null : node.type === "item" ? (
               <Typography
                 variant="caption"
                 color="textSecondary"
