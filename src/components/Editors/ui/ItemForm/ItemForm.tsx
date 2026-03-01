@@ -25,6 +25,20 @@ export function ItemForm({
   // フック
   const settings = useAtomValue(atomAppSettingsValue);
   const ref = usePreventScroll();
+  if (
+    !settings.labels?.highlighted ||
+    !settings.labels?.key ||
+    !settings.labels?.notes ||
+    !settings.labels?.path ||
+    !settings.labels?.speed ||
+    !settings.labels?.start ||
+    !settings.labels?.tier ||
+    !settings.labels?.title ||
+    !settings.labels?.ticks ||
+    !settings.labels?.window
+  ) {
+    return null;
+  }
 
   const labels = settings.labels;
   if (!item) return null;
@@ -42,7 +56,7 @@ export function ItemForm({
     >
       {/* title */}
       <Grid size={3}>
-        <Header title={labels?.title ?? "Title"} />
+        <Header title={labels.title} />
       </Grid>
       <Grid size={9}>
         <TextField
@@ -53,7 +67,7 @@ export function ItemForm({
 
       {/* path */}
       <Grid size={3}>
-        <Header title={labels?.path ?? "Path"} />
+        <Header title={labels.path} />
       </Grid>
       <Grid size={9}>
         <TextField
@@ -73,7 +87,7 @@ export function ItemForm({
 
       {/* tier */}
       <Grid size={3}>
-        <Header title={labels?.tier ?? "Tier"} />
+        <Header title={labels.tier} />
       </Grid>
       <Grid size={9}>
         <Select
@@ -104,7 +118,7 @@ export function ItemForm({
 
       {/* start */}
       <Grid size={3}>
-        <Header title={labels?.start ?? "Start"} />
+        <Header title={labels.start} />
       </Grid>
       <Grid size={9}>
         <TextField
@@ -119,7 +133,7 @@ export function ItemForm({
 
       {/* ticks */}
       <Grid size={3}>
-        <Header title={labels?.ticks ?? "Ticks"} />
+        <Header title={labels.ticks} />
       </Grid>
       <Grid size={9}>
         <TextField
@@ -134,7 +148,7 @@ export function ItemForm({
 
       {/* key */}
       <Grid size={3}>
-        <Header title={labels?.key ?? "Key"} />
+        <Header title={labels.key} />
       </Grid>
       <Grid size={9}>
         <Select
@@ -155,7 +169,7 @@ export function ItemForm({
 
       {/* speed */}
       <Grid size={3}>
-        <Header title={labels?.speed ?? "Speed"} />
+        <Header title={labels.speed} />
       </Grid>
       <Grid size={9}>
         <Select
@@ -176,7 +190,7 @@ export function ItemForm({
 
       {/* highlighted */}
       <Grid size={3}>
-        <Header title={labels?.highlighted ?? "Highlighted"} />
+        <Header title={labels.highlighted} />
       </Grid>
       <Grid size={9}>
         <Checkbox
@@ -189,7 +203,7 @@ export function ItemForm({
 
       {/* window */}
       <Grid size={3}>
-        <Header title={labels?.window ?? "Window"} />
+        <Header title={labels.window} />
       </Grid>
       <Grid size={9}>
         <Checkbox
@@ -203,7 +217,7 @@ export function ItemForm({
 
       {/* notes */}
       <Grid size={3}>
-        <Header title={labels?.notes ?? "Notes"} />
+        <Header title={labels.notes} />
       </Grid>
       <Grid size={9}>
         <Stack direction="row" alignItems="center">
