@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { atomHiddenTiers } from "./atomHiddenTiers";
 
-export const atomFilteredTreeValue = atom<FolderNode | null>((get) => {
+const atomFilteredTreeValue = atom<FolderNode | null>((get) => {
   const tree = get(_atomTree.fullTree);
   const hiddenTiers = get(atomHiddenTiers);
   if (!tree) return null;
@@ -23,3 +23,8 @@ function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
   }
   return { ...folder, children };
 }
+
+export const atomTree = {
+  referenceTreeValue: atom((get) => get(_atomTree.referenceTree)),
+  filterTreeValue: atomFilteredTreeValue,
+};

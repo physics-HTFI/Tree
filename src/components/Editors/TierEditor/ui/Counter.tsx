@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
-import { atomFilteredTreeValue } from "@/jotai/atomFilteredTree";
+import { atomTree } from "@/jotai/atomTree";
 import { useAtomValue } from "jotai";
 
 export function Counter() {
-  const filteredTreeItems = useAtomValue(atomFilteredTreeValue);
+  const filteredTreeItems = useAtomValue(atomTree.filterTreeValue);
   const count = countFiles(filteredTreeItems);
 
   return (

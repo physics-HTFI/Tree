@@ -35,7 +35,6 @@ const setAsync = atom(
       _atomTree.dataTree,
       await createTreeItems.fromDataFolder(folders.data, settings.ignore),
     );
-    console.log(await createTreeItems.fromReferenceFolder(folders.reference));
     set(
       _atomTree.referenceTree,
       await createTreeItems.fromReferenceFolder(folders.reference),

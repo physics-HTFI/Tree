@@ -1,7 +1,7 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { CustomTreeViewItem } from "./ui/TreeViewItem";
 import { useState } from "react";
-import { atomFilteredTreeValue } from "@/jotai/atomFilteredTree";
+import { atomTree } from "@/jotai/atomTree";
 import { useAtom, useAtomValue } from "jotai";
 import { atomHiddenTiers } from "@/jotai/atomHiddenTiers";
 import { atomsSelected } from "@/jotai/atomSelected";
@@ -9,7 +9,7 @@ import { atomsSelected } from "@/jotai/atomSelected";
 export function TreeView() {
   // フック
   const hiddenTiers = useAtomValue(atomHiddenTiers);
-  const tree = useAtomValue(atomFilteredTreeValue);
+  const tree = useAtomValue(atomTree.filterTreeValue);
   const [selectedItemId, setSelectedItemId] = useAtom(atomsSelected.nodeId);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [curHiddenTiers, setCurHiddenTiers] = useState<Set<number>>(new Set());
