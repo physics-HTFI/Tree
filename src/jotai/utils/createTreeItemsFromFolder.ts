@@ -50,7 +50,7 @@ export async function createTreeItemsFromFolder(
   const sortedChildren = sortChildren(folderData, folderNode, children);
   folderNode.children = sortedChildren;
 
-  const lengthChanged = folderData?.entries?.length !== children.length;
+  const lengthChanged = folderData?.entries?.length !== sortedChildren.length;
   if (lengthChanged) await appFileSystem.saveFolderDataAsync(folderNode);
   return folderNode;
 }
