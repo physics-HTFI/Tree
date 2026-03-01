@@ -8,11 +8,11 @@ const FOLDER_DATA_FILE_NAME = ".folder.json";
 export const appFileSystem = {
   readAppSettingsAsync: async (
     folder: FileSystemDirectoryHandle | null,
-  ): Promise<AppSettings> =>
-    (await fileSystem.parseJsonAsync<AppSettings>(
+  ): Promise<AppSettings | null> =>
+    await fileSystem.parseJsonAsync<AppSettings>(
       folder,
       APP_SETTINGS_FILE_NAME,
-    )) ?? {},
+    ),
 
   readDefaultSvgBase64Async: async (
     folder: FileSystemDirectoryHandle | null,

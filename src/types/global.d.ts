@@ -1,6 +1,8 @@
 declare global {
   interface Window {
-    showDirectoryPicker?: () => Promise<FileSystemDirectoryHandle>;
+    showDirectoryPicker?: (options: {
+      mode: "read" | "readwrite";
+    }) => Promise<FileSystemDirectoryHandle>;
   }
   interface FileSystemDirectoryHandle {
     requestPermission: () => Promise<void>;

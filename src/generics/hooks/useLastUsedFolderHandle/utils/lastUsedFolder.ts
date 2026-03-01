@@ -1,8 +1,7 @@
 import { openDB } from "idb";
 
-const DB_NAME = "tree-db";
+const DB_NAME = "last-used-db";
 const STORE_NAME = "last-used";
-const STORE_KEY = "folder";
 const DB_VERSION = 1;
 
 export const lastUsedFolder = {
@@ -21,22 +20,25 @@ async function getDB() {
 }
 
 async function saveLastUsedFolderAsync(
+  key: string,
   handle: FileSystemDirectoryHandle,
 ): Promise<void> {
   if (!("indexedDB" in window)) return;
   try {
     const db = await getDB();
-    await db.put(STORE_NAME, handle, STORE_KEY);
+    await db.put(STORE_NAME, handle, key);
   } catch (err) {
     console.error("saveLastUsedFolder: failed to store handle", err);
   }
 }
 
-async function loadLastUsedFolderAsync(): Promise<FileSystemDirectoryHandle | null> {
+async function loadLastUsedFolderAsync(
+  key: string,
+): Promise<FileSystemDirectoryHandle | null> {
   if (!("indexedDB" in window)) return null;
   try {
     const db = await getDB();
-    const handle = (await db.get(STORE_NAME, STORE_KEY)) as
+    const handle = (await db.get(STORE_NAME, key)) as
       | FileSystemDirectoryHandle
       | undefined;
     return handle ?? null;

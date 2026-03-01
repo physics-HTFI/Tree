@@ -7,35 +7,59 @@ import {
   Stack,
 } from "@mui/material";
 import { useLastUsedFolderHandle } from "@/generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
-import { atomsFolder } from "@/jotai/atomFolder";
+import { atomsFolders } from "@/jotai/atomFolders";
 import { useAtomValue, useSetAtom } from "jotai";
+import { useState } from "react";
 
 export function FolderPicker() {
   // フック
-  const isSelected = useAtomValue(atomsFolder.isSelectedValue);
-  const setFolderAsync = useSetAtom(atomsFolder.setAsync);
-  const { lastUsedFolderHandle, saveLastUsedFolderHandleAsync } =
-    useLastUsedFolderHandle();
+  const isSelected = useAtomValue(atomsFolders.isSelectedValue);
+  const setFoldersAsync = useSetAtom(atomsFolders.setAsync);
+  const {
+    lastUsedFolderHandle: lastUsedDataFolder,
+    saveLastUsedFolderHandleAsync: saveLastUsedDataFolderAsync,
+  } = useLastUsedFolderHandle("data");
+  const {
+    lastUsedFolderHandle: lastUsedReferenceFolder,
+    saveLastUsedFolderHandleAsync: saveLastUsedReferenceFolderAsync,
+  } = useLastUsedFolderHandle("reference");
+  const [folders, setFolders] = useState<{
+    data?: FileSystemDirectoryHandle;
+    reference?: FileSystemDirectoryHandle;
+  }>({});
 
-  const selectFolderAsync = async (
-    handle: FileSystemDirectoryHandle | null,
-  ) => {
-    if (!handle) return;
-    await handle.requestPermission();
-    await setFolderAsync(handle);
-    await saveLastUsedFolderHandleAsync(handle);
+  const hasLastUsed = !!lastUsedDataFolder && !!lastUsedReferenceFolder;
+
+  const selectFolderAsync = async (newFolders: typeof folders) => {
+    setFolders(newFolders);
+    if (!newFolders.data || !newFolders.reference) return;
+    const unpacked = { data: newFolders.data, reference: newFolders.reference }; // selectedを直接渡すと型エラーになるため、unpackedに一旦格納する
+    await setFoldersAsync(unpacked);
+    await saveLastUsedDataFolderAsync(unpacked.data);
+    await saveLastUsedReferenceFolderAsync(unpacked.reference);
   };
 
   // イベントハンドラー
-  const pickFolderAsync = async () =>
-    await selectFolderAsync(await pickLocalFolderAsync());
-  const pickLastUsedAsync = async () =>
-    await selectFolderAsync(lastUsedFolderHandle);
+  const pickFolderAsync = async (type: "data" | "reference") => {
+    const folder = await pickLocalFolderAsync(
+      type === "data" ? "readwrite" : "read",
+    );
+    const newFolders = { ...folders, [type]: folder };
+    await selectFolderAsync(newFolders);
+  };
+  const pickLastUsedAsync = async () => {
+    if (!hasLastUsed) return;
+    const newFolders = {
+      data: lastUsedDataFolder ?? undefined,
+      reference: lastUsedReferenceFolder ?? undefined,
+    };
+    await selectFolderAsync(newFolders);
+  };
 
   const open = !isSelected;
   return (
     <Dialog open={open}>
-      <DialogTitle>読み込むフォルダーを選択してください</DialogTitle>
+      <DialogTitle>フォルダーを選択してください</DialogTitle>
       <DialogContent>
         <Stack
           direction="row"
@@ -44,16 +68,26 @@ export function FolderPicker() {
           alignItems="center"
         >
           <Button
-            onClick={pickFolderAsync}
+            onClick={() => pickFolderAsync("data")}
             variant="contained"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, textTransform: "none" }}
             className="mr-50"
           >
-            フォルダーを
+            データフォルダー
             <br />
-            選択する
+            {folders.data?.name ?? "- 未選択 -"}
           </Button>
-          {lastUsedFolderHandle && (
+          <Button
+            onClick={() => pickFolderAsync("reference")}
+            variant="contained"
+            sx={{ mr: 2, textTransform: "none" }}
+            className="mr-50"
+          >
+            参照フォルダー
+            <br />
+            {folders.reference?.name ?? "- 未選択 -"}
+          </Button>
+          {hasLastUsed && (
             <Button
               onClick={pickLastUsedAsync}
               variant="outlined"
@@ -61,7 +95,9 @@ export function FolderPicker() {
             >
               前回のフォルダー
               <br />
-              {lastUsedFolderHandle.name}
+              {lastUsedDataFolder.name}
+              {" -- "}
+              {lastUsedReferenceFolder.name}
             </Button>
           )}
         </Stack>
