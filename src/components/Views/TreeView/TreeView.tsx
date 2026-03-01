@@ -44,6 +44,7 @@ export function TreeView() {
   return (
     <RichTreeView
       items={tree?.children ?? []}
+      itemChildrenIndentation={10}
       selectedItems={selectedItemId}
       expandedItems={expandedIds}
       getItemId={(item) => item.nodeId}

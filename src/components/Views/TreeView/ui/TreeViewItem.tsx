@@ -50,21 +50,20 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   } = useTreeItem({ id, itemId, children, label, disabled, rootRef: ref });
 
   const node = useTreeItemModel<TreeNode>(itemId)!;
-  const keyLabel =
-    node.type === "item"
-      ? settings?.keys?.find((key) => key.key === node.entry.key)?.label
-      : undefined;
-  const tier =
-    node.type === "item" ? settings?.tiers?.[node.entry.tier ?? 0] : undefined;
+  const isItem = node.type === "item";
+  const keyLabel = isItem
+    ? settings?.keys?.find((key) => key.key === node.entry.key)?.label
+    : undefined;
+  const tier = isItem ? settings?.tiers?.[node.entry.tier ?? 0] : undefined;
   const sx: SxProps = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
     maxWidth: settings?.max_item_width,
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
+    fontSize: isItem && (node.entry.tier ?? 0) === 0 ? "0.7rem" : "0.82rem",
   };
-  const color =
-    node.type === "item" && node?.entry.highlighted ? "mistyrose" : undefined;
+  const color = isItem && node?.entry.highlighted ? "mistyrose" : undefined;
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
@@ -73,6 +72,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
           {...getContentProps()}
           sx={{
             py: 0,
+            height: 20,
             // フォーカスリングを表示しない
             ":is([data-focused]):not([data-selected]):not(:hover)": {
               backgroundColor: "transparent",
@@ -84,7 +84,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
           </TreeItemIconContainer>
           <Stack
             direction="row"
-            spacing={0.5}
+            spacing={0.7}
             sx={{
               alignItems: "center",
               // width: item.type === "item" ? "100%" : undefined, // アイコンを右端に寄せる
@@ -97,6 +97,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
                 variant="caption"
                 color="textSecondary"
                 whiteSpace="nowrap"
+                fontSize="0.7rem"
                 sx={{
                   visibility: "hidden",
                   "#root:hover &": {
@@ -111,9 +112,9 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
               </Typography>
             ) : (
               <IconButton
-                onClick={async (e) => {
+                onClick={(e) => {
                   e.stopPropagation();
-                  await setSelectedTreeNodeId(node.nodeId);
+                  setSelectedTreeNodeId(node.nodeId);
                 }}
                 sx={{
                   p: 0,
@@ -140,8 +141,9 @@ function VerticalLine() {
   return (
     <Box
       sx={{
-        borderRight: "1px solid gainsboro",
+        borderRight: "1px solid #DDD",
         color: "transparent",
+        width: 1,
       }}
     >
       i
