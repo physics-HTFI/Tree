@@ -14,8 +14,8 @@ export function ImageView() {
   );
 
   if (id !== currentId) {
-    // 画像読み込み失敗時に「自動スクロール」が残らないようにする。
-    // （onErrorだと遅延が発生するためここで行う。）
+    // 画像読み込み失敗時に「自動スクロール」ラベルが残らないようにする。
+    // （onErrorだと遅延が発生して一瞬残るためここで行う。）
     timerStop();
     setCurrentId(id);
   }

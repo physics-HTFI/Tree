@@ -80,9 +80,10 @@ const atomSetItemNodeAsync = atom(
     const hasSvg = await existsSvg(parent.handle, newItemEntry.title);
     const preTitle = selectedItemNode.entry.title;
     for (const child of parent.children) {
-      if (!hasSvg || !titleChanged) break;
+      if (!hasSvg) break;
       if (child.type === "item" && child.entry.title === preTitle) {
-        child.entry.title = newItemEntry.title;
+        if (titleChanged) child.entry.title = newItemEntry.title;
+        child.hasSvg = hasSvg;
       }
     }
 
