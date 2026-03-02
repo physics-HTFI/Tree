@@ -9,7 +9,7 @@ export const createTreeItems = {
 
 async function createTreeItemsFromReferenceFolder(
   handle: FileSystemDirectoryHandle | null,
-  parentId: string = "",
+  parentId: string = "reference/",
 ): Promise<FolderNode> {
   if (!handle)
     return { type: "folder", nodeId: "---", title: "---", children: [] };
@@ -38,7 +38,7 @@ async function createTreeItemsFromReferenceFolder(
       const data = {
         type: "item",
         title: fileName.baseName(entry.name),
-        path: entry.name,
+        path: fileName.trimRootFromNodeId(`${folderNode.nodeId}${entry.name}`),
       } as const;
       folderNode.children.push({
         type: "item",
@@ -57,7 +57,7 @@ async function createTreeItemsFromReferenceFolder(
 async function createTreeItemsFromDataFolder(
   handle: FileSystemDirectoryHandle | null,
   ignoreList?: string[],
-  parentId: string = "",
+  parentId: string = "data/",
 ): Promise<FolderNode> {
   if (!handle)
     return { type: "folder", nodeId: "---", title: "---", children: [] };

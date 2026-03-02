@@ -29,7 +29,7 @@ export function ModelView() {
   if (!type) return null;
 
   if (type === "mp3") {
-    return <Audio fileName={path} folder={node.parent.handle} />;
+    return <Audio path={path} />;
   }
 
   const isFrame = type === "id" && !window;

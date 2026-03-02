@@ -1,28 +1,21 @@
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { atomTree } from "@/jotai/atomTree";
 import { itemBase64 } from "@/jotai/utils/itemBase64";
+import { fileName } from "@/utils/fileName";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 
-export function Audio({
-  fileName,
-  folder,
-}: {
-  fileName: string;
-  folder?: FileSystemDirectoryHandle;
-}) {
+export function Audio({ path }: { path: string }) {
   const settings = useAtomValue(atomAppSettingsValue);
   const referenceTree = useAtomValue(atomTree.referenceTreeValue);
-  const [curFolder, setCurFolder] = useState<FileSystemDirectoryHandle>();
   const [curFileName, setCurFileName] = useState<string>();
   const [src, setSrc] = useState<string | null>(null);
   if (!settings.frame?.width) return null;
-  if (!folder) return null;
+  if (!fileName.isMp3File(path)) return null;
 
-  if (folder !== curFolder || fileName !== curFileName) {
-    setCurFolder(folder);
-    setCurFileName(fileName);
-    const { handle, name } = getHandle(fileName, folder, referenceTree);
+  if (path !== curFileName) {
+    setCurFileName(path);
+    const { handle, name } = getHandle(path, referenceTree);
     if (!handle || !name) {
       setSrc(null);
       return null;
@@ -52,12 +45,9 @@ export function Audio({
 
 function getHandle(
   path: string,
-  folder: FileSystemDirectoryHandle,
   referenceTree: FolderNode | null,
 ): { handle?: FileSystemDirectoryHandle; name?: string } {
   const split = path.split("/");
-  if (split.length === 1) return { handle: folder, name: path };
-
   let current = referenceTree;
   for (let i = 0; i < split.length - 1; i++) {
     const name = split[i];

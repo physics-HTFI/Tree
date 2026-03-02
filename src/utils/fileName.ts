@@ -7,6 +7,8 @@ export const fileName = {
     const match = name.match(/^(.*?)(\.[^.]+)?$/);
     return match ? match[1] : name;
   },
+
+  trimRootFromNodeId: (nodeId: string) => nodeId.replace(/^([^/]*\/){2}/, ""),
 };
 
 function isFile(name: string, extensions: string[]) {

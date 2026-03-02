@@ -24,11 +24,12 @@ export function TreeView() {
     if (isTier0Hidden) {
       const getIds = (subTree: TreeNode | null, ids: string[]) => {
         if (subTree?.type === "folder") {
-          ids.push(subTree.nodeId);
+          if (subTree !== tree) ids.push(subTree.nodeId);
           subTree.children.forEach((child) => getIds(child, ids));
         }
         return ids;
       };
+      console.log(getIds(tree, []));
       setExpandedIds(getIds(tree, []));
     } else {
       setExpandedIds([]);
