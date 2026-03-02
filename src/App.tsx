@@ -24,9 +24,10 @@ function App() {
             maxWidth: 300,
             ml: "auto !important", // 右寄せにする
             p: 1,
-            height: "calc(100vh - 16px)",
-            position: "sticky", // (1) 位置を固定する
-            top: 0, // (1)
+            position: "fixed",
+            top: 0,
+            bottom: 0,
+            right: 0,
           }}
         >
           <TierEditor />

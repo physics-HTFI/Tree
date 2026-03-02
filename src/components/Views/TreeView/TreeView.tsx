@@ -57,6 +57,7 @@ export function TreeView() {
       slots={{ item: CustomTreeViewItem }}
       sx={{
         p: 1,
+        minWidth: 200,
         position: "sticky", // (1) スクロールしても常に表示する
         top: 0, // (1)
         alignSelf: "flex-start", // (1)

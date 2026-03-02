@@ -29,7 +29,10 @@ export function ImageView() {
       <img
         ref={ref}
         src={svg}
-        onLoad={timerStart}
+        onLoad={() => {
+          timerStart();
+          window.scrollTo(0, 0);
+        }}
         style={{
           objectFit: "none",
           alignSelf: "flex-start",
@@ -42,9 +45,9 @@ export function ImageView() {
         variant="outlined"
         size="small"
         sx={{
-          position: "sticky",
-          top: 8,
-          ml: -7,
+          position: "fixed",
+          top: 48,
+          right: 152,
           visibility: scrolling ? undefined : "hidden",
           pointerEvents: "none",
         }}
