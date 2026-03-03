@@ -14,7 +14,7 @@ export function AddItem() {
 
   if (!folder?.handle) return null;
 
-  const canAdd = Boolean(item.title);
+  const canAdd = modifierItemNode.canAddItem(item.title, folder);
 
   const updateItem = (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };

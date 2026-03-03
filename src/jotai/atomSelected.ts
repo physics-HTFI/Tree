@@ -76,18 +76,19 @@ const atomSetItemNodeAsync = atom(
     const treeItems = get(_atomTree.dataTree);
     const { parentOrSelf: parent, selectedItemNode } = get(atomTreeNode);
     if (!treeItems || !parent?.handle || !selectedItemNode) return;
-    modifierItemNode.modifyItemNode(newItemEntry);
-    const titleChanged =
-      selectedItemNode.entry.title !== undefined &&
-      newItemEntry.title !== undefined &&
-      selectedItemNode.entry.title !== newItemEntry.title;
 
-    // SVGファイルの名前を変更（タイトルが変更された場合）
+    modifierItemNode.modifyItemNode(newItemEntry);
     const canOverwrite = modifierItemNode.canOverwrite(
       newItemEntry,
       selectedItemNode,
     );
     if (!canOverwrite) return;
+
+    // SVGファイルの名前を変更（タイトルが変更された場合）
+    const titleChanged =
+      selectedItemNode.entry.title !== undefined &&
+      newItemEntry.title !== undefined &&
+      selectedItemNode.entry.title !== newItemEntry.title;
     if (titleChanged && selectedItemNode.hasSvg) {
       const oldFileName = selectedItemNode.entry.title + ".svg";
       const newFileName = newItemEntry.title + ".svg";
@@ -100,29 +101,18 @@ const atomSetItemNodeAsync = atom(
     }
 
     // 同じタイトルのSVGを持つアイテムがある場合、画像のリンク切れを防ぐため、一緒に改名する
-    const hasSvg = await existsSvg(parent.handle, newItemEntry.title);
-    const preTitle = selectedItemNode.entry.title;
-    for (const child of parent.children) {
-      if (!hasSvg) break;
-      if (child.type === "item" && child.entry.title === preTitle) {
-        if (titleChanged) child.entry.title = newItemEntry.title;
-        child.hasSvg = hasSvg;
-      }
-    }
 
     // selectedItemNode を更新
     selectedItemNode.entry = {
       ...selectedItemNode.entry,
       ...newItemEntry,
     };
-    if (titleChanged) {
-      for (const child of parent.children) {
-        if (child.type !== "item") continue;
-        child.hasSvg = await existsSvg(parent.handle, child.entry.title);
-      }
-    }
-    await appFileSystem.saveFolderDataAsync(parent);
+    selectedItemNode.hasSvg = await existsSvg(
+      parent.handle,
+      newItemEntry.title,
+    );
     set(_atomTree.dataTree, { ...treeItems });
+    await appFileSystem.saveFolderDataAsync(parent);
   },
 );
 
@@ -137,8 +127,8 @@ const atomSetFolderNodeAsync = atom(
     modifierFolderNode.modifyNewFolder(newFolder);
     folder.path = newFolder.path;
     folder.children = newFolder.children;
-    await appFileSystem.saveFolderDataAsync(folder);
     set(_atomTree.dataTree, { ...treeItems });
+    await appFileSystem.saveFolderDataAsync(folder);
   },
 );
 
@@ -171,8 +161,8 @@ const atomAddNewFolderNodeAsync = atom(
     if (!subFolder) return;
     // 親フォルダの更新
     parent.children = [subFolder, ...parent.children];
-    await appFileSystem.saveFolderDataAsync(parent);
     set(_atomTree.dataTree, { ...treeItems });
+    await appFileSystem.saveFolderDataAsync(parent);
   },
 );
 

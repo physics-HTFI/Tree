@@ -6,11 +6,19 @@ export const modifierItemNode = {
     return true;
   },
 
+  canAddItem: (title?: string, parent?: FolderNode) => {
+    if (!title || !parent) return false;
+    const duplicated = parent.children?.some(
+      (c) =>
+        c.type === "item" &&
+        c.entry.title?.toLowerCase() === title.toLowerCase(),
+    );
+    if (duplicated) return false;
+    return true;
+  },
+
   canOverwrite: (item: ItemEntry, node: ItemNode) => {
     if (item.title === node.entry.title) return true;
-    if (!node.hasSvg) return true;
-
-    // SVGを持っているエントリーは既存のタイトルと重複するタイトルに変更できない
     const duplicated = node.parent?.children?.some(
       (c) =>
         c.type === "item" &&
