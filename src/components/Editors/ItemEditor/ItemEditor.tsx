@@ -4,11 +4,14 @@ import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
 import { modifierItemNode } from "@/modifiers/modifierItemNode";
+import { atomReferenceDataValue } from "@/jotai/atomReferenceData";
 
 export function ItemEditor() {
   // フック
   const { selectedItemNode } = useAtomValue(atomsSelected.nodeValue);
   const updateByItemDataAsync = useSetAtom(atomsSelected.setItemNodeAsync);
+  const setReferencePathAsync = useSetAtom(atomsSelected.setReferencePathAsync);
+  const referenceData = useAtomValue(atomReferenceDataValue);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
   const { debounced: debouncedUpdate, cancel: cancelUpdate } = useDebounce(
@@ -20,9 +23,21 @@ export function ItemEditor() {
     setItem(selectedItemNode?.entry);
     cancelUpdate(); // ノード切替時に更新をキャンセル（古いアイテムの変更が新しいアイテムに反映されるのを防ぐ）
   }
-  if (!selectedItemNode || selectedItemNode.readonly || !item) return null;
+  if (!selectedItemNode || !item || !referenceData) return null;
+
+  const referenceSelected =
+    selectedItemNode.isReference &&
+    referenceData.highlighted_paths.includes(selectedItemNode.entry.path ?? "");
 
   const update = async (diff: Partial<ItemEntry>) => {
+    if (selectedItemNode.isReference) {
+      await setReferencePathAsync(
+        selectedItemNode.entry.path ?? "",
+        diff.highlighted ? "add" : "remove",
+      );
+      return;
+    }
+
     const newItem = { ...item, ...diff };
     modifierItemNode.modifyItemNode(newItem);
     setItem(newItem);
@@ -41,5 +56,11 @@ export function ItemEditor() {
     debouncedUpdate(newItem, delays ? 1000 : 10);
   };
 
-  return <ItemForm item={item} onChange={update} />;
+  return (
+    <ItemForm
+      item={item}
+      onChange={update}
+      referenceSelected={referenceSelected}
+    />
+  );
 }

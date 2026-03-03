@@ -20,7 +20,7 @@ async function createTreeItemsFromReferenceFolder(
     title: handle.name,
     nodeId: createId({ type: "folder", title: handle.name }, parentId),
     handle,
-    readonly: true,
+    isReference: true,
     children: [],
   };
 
@@ -46,11 +46,12 @@ async function createTreeItemsFromReferenceFolder(
         parent: folderNode,
         hasSvg: false,
         entry: data,
-        readonly: true,
+        isReference: true,
       });
     }
   }
 
+  folderNode.children.sort(sortChildrenByName);
   return folderNode;
 }
 
@@ -149,4 +150,13 @@ function isSameTitle(entry: EntryData, node: TreeNode) {
   } else {
     return node.type === "item" ? entry.title === node.entry.title : false;
   }
+}
+
+function sortChildrenByName(a: TreeNode, b: TreeNode) {
+  if (a.type === b.type) {
+    const aTitle = a.type === "folder" ? a.title : (a.entry.title ?? "");
+    const bTitle = b.type === "folder" ? b.title : (b.entry.title ?? "");
+    return aTitle.localeCompare(bTitle, undefined, { numeric: true });
+  }
+  return a.type === "folder" ? -1 : 1;
 }

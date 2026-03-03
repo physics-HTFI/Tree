@@ -8,7 +8,7 @@ export function GoToLinkButton() {
   const node = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const item = node?.entry ?? null;
 
-  if (!settings.expressions?.link || node?.readonly || !item?.title)
+  if (!settings.expressions?.link || node?.isReference || !item?.title)
     return null;
   const linkUrl = settings.expressions.link.replace("{{key}}", item.title);
   return (

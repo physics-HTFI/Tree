@@ -23,6 +23,7 @@ import {
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 import { atomsSelected } from "@/jotai/atomSelected";
+import { atomReferenceDataValue } from "@/jotai/atomReferenceData";
 
 interface CustomTreeViewItemProps
   extends
@@ -34,6 +35,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   ref: React.Ref<HTMLLIElement>,
 ) {
   const settings = useAtomValue(atomAppSettingsValue);
+  const referenceData = useAtomValue(atomReferenceDataValue);
   const setSelectedTreeNodeId = useSetAtom(atomsSelected.nodeId);
   const { id, itemId, label, disabled, children, ...other } = props;
 
@@ -54,7 +56,10 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   const keyLabel = isItem
     ? settings?.keys?.find((key) => key.key === node.entry.key)?.label
     : undefined;
-  const tier = isItem ? settings?.tiers?.[node.entry.tier ?? 0] : undefined;
+  const tier =
+    isItem && !node.isReference
+      ? settings?.tiers?.[node.entry.tier ?? 0]
+      : undefined;
   const sx: SxProps = {
     color: tier?.color,
     textDecoration: tier?.underline ? "underline" : undefined,
@@ -63,7 +68,12 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
     whiteSpace: "nowrap",
     fontSize: isItem && (node.entry.tier ?? 0) === 0 ? "0.7rem" : "0.82rem",
   };
-  const color = isItem && node?.entry.highlighted ? "mistyrose" : undefined;
+  const highlighted =
+    isItem &&
+    (node.entry.highlighted ||
+      (node.isReference &&
+        referenceData.highlighted_paths.includes(node.entry.path ?? "")));
+  const color = highlighted ? "mistyrose" : undefined;
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
@@ -92,7 +102,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
           >
             <TreeItemCheckbox {...getCheckboxProps()} />
             <TreeItemLabel {...getLabelProps()} sx={sx} />
-            {node.readonly ? null : node.type === "item" ? (
+            {node.isReference ? null : node.type === "item" ? (
               <Typography
                 variant="caption"
                 color="textSecondary"

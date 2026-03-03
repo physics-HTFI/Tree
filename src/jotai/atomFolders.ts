@@ -4,11 +4,8 @@ import { _atomAppSettings } from "./backings/_atomAppSettings";
 import { _atomTree } from "./backings/_atomTree";
 import { createTreeItems } from "./utils/createTreeItems";
 import { _atomDefaultSvgBase64 } from "./backings/_atomDefaultSvgBase64";
-
-const _atomFolders = atom<{
-  data: FileSystemDirectoryHandle;
-  reference: FileSystemDirectoryHandle;
-} | null>(null);
+import { _atomReferenceData } from "./backings/_atomReferenceData";
+import { _atomFolders } from "./backings/_atomFolders";
 
 const setAsync = atom(
   null,
@@ -28,6 +25,12 @@ const setAsync = atom(
     const settings = await appFileSystem.readAppSettingsAsync(folders.data);
     if (!settings) return;
     set(_atomAppSettings, settings);
+
+    // ReferenceDataを読み込んでatomにセットする
+    const referenceData = await appFileSystem.readReferenceDataAsync(
+      folders.data,
+    );
+    if (referenceData) set(_atomReferenceData, referenceData);
 
     // フォルダからTreeItemsを生成してatomにセットする
     if (!settings?.tiers) return;

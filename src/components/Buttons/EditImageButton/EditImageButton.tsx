@@ -50,7 +50,7 @@ export function EditImageButton() {
     return () => window.removeEventListener("message", receive);
   }, [open, svg, setSvgAsync, defaultSvg]);
 
-  if (!selectedItem || selectedItem.readonly) return null;
+  if (!selectedItem || selectedItem.isReference) return null;
   return (
     <>
       <ButtonBase type="edit" onClick={() => setOpen(true)} />

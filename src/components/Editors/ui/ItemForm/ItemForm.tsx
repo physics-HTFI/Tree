@@ -17,9 +17,11 @@ import { modifierItemNode } from "@/modifiers/modifierItemNode";
 
 export function ItemForm({
   item,
+  referenceSelected,
   onChange,
 }: {
   item: ItemEntry | null;
+  referenceSelected?: boolean;
   onChange: (itemDiff: Partial<ItemEntry>) => void;
 }) {
   // フック
@@ -62,6 +64,7 @@ export function ItemForm({
         <TextField
           value={item.title}
           onChange={(value) => onChange({ title: value })}
+          readonly={referenceSelected}
         />
       </Grid>
 
@@ -82,111 +85,122 @@ export function ItemForm({
               start: toNumber(start),
             });
           }}
+          readonly={referenceSelected}
         />
       </Grid>
 
-      {/* tier */}
-      <Grid size={3}>
-        <Header title={labels.tier} />
-      </Grid>
-      <Grid size={9}>
-        <Select
-          value={item.tier ?? 0}
-          onChange={(e) => onChange({ tier: toNumber(e.target.value) })}
-          variant="standard"
-          size="small"
-          fullWidth
-        >
-          {settings?.tiers
-            ?.map((tier, i) => ({ tier, i }))
-            ?.reverse()
-            ?.map((v) => (
-              <MenuItem key={v.tier.label} value={v.i}>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: v.tier.color,
-                    textDecoration: v.tier.underline ? "underline" : undefined,
-                  }}
-                >
-                  {v.tier.label}
-                </Typography>
-              </MenuItem>
-            ))}
-        </Select>
-      </Grid>
+      {referenceSelected === undefined && (
+        <>
+          {/* tier */}
+          <Grid size={3}>
+            <Header title={labels.tier} />
+          </Grid>
+          <Grid size={9}>
+            <Select
+              value={item.tier ?? 0}
+              onChange={(e) => onChange({ tier: toNumber(e.target.value) })}
+              variant="standard"
+              size="small"
+              fullWidth
+            >
+              {settings?.tiers
+                ?.map((tier, i) => ({ tier, i }))
+                ?.reverse()
+                ?.map((v) => (
+                  <MenuItem key={v.tier.label} value={v.i}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: v.tier.color,
+                        textDecoration: v.tier.underline
+                          ? "underline"
+                          : undefined,
+                      }}
+                    >
+                      {v.tier.label}
+                    </Typography>
+                  </MenuItem>
+                ))}
+            </Select>
+          </Grid>
 
-      {/* start */}
-      <Grid size={3}>
-        <Header title={labels.start} />
-      </Grid>
-      <Grid size={9}>
-        <TextField
-          value={item.start}
-          sx={{ width: 60 }}
-          onWheel={(e) =>
-            onChange({ start: getWheeledNumber("start", item, settings, e) })
-          }
-        />
-        <CloseButton onClick={() => onChange({ start: undefined })} />
-      </Grid>
+          {/* start */}
+          <Grid size={3}>
+            <Header title={labels.start} />
+          </Grid>
+          <Grid size={9}>
+            <TextField
+              value={item.start}
+              sx={{ width: 60 }}
+              onWheel={(e) =>
+                onChange({
+                  start: getWheeledNumber("start", item, settings, e),
+                })
+              }
+            />
+            <CloseButton onClick={() => onChange({ start: undefined })} />
+          </Grid>
 
-      {/* ticks */}
-      <Grid size={3}>
-        <Header title={labels.ticks} />
-      </Grid>
-      <Grid size={9}>
-        <TextField
-          value={item.ticks}
-          sx={{ width: 60 }}
-          onWheel={(e) =>
-            onChange({ ticks: getWheeledNumber("ticks", item, settings, e) })
-          }
-        />
-        <CloseButton onClick={() => onChange({ ticks: undefined })} />
-      </Grid>
+          {/* ticks */}
+          <Grid size={3}>
+            <Header title={labels.ticks} />
+          </Grid>
+          <Grid size={9}>
+            <TextField
+              value={item.ticks}
+              sx={{ width: 60 }}
+              onWheel={(e) =>
+                onChange({
+                  ticks: getWheeledNumber("ticks", item, settings, e),
+                })
+              }
+            />
+            <CloseButton onClick={() => onChange({ ticks: undefined })} />
+          </Grid>
 
-      {/* key */}
-      <Grid size={3}>
-        <Header title={labels.key} />
-      </Grid>
-      <Grid size={9}>
-        <Select
-          value={item.key ?? ""}
-          onChange={(e) => onChange({ key: toNumber(e.target.value) })}
-          variant="standard"
-          size="small"
-          sx={{ width: 90 }}
-        >
-          {settings?.keys?.map((key, index) => (
-            <MenuItem key={index} value={key.key}>
-              {key.label ?? "---"}
-            </MenuItem>
-          ))}
-        </Select>
-        <CloseButton onClick={() => onChange({ key: undefined })} />
-      </Grid>
+          {/* key */}
+          <Grid size={3}>
+            <Header title={labels.key} />
+          </Grid>
+          <Grid size={9}>
+            <Select
+              value={item.key ?? ""}
+              onChange={(e) => onChange({ key: toNumber(e.target.value) })}
+              variant="standard"
+              size="small"
+              sx={{ width: 90 }}
+            >
+              {settings?.keys?.map((key, index) => (
+                <MenuItem key={index} value={key.key}>
+                  {key.label ?? "---"}
+                </MenuItem>
+              ))}
+            </Select>
+            <CloseButton onClick={() => onChange({ key: undefined })} />
+          </Grid>
 
-      {/* speed */}
-      <Grid size={3}>
-        <Header title={labels.speed} />
-      </Grid>
-      <Grid size={9}>
-        <Select
-          value={item.speed ?? ""}
-          onChange={(e) => onChange({ speed: toNumber(e.target.value) })}
-          variant="standard"
-          sx={{ width: 90 }}
-          size="small"
-        >
-          {settings?.speeds?.map((speed, index) => (
-            <MenuItem key={index} value={speed.speed}>
-              {speed.label ?? "---"}
-            </MenuItem>
-          ))}
-        </Select>
-        <CloseButton onClick={() => onChange({ speed: undefined })} />
-      </Grid>
+          {/* speed */}
+          <Grid size={3}>
+            <Header title={labels.speed} />
+          </Grid>
+          <Grid size={9}>
+            <Select
+              value={item.speed ?? ""}
+              onChange={(e) => onChange({ speed: toNumber(e.target.value) })}
+              variant="standard"
+              sx={{ width: 90 }}
+              size="small"
+            >
+              {settings?.speeds?.map((speed, index) => (
+                <MenuItem key={index} value={speed.speed}>
+                  {speed.label ?? "---"}
+                </MenuItem>
+              ))}
+            </Select>
+            <CloseButton onClick={() => onChange({ speed: undefined })} />
+          </Grid>
+        </>
+      )}
 
       {/* highlighted */}
       <Grid size={3}>
@@ -194,41 +208,45 @@ export function ItemForm({
       </Grid>
       <Grid size={9}>
         <Checkbox
-          checked={item.highlighted || false}
+          checked={item.highlighted || referenceSelected || false}
           size="small"
           sx={{ p: 0, display: "inline-block" }}
           onChange={(e) => onChange({ highlighted: e.target.checked })}
         />
       </Grid>
 
-      {/* window */}
-      <Grid size={3}>
-        <Header title={labels.window} />
-      </Grid>
-      <Grid size={9}>
-        <Checkbox
-          checked={isUrl || item.window || false}
-          disabled={isUrl}
-          size="small"
-          sx={{ p: 0, display: "inline-block" }}
-          onChange={(e) => onChange({ window: e.target.checked })}
-        />
-      </Grid>
+      {referenceSelected === undefined && (
+        <>
+          {/* window */}
+          <Grid size={3}>
+            <Header title={labels.window} />
+          </Grid>
+          <Grid size={9}>
+            <Checkbox
+              checked={isUrl || item.window || false}
+              disabled={isUrl}
+              size="small"
+              sx={{ p: 0, display: "inline-block" }}
+              onChange={(e) => onChange({ window: e.target.checked })}
+            />
+          </Grid>
 
-      {/* notes */}
-      <Grid size={3}>
-        <Header title={labels.notes} />
-      </Grid>
-      <Grid size={9}>
-        <Stack direction="row" alignItems="center">
-          <TextField
-            value={item.notes}
-            multiline
-            onChange={(value) => onChange({ notes: value })}
-          />
-          <CloseButton onClick={() => onChange({ notes: undefined })} />
-        </Stack>
-      </Grid>
+          {/* notes */}
+          <Grid size={3}>
+            <Header title={labels.notes} />
+          </Grid>
+          <Grid size={9}>
+            <Stack direction="row" alignItems="center">
+              <TextField
+                value={item.notes}
+                multiline
+                onChange={(value) => onChange({ notes: value })}
+              />
+              <CloseButton onClick={() => onChange({ notes: undefined })} />
+            </Stack>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }

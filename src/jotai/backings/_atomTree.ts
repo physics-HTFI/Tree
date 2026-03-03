@@ -5,7 +5,9 @@ const atomReferenceTree = atom<FolderNode | null>(null);
 
 export const _atomTree = {
   dataTree: atomDataTree,
+
   referenceTree: atomReferenceTree,
+
   fullTree: atom((get) => {
     const dataTree = get(atomDataTree);
     const referenceTree = get(atomReferenceTree);
