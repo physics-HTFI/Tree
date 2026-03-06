@@ -34,10 +34,6 @@ export const modifierItemNode = {
   },
 
   modifyItemNode: (item: ItemEntry) => {
-    item.title = item.title?.trim();
-    item.path = item.path?.trim();
-    item.notes = item.notes?.trim();
-
     if (!item.title) item.title = "";
     if (!item.path) item.path = undefined;
     if (!item.notes) item.notes = undefined;
