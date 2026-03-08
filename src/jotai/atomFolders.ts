@@ -6,6 +6,7 @@ import { createTreeItems } from "./utils/createTreeItems";
 import { _atomDefaultSvgBase64 } from "./backings/_atomDefaultSvgBase64";
 import { _atomReferenceData } from "./backings/_atomReferenceData";
 import { _atomFolders } from "./backings/_atomFolders";
+import { setFaviconSvg } from "./utils/setFaviconSvg";
 
 const setAsync = atom(
   null,
@@ -46,6 +47,12 @@ const setAsync = atom(
     // デフォルトSVGを読み込んでatomにセットする
     const svg = await appFileSystem.readDefaultSvgBase64Async(folders.data);
     set(_atomDefaultSvgBase64, svg);
+
+    // ファビコンSVGを読み込んでセットする
+    const faviconSvg = await appFileSystem.readFaviconSvgBase64Async(
+      folders.data,
+    );
+    setFaviconSvg(faviconSvg);
   },
 );
 

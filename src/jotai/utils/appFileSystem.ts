@@ -5,6 +5,7 @@ const APP_SETTINGS_FILE_NAME = ".settings.json";
 const REFERENCE_DATA_FILE_NAME = ".reference.json";
 const DEFAULT_SVG_FILE_NAME = ".default.svg";
 const FOLDER_DATA_FILE_NAME = ".folder.json";
+const FAVICON_SVG_FILE_NAME = ".favicon.svg";
 
 export const appFileSystem = {
   readAppSettingsAsync: async (
@@ -37,6 +38,11 @@ export const appFileSystem = {
     folder: FileSystemDirectoryHandle | null,
   ): Promise<string | null> =>
     await itemBase64.readSvgFromFileAsync(folder, DEFAULT_SVG_FILE_NAME),
+
+  readFaviconSvgBase64Async: async (
+    folder: FileSystemDirectoryHandle | null,
+  ): Promise<string | null> =>
+    await itemBase64.readSvgFromFileAsync(folder, FAVICON_SVG_FILE_NAME),
 
   readFolderDataAsync: async (folder: FileSystemDirectoryHandle | null) =>
     (await fileSystem.parseJsonAsync<FolderData>(
