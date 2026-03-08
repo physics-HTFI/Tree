@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 
-const atomDataTree = atom<FolderNode | null>(null);
-const atomReferenceTree = atom<FolderNode | null>(null);
+const atomDataTree = atom<FolderNode>();
+const atomReferenceTree = atom<FolderNode>();
 
 export const _atomTree = {
   dataTree: atomDataTree,
@@ -11,7 +11,7 @@ export const _atomTree = {
   fullTree: atom((get) => {
     const dataTree = get(atomDataTree);
     const referenceTree = get(atomReferenceTree);
-    if (!dataTree || !referenceTree) return null;
+    if (!dataTree || !referenceTree) return undefined;
     return {
       ...dataTree,
       children: [...dataTree.children, referenceTree],

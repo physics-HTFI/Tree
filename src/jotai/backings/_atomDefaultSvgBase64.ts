@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const _atomDefaultSvgBase64 = atom<string | null>(null);
+export const _atomDefaultSvgBase64 = atom<string>();

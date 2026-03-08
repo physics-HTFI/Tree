@@ -34,16 +34,16 @@ async function saveLastUsedFolderAsync(
 
 async function loadLastUsedFolderAsync(
   key: string,
-): Promise<FileSystemDirectoryHandle | null> {
-  if (!("indexedDB" in window)) return null;
+): Promise<FileSystemDirectoryHandle | undefined> {
+  if (!("indexedDB" in window)) return undefined;
   try {
     const db = await getDB();
     const handle = (await db.get(STORE_NAME, key)) as
       | FileSystemDirectoryHandle
       | undefined;
-    return handle ?? null;
+    return handle;
   } catch (err) {
     console.error("loadLastUsedFolder: failed to read handle", err);
-    return null;
+    return undefined;
   }
 }

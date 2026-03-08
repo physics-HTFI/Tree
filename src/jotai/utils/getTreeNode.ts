@@ -8,8 +8,8 @@
  * }
  */
 export function getTreeNode(
-  parent: FolderNode | null,
-  nodeId: string | null,
+  parent?: FolderNode,
+  nodeId?: string,
 ): {
   selectedFolderNode?: FolderNode;
   selectedItemNode?: ItemNode;

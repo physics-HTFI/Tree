@@ -2,10 +2,10 @@ import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { atomHiddenTiers } from "./atomHiddenTiers";
 
-const atomFilteredTreeValue = atom<FolderNode | null>((get) => {
+const atomFilteredTreeValue = atom<FolderNode | undefined>((get) => {
   const tree = get(_atomTree.fullTree);
   const hiddenTiers = get(atomHiddenTiers);
-  if (!tree) return null;
+  if (!tree) return undefined;
   return filterTree(tree, hiddenTiers);
 });
 

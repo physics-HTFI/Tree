@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { lastUsedFolder } from "./utils/lastUsedFolder";
 
 export const useLastUsedFolderHandle = (key: string) => {
-  const [folder, setFolder] = useState<FileSystemDirectoryHandle | null>(null);
+  const [folder, setFolder] = useState<FileSystemDirectoryHandle>();
 
   // マウント時に、前回使用されたフォルダをIndexedDBから読み込む
   useEffect(() => {
@@ -12,7 +12,7 @@ export const useLastUsedFolderHandle = (key: string) => {
   }, [key]);
 
   const saveLastUsedFolderHandleAsync = async (
-    handle: FileSystemDirectoryHandle | null,
+    handle?: FileSystemDirectoryHandle,
   ) => {
     if (!handle) return;
     setFolder(handle);

@@ -24,7 +24,7 @@ export function SortItems() {
   const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
   const [list, setList] = useState(folder?.children || []);
-  const [id, setId] = useState<string | null>(null);
+  const [id, setId] = useState<string>();
 
   if (!folder) return null;
 

@@ -22,7 +22,7 @@ export function TreeView() {
     const isTier0Hidden = hiddenTiers?.has(0);
     setCurHiddenTiers(new Set(hiddenTiers));
     if (isTier0Hidden) {
-      const getIds = (subTree: TreeNode | null, ids: string[]) => {
+      const getIds = (subTree: TreeNode | undefined, ids: string[]) => {
         if (subTree?.type === "folder") {
           if (subTree !== tree) ids.push(subTree.nodeId);
           subTree.children.forEach((child) => getIds(child, ids));
@@ -51,7 +51,7 @@ export function TreeView() {
       getItemId={(item) => item.nodeId}
       isItemSelectionDisabled={(item) => item.type === "folder"}
       getItemLabel={getLabel}
-      onSelectedItemsChange={(_, id) => setSelectedItemId(id)}
+      onSelectedItemsChange={(_, id) => setSelectedItemId(id ?? undefined)}
       onExpandedItemsChange={(_, ids) =>
         setExpandedIds(curHiddenTiers ? trimIds(expandedIds, ids) : ids)
       }

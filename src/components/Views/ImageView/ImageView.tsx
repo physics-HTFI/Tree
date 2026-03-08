@@ -7,7 +7,7 @@ import { useState } from "react";
 export function ImageView() {
   const svg = useAtomValue(atomsSelected.svgBase64);
   const id = useAtomValue(atomsSelected.nodeId);
-  const [currentId, setCurrentId] = useState<string | null>(null);
+  const [currentId, setCurrentId] = useState<string>();
   const itemNode = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const { ref, scrolling, toggleScroll, timerStart, timerStop } = useScroll(
     itemNode?.entry?.speed ?? 0,

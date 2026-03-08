@@ -5,14 +5,14 @@ export function useDebounce<T>(fn: (arg: T) => void): {
   cancel: () => void;
   consume: () => void;
 } {
-  const ref = useRef<{ time: ReturnType<typeof setTimeout>; args: T } | null>(
-    null,
-  );
+  const ref = useRef<
+    { time: ReturnType<typeof setTimeout>; args: T } | undefined
+  >(undefined);
 
   const cancel = useCallback(() => {
     if (!ref.current) return;
     clearTimeout(ref.current?.time);
-    ref.current = null;
+    ref.current = undefined;
   }, []);
 
   const debounced = useCallback(

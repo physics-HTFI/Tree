@@ -9,7 +9,7 @@ export function Audio({ path }: { path: string }) {
   const settings = useAtomValue(atomAppSettingsValue);
   const referenceTree = useAtomValue(atomTree.referenceTreeValue);
   const [curFileName, setCurFileName] = useState<string>();
-  const [src, setSrc] = useState<string | null>(null);
+  const [src, setSrc] = useState<string>();
   const ref = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -26,13 +26,13 @@ export function Audio({ path }: { path: string }) {
     setCurFileName(path);
     const { handle, name } = getHandle(path, referenceTree);
     if (!handle || !name) {
-      setSrc(null);
+      setSrc(undefined);
       return null;
     }
     itemBase64
       .readMp3FromFileAsync(handle, name)
       .then(setSrc)
-      .catch(() => setSrc(null));
+      .catch(() => setSrc(undefined));
   }
 
   return (
@@ -50,7 +50,7 @@ export function Audio({ path }: { path: string }) {
 
 function getHandle(
   path: string,
-  referenceTree: FolderNode | null,
+  referenceTree?: FolderNode,
 ): { handle?: FileSystemDirectoryHandle; name?: string } {
   const split = path.split("/");
   let current = referenceTree;

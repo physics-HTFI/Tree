@@ -34,21 +34,21 @@ export const itemBase64 = {
 };
 
 async function readSvgFromFileAsync(
-  folder?: FileSystemDirectoryHandle | null,
+  folder?: FileSystemDirectoryHandle,
   fileName?: string,
 ) {
-  if (!folder || fileName === undefined) return null;
-  if (!fileName.toLocaleLowerCase().endsWith(".svg")) return null;
+  if (!folder || fileName === undefined) return undefined;
+  if (!fileName.toLocaleLowerCase().endsWith(".svg")) return undefined;
   const svg = await base64.readTextAsBase64Async(folder, fileName);
-  return svg ? HEADER_SVG + svg : null;
+  return svg ? HEADER_SVG + svg : undefined;
 }
 
 async function readMp3FromFileAsync(
-  folder?: FileSystemDirectoryHandle | null,
+  folder?: FileSystemDirectoryHandle,
   fileName?: string,
 ) {
-  if (!folder || fileName === undefined) return null;
-  if (!fileName.toLocaleLowerCase().endsWith(".mp3")) return null;
+  if (!folder || fileName === undefined) return undefined;
+  if (!fileName.toLocaleLowerCase().endsWith(".mp3")) return undefined;
   const mp3 = await base64.readBinaryAsBase64Async(folder, fileName);
-  return mp3 ? HEADER_MP3 + mp3 : null;
+  return mp3 ? HEADER_MP3 + mp3 : undefined;
 }

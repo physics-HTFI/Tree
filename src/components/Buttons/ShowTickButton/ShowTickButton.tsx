@@ -6,7 +6,7 @@ import { useAtomValue } from "jotai";
 import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
 
 export function ShowTickButton() {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>(undefined);
 
   const settings = useAtomValue(atomAppSettingsValue);
   const icon = settings.buttons?.tick;
@@ -16,14 +16,14 @@ export function ShowTickButton() {
     <>
       <ButtonBase
         type="tick"
-        onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}
+        onClick={(e) => setAnchorEl(anchorEl ? undefined : e.currentTarget)}
       />
       <Popper
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         placement="bottom-end"
       >
-        <TickPanel onClose={() => setAnchorEl(null)} />
+        <TickPanel onClose={() => setAnchorEl(undefined)} />
       </Popper>
     </>
   );

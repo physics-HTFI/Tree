@@ -6,8 +6,8 @@ export async function createAndSaveFolderNode(
   folder: NewFolderNode,
   parent: FolderNode,
 ) {
-  if (!modifierFolderNode.canAddFolder(folder, parent)) return null;
-  if (!parent.handle) return null;
+  if (!modifierFolderNode.canAddFolder(folder, parent)) return undefined;
+  if (!parent.handle) return undefined;
   try {
     const { title, path } = folder;
     const handle = await parent.handle.getDirectoryHandle(title, {
@@ -25,6 +25,6 @@ export async function createAndSaveFolderNode(
     return folderNode;
   } catch {
     alert("フォルダの作成に失敗しました"); // フォルダ名に使えない文字が含まれている場合など
-    return null;
+    return undefined;
   }
 }

@@ -1,6 +1,7 @@
-export function setFaviconSvg(href: string | null) {
-  let link: HTMLLinkElement | null =
-    document.querySelector("link[rel*='icon']");
+export function setFaviconSvg(href?: string) {
+  let link = document.querySelector("link[rel*='icon']") as
+    | HTMLLinkElement
+    | undefined;
   if (!link) {
     link = document.createElement("link");
     link.rel = "icon";

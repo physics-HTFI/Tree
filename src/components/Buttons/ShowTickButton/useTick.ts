@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 
 export function useTick() {
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioContextRef = useRef<AudioContext | undefined>(undefined);
 
   const tick = useCallback(() => {
     if (!audioContextRef.current) {

@@ -8,7 +8,7 @@ export const createTreeItems = {
 };
 
 async function createTreeItemsFromReferenceFolder(
-  handle: FileSystemDirectoryHandle | null,
+  handle: FileSystemDirectoryHandle | undefined,
   parentId: string = "reference/",
 ): Promise<FolderNode> {
   if (!handle)
@@ -56,7 +56,7 @@ async function createTreeItemsFromReferenceFolder(
 }
 
 async function createTreeItemsFromDataFolder(
-  handle: FileSystemDirectoryHandle | null,
+  handle?: FileSystemDirectoryHandle,
   ignoreList?: string[],
   parentId: string = "data/",
 ): Promise<FolderNode> {

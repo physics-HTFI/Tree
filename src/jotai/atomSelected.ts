@@ -17,7 +17,7 @@ import { _atomFolders } from "./backings/_atomFolders";
 //| 選択されたノードに関するatom
 //|
 
-const atomNodeId = atom<string | null>(null);
+const atomNodeId = atom<string>();
 
 const atomTreeNode = atom((get) => {
   const selectedId = get(atomNodeId);
@@ -172,7 +172,7 @@ const atomAddNewFolderNodeAsync = atom(
 
 export const atomsSelected = {
   nodeId: atomNodeId,
-  unselectAsync: atom(null, (_, set) => set(atomNodeId, null)),
+  unselectAsync: atom(null, (_, set) => set(atomNodeId, undefined)),
 
   nodeValue: atomTreeNode,
 

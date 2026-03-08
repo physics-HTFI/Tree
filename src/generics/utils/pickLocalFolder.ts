@@ -4,13 +4,13 @@
  */
 export const pickLocalFolderAsync: (
   mode: "read" | "readwrite",
-) => Promise<FileSystemDirectoryHandle | null> = async (mode) => {
-  if (!window.showDirectoryPicker) return null;
+) => Promise<FileSystemDirectoryHandle | undefined> = async (mode) => {
+  if (!window.showDirectoryPicker) return undefined;
   try {
     const handle = await window.showDirectoryPicker({ mode });
     return handle;
   } catch {
     // user aborted or error; do nothing
-    return null;
+    return undefined;
   }
 };

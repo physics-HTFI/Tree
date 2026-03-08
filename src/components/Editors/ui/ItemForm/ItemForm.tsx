@@ -20,7 +20,7 @@ export function ItemForm({
   referenceSelected,
   onChange,
 }: {
-  item: ItemEntry | null;
+  item?: ItemEntry;
   referenceSelected?: boolean;
   onChange: (itemDiff: Partial<ItemEntry>) => void;
 }) {

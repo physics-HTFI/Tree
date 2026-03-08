@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export function Window({ src }: { src: string }) {
   const settings = useAtomValue(atomAppSettingsValue);
-  const [prevSrc, setPrevSrc] = useState<string | null>(null);
+  const [prevSrc, setPrevSrc] = useState<string>();
   if (!settings.frame?.width || !settings.frame?.height) return null;
 
   if (src !== prevSrc) {

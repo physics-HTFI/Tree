@@ -13,7 +13,7 @@ export function Counter() {
   );
 }
 
-function countFiles(items: FolderNode | null): number {
+function countFiles(items?: FolderNode): number {
   if (!items) return 0;
   let count = 0;
   for (const item of items.children) {

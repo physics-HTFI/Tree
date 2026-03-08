@@ -11,48 +11,48 @@ export const fileSystem = {
 };
 
 async function readTextAsync(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   fileName: string,
-): Promise<string | null> {
-  if (!folder) return null;
+): Promise<string | undefined> {
+  if (!folder) return undefined;
   try {
     const fileHandle = await folder.getFileHandle(fileName);
     const file = await fileHandle.getFile();
     return await file.text();
   } catch {
-    return null;
+    return undefined;
   }
 }
 
 async function readBinaryAsync(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   fileName: string,
-): Promise<ArrayBuffer | null> {
-  if (!folder) return null;
+): Promise<ArrayBuffer | undefined> {
+  if (!folder) return undefined;
   try {
     const fileHandle = await folder.getFileHandle(fileName);
     const file = await fileHandle.getFile();
     return await file.arrayBuffer();
   } catch {
-    return null;
+    return undefined;
   }
 }
 
 async function parseJsonAsync<T>(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   fileName: string,
-): Promise<T | null> {
+): Promise<T | undefined> {
   try {
     const text = await readTextAsync(folder, fileName);
-    if (!text) return null;
+    if (!text) return undefined;
     return JSON.parse(text) as T;
   } catch {
-    return null;
+    return undefined;
   }
 }
 
 async function saveTextAsync(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   fileName: string,
   text: string,
 ) {
@@ -71,7 +71,7 @@ async function saveTextAsync(
 }
 
 async function saveAsJsonAsync<T>(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   fileName: string,
   value: T,
   format?: (json: string) => string,
@@ -88,14 +88,14 @@ async function saveAsJsonAsync<T>(
 }
 
 async function renameAsync(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   oldName: string,
   newName: string,
 ) {
   if (!folder) return false;
   try {
     const text = await readTextAsync(folder, oldName);
-    if (text === null) return false;
+    if (text === undefined) return false;
     await saveTextAsync(folder, newName, text);
     await folder.removeEntry(oldName);
     return true;
@@ -105,7 +105,7 @@ async function renameAsync(
 }
 
 async function existsAsync(
-  folder: FileSystemDirectoryHandle | null,
+  folder: FileSystemDirectoryHandle | undefined,
   fileName: string,
 ) {
   if (!folder) return false;

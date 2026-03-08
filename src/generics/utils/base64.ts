@@ -11,9 +11,9 @@ async function readTextAsBase64Async(
   folder?: FileSystemDirectoryHandle,
   fileName?: string,
 ) {
-  if (!folder || !fileName) return null;
+  if (!folder || !fileName) return undefined;
   const text = await fileSystem.readTextAsync(folder, fileName);
-  if (!text) return null;
+  if (!text) return undefined;
   return utf8ToBase64(text);
 }
 
@@ -21,9 +21,9 @@ async function readBinaryAsBase64Async(
   folder?: FileSystemDirectoryHandle,
   fileName?: string,
 ) {
-  if (!folder || !fileName) return null;
+  if (!folder || !fileName) return undefined;
   const arrayBuffer = await fileSystem.readBinaryAsync(folder, fileName);
-  if (!arrayBuffer) return null;
+  if (!arrayBuffer) return undefined;
   const bytes = new Uint8Array(arrayBuffer);
   const bin = Array.from(bytes, (b) => String.fromCharCode(b)).join("");
   return btoa(bin);
