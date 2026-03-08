@@ -12,7 +12,7 @@ export function Frame({ src }: { src: string }) {
       src={src}
       allow={settings.frame.allow}
       referrerPolicy={settings.frame.referrerPolicy}
-      style={{ border: "none" }}
+      style={{ border: "none", borderRadius: 8 }}
       allowFullScreen
     />
   );
