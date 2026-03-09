@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { ItemForm } from "../../ui/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtomValue, useSetAtom } from "jotai";
 import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 
 const defaultItem: ItemEntry = { type: "item" };
 
 export function AddItem() {
-  const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
-  const addItemAsync = useSetAtom(atomsSelected.addItemEntryAsync);
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const addItemAsync = useSetAtom(atomsSelectedNode.addItemEntryAsync);
   const [item, setItem] = useState<ItemEntry>(defaultItem);
 
   if (!folder?.handle) return null;

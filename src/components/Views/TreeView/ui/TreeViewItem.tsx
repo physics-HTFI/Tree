@@ -21,7 +21,7 @@ import {
   type SxProps,
 } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
@@ -36,7 +36,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
 ) {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
   const referenceData = useAtomValue(atomReferenceJson.value);
-  const setSelectedTreeNodeId = useSetAtom(atomsSelected.nodeId);
+  const setSelectedTreeNodeId = useSetAtom(atomsSelectedNode.nodeId);
   const { id, itemId, label, disabled, children, ...other } = props;
 
   const {

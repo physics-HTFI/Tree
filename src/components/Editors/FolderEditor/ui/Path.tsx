@@ -1,7 +1,7 @@
 import { OpenInNew } from "@mui/icons-material";
 import { IconButton, Stack, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useState } from "react";
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { TextField } from "@/components/share/TextField";
@@ -9,9 +9,9 @@ import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function Path() {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
-  const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
   const [path, setPath] = useState<string>(folder?.path ?? "");
-  const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
+  const updateAsync = useSetAtom(atomsSelectedNode.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
   if (!folder || !settings?.labels) return null;

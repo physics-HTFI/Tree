@@ -1,5 +1,5 @@
 import { useDebounce } from "@/generics/hooks/useDebounce";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
 import {
   Delete,
@@ -20,8 +20,8 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 
 export function SortItems() {
-  const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
-  const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const updateAsync = useSetAtom(atomsSelectedNode.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
   const [list, setList] = useState(folder?.children || []);
   const [id, setId] = useState<string>();

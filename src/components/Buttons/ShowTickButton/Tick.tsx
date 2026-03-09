@@ -8,11 +8,13 @@ import StopIcon from "@mui/icons-material/Stop";
 import { useTick } from "./useTick";
 import { Box, Card, CardContent, ClickAwayListener } from "@mui/material";
 import { useAtomValue } from "jotai";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
-  const selectedItem = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
+  const selectedItem = useAtomValue(
+    atomsSelectedNode.nodeValue,
+  ).selectedItemNode;
   const settings = useAtomValue(atomConsts.settingsJsonValue);
   const defaultTicks = settings?.defaults?.ticks;
   const [item, setItem] = useState<ItemNode>();

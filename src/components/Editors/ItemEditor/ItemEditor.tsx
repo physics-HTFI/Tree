@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
 import { useDebounce } from "@/generics/hooks/useDebounce";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtomValue, useSetAtom } from "jotai";
 import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 
 export function ItemEditor() {
   // フック
-  const { selectedItemNode } = useAtomValue(atomsSelected.nodeValue);
-  const updateByItemDataAsync = useSetAtom(atomsSelected.setItemNodeAsync);
+  const { selectedItemNode } = useAtomValue(atomsSelectedNode.nodeValue);
+  const updateByItemDataAsync = useSetAtom(atomsSelectedNode.setItemNodeAsync);
   const setReferencePathAsync = useSetAtom(atomReferenceJson.setPathAsync);
   const referenceData = useAtomValue(atomReferenceJson.value);
   const [nodeId, setNodeId] = useState<string>();

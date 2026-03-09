@@ -3,14 +3,14 @@ import { CustomTreeViewItem } from "./ui/TreeViewItem";
 import { useState } from "react";
 import { atomFilteredTreeValue } from "@/models/hooks/atomFilteredTree";
 import { useAtom, useAtomValue } from "jotai";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomOptions } from "@/models/hooks/atomOptions";
 
 export function TreeView() {
   // フック
   const hiddenTiers = useAtomValue(atomOptions.hiddenTiers);
   const tree = useAtomValue(atomFilteredTreeValue);
-  const [selectedItemId, setSelectedItemId] = useAtom(atomsSelected.nodeId);
+  const [selectedItemId, setSelectedItemId] = useAtom(atomsSelectedNode.nodeId);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [curHiddenTiers, setCurHiddenTiers] = useState<Set<number>>(new Set());
 

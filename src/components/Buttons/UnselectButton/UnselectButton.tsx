@@ -1,8 +1,8 @@
 import { useSetAtom } from "jotai";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function UnselectButton() {
-  const unselect = useSetAtom(atomsSelected.unselect);
+  const unselect = useSetAtom(atomsSelectedNode.unselect);
   return <ButtonBase type="close" onClick={unselect} />;
 }

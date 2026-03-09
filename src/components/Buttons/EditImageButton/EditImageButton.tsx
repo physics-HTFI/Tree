@@ -1,6 +1,6 @@
 import { ButtonBase } from "../ui/ButtonBase";
 import { useEffect, useRef, useState } from "react";
-import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtom, useAtomValue } from "jotai";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
@@ -12,8 +12,10 @@ const SRC =
   "https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&proto=json&noSaveBtn=1";
 
 export function EditImageButton() {
-  const selectedItem = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
-  const [svg, setSvgAsync] = useAtom(atomsSelected.svgBase64);
+  const selectedItem = useAtomValue(
+    atomsSelectedNode.nodeValue,
+  ).selectedItemNode;
+  const [svg, setSvgAsync] = useAtom(atomsSelectedNode.svgBase64);
   const [open, setOpen] = useState(false);
   const defaultSvg = useAtomValue(atomConsts.defaultSvgBase64Value);
   const ref = useRef<HTMLIFrameElement>(null);

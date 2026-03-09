@@ -1,32 +1,25 @@
 import { atomConsts } from "@/models/hooks/atomConsts";
-import { useAudioSource } from "@/models/hooks/useAudioSource";
+import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { fileName } from "@/models/utils/fileName";
 import { useAtomValue } from "jotai";
 import { useEffect, useRef, useState } from "react";
 
 export function Audio({ path }: { path: string }) {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
-  const { readAudioSource } = useAudioSource();
+  const src = useAtomValue(atomsSelectedNode.audioBase64);
   const [curFileName, setCurFileName] = useState<string>();
-  const [src, setSrc] = useState<string>();
   const ref = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
     ref.current.volume = 0.5;
     ref.current.focus();
-    return;
   }, [curFileName]);
 
   if (!settings?.frame?.width) return null;
   if (!fileName.isMp3File(path)) return null;
 
-  if (path !== curFileName) {
-    setCurFileName(path);
-    readAudioSource(path)
-      .then(setSrc)
-      .catch(() => setSrc(undefined));
-  }
+  if (path !== curFileName) setCurFileName(path);
 
   return (
     <audio
