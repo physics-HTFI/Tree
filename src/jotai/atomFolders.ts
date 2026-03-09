@@ -34,10 +34,6 @@ const setFoldersAsync = atom(
       _atomTree.dataTree,
       await createTreeItems.fromDataFolder(folders.data, settings.ignore),
     );
-    set(
-      _atomTree.referenceTree,
-      await createTreeItems.fromReferenceFolder(folders.reference),
-    );
 
     // ファビコンSVGを読み込んでセットする
     const faviconSvg = await appFileSystem.readFaviconSvgBase64Async(

@@ -1,11 +1,17 @@
 import { atom } from "jotai";
+import { _atomFolders } from "./_atomFolders";
+import { createTreeItems } from "../utils/createTreeItems";
 
 const atomDataTree = atom<FolderNode>();
-const atomReferenceTree = atom<FolderNode>();
 
-const atomFullTree = atom((get) => {
+const atomReferenceTreeValue = atom<Promise<FolderNode>>(async (get) => {
+  const reference = get(_atomFolders)?.reference;
+  return await createTreeItems.fromReferenceFolder(reference);
+});
+
+const atomFullTreeValue = atom<Promise<FolderNode | undefined>>(async (get) => {
   const dataTree = get(atomDataTree);
-  const referenceTree = get(atomReferenceTree);
+  const referenceTree = await get(atomReferenceTreeValue);
   if (!dataTree || !referenceTree) return undefined;
   return {
     ...dataTree,
@@ -15,6 +21,6 @@ const atomFullTree = atom((get) => {
 
 export const _atomTree = {
   dataTree: atomDataTree,
-  referenceTree: atomReferenceTree,
-  fullTree: atomFullTree,
+  referenceTreeValue: atomReferenceTreeValue,
+  fullTreeValue: atomFullTreeValue,
 };

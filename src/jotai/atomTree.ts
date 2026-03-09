@@ -2,12 +2,14 @@ import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { atomOptions } from "./atomOptions";
 
-const atomFilteredTreeValue = atom<FolderNode | undefined>((get) => {
-  const tree = get(_atomTree.fullTree);
-  const hiddenTiers = get(atomOptions.hiddenTiers);
-  if (!tree) return undefined;
-  return filterTree(tree, hiddenTiers);
-});
+const atomFilteredTreeValue = atom<Promise<FolderNode | undefined>>(
+  async (get) => {
+    const tree = await get(_atomTree.fullTreeValue);
+    const hiddenTiers = get(atomOptions.hiddenTiers);
+    if (!tree) return undefined;
+    return filterTree(tree, hiddenTiers);
+  },
+);
 
 function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
   const children: TreeNode[] = [];
@@ -25,6 +27,6 @@ function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
 }
 
 export const atomTree = {
-  referenceTreeValue: atom((get) => get(_atomTree.referenceTree)),
+  referenceTreeValue: atom((get) => get(_atomTree.referenceTreeValue)),
   filteredTreeValue: atomFilteredTreeValue,
 };
