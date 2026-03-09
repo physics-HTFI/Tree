@@ -1,5 +1,5 @@
 import { fileSystem } from "@/generics/utils/fileSystem";
-import { itemBase64 } from "./itemBase64";
+import { mediaBase64 } from "./mediaBase64";
 
 export const appFileSystem = {
   readSettingsJsonAsync,
@@ -31,13 +31,13 @@ async function readSettingsJsonAsync(
 async function readDefaultSvgBase64Async(
   folder?: FileSystemDirectoryHandle,
 ): Promise<string | undefined> {
-  return await itemBase64.readSvgFromFileAsync(folder, DEFAULT_SVG_FILE_NAME);
+  return await mediaBase64.readSvgFromFileAsync(folder, DEFAULT_SVG_FILE_NAME);
 }
 
 async function readFaviconSvgBase64Async(
   folder?: FileSystemDirectoryHandle,
 ): Promise<string | undefined> {
-  return await itemBase64.readSvgFromFileAsync(folder, FAVICON_SVG_FILE_NAME);
+  return await mediaBase64.readSvgFromFileAsync(folder, FAVICON_SVG_FILE_NAME);
 }
 
 async function readReferenceJsonAsync(

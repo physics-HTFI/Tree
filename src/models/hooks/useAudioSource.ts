@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
-import { itemBase64 } from "./utils/itemBase64";
+import { mediaBase64 } from "./utils/mediaBase64";
 import { useCallback } from "react";
 
 export function useAudioSource() {
@@ -25,7 +25,7 @@ export function useAudioSource() {
       const name = split.at(-1);
       if (!handle || !name) return undefined;
 
-      return await itemBase64.readMp3FromFileAsync(handle, name);
+      return await mediaBase64.readMp3FromFileAsync(handle, name);
     },
     [referenceTree],
   );
