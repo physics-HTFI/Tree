@@ -3,12 +3,11 @@ import { appFileSystem } from "./utils/appFileSystem";
 import { _atomAppSettings } from "./backings/_atomAppSettings";
 import { _atomTree } from "./backings/_atomTree";
 import { createTreeItems } from "./utils/createTreeItems";
-import { _atomDefaultSvgBase64 } from "./backings/_atomDefaultSvgBase64";
 import { _atomReferenceData } from "./backings/_atomReferenceData";
 import { _atomFolders } from "./backings/_atomFolders";
 import { setFaviconSvg } from "./utils/setFaviconSvg";
 
-const setAsync = atom(
+const setFoldersAsync = atom(
   null,
   async (
     _,
@@ -44,10 +43,6 @@ const setAsync = atom(
       await createTreeItems.fromReferenceFolder(folders.reference),
     );
 
-    // デフォルトSVGを読み込んでatomにセットする
-    const svg = await appFileSystem.readDefaultSvgBase64Async(folders.data);
-    set(_atomDefaultSvgBase64, svg);
-
     // ファビコンSVGを読み込んでセットする
     const faviconSvg = await appFileSystem.readFaviconSvgBase64Async(
       folders.data,
@@ -59,6 +54,6 @@ const setAsync = atom(
 const isSelectedValue = atom((get) => !!get(_atomFolders));
 
 export const atomsFolders = {
-  setAsync,
+  setAsync: setFoldersAsync,
   isSelectedValue,
 };
