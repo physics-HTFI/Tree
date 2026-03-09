@@ -9,6 +9,7 @@ import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 import { createId } from "@/models/utils/createId";
 import { _atomsSelectedNode } from "./backings/_atomSelectedNode";
 import { mediaBase64 } from "./utils/mediaBase64";
+import { findAudio } from "./utils/findAudio";
 
 //|
 //| 選択されたノードのメディアに関するatom
@@ -33,28 +34,12 @@ const atomSvgBase64 = atom(
 
 const atomAudioUpdateTrigger = atom(0); // オーディオの更新をトリガーするためのatom
 
-const atomAudioBase64 = atom(async (get) => {
+const atomAudioBase64Value = atom(async (get) => {
   get(atomAudioUpdateTrigger);
   const referenceTree = await get(_atomTree.referenceTreeValue);
   const { selectedItemNode } = await get(_atomsSelectedNode.nodeValue);
   const path = selectedItemNode?.entry.path;
-  if (!path || !referenceTree) return undefined;
-
-  const split = path.split("/");
-  let current = referenceTree;
-  for (let i = 0; i < split.length - 1; i++) {
-    const name = split[i];
-    const next = current?.children.find(
-      (child) => child.type === "folder" && child.title === name,
-    );
-    if (!next || next.type !== "folder") return undefined;
-    current = next;
-  }
-
-  const handle = current.handle;
-  const name = split.at(-1);
-  if (!handle || !name) return undefined;
-
+  const { handle, name } = findAudio(referenceTree, path);
   return await mediaBase64.readMp3FromFileAsync(handle, name);
 });
 
@@ -185,7 +170,7 @@ export const atomsSelectedNode = {
   nodeValue: _atomsSelectedNode.nodeValue,
 
   svgBase64: atomSvgBase64,
-  audioBase64: atomAudioBase64,
+  audioBase64Value: atomAudioBase64Value,
 
   setItemNodeAsync: atomSetItemNodeAsync,
   setFolderNodeAsync: atomSetFolderNodeAsync,

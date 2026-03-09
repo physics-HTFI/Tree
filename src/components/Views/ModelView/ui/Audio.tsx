@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 export function Audio({ path }: { path: string }) {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
-  const src = useAtomValue(atomsSelectedNode.audioBase64);
+  const src = useAtomValue(atomsSelectedNode.audioBase64Value);
   const [curFileName, setCurFileName] = useState<string>();
   const ref = useRef<HTMLAudioElement>(null);
 
