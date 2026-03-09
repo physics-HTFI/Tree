@@ -9,6 +9,7 @@ export const createTreeItems = {
 
 async function createTreeItemsFromReferenceFolder(
   handle: FileSystemDirectoryHandle | undefined,
+  ignoreList?: string[],
   parentId: string = "reference/",
 ): Promise<FolderNode> {
   if (!handle)
@@ -27,8 +28,10 @@ async function createTreeItemsFromReferenceFolder(
   // フォルダ内のエントリを取得し、TreeNodeの配列を作成する
   for await (const entry of handle.values()) {
     if (entry.kind === "directory") {
+      if (ignoreList?.includes(entry.name)) continue;
       const node = await createTreeItemsFromReferenceFolder(
         entry as FileSystemDirectoryHandle,
+        ignoreList,
         folderNode.nodeId,
       );
       if (!node.children.length) continue;
