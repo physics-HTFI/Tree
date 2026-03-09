@@ -3,6 +3,6 @@ import { atomsSelected } from "@/models/hooks/atomSelected";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function UnselectButton() {
-  const unselectAsync = useSetAtom(atomsSelected.unselectAsync);
-  return <ButtonBase type="close" onClick={unselectAsync} />;
+  const unselect = useSetAtom(atomsSelected.unselect);
+  return <ButtonBase type="close" onClick={unselect} />;
 }

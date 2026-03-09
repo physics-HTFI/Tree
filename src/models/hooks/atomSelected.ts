@@ -149,7 +149,7 @@ const atomAddNewFolderNodeAsync = atom(
 
 export const atomsSelected = {
   nodeId: atomNodeId,
-  unselectAsync: atom(null, (_, set) => set(atomNodeId, undefined)),
+  unselect: atom(null, (_, set) => set(atomNodeId, undefined)),
 
   nodeValue: atomTreeNode,
 

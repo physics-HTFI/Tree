@@ -17,13 +17,13 @@ import { atomsSelected } from "@/models/hooks/atomSelected";
 
 export function FolderEditor() {
   const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
-  const unselectAsync = useSetAtom(atomsSelected.unselectAsync);
+  const unselect = useSetAtom(atomsSelected.unselect);
   const [tabValue, setTabValue] = useState(0);
 
   if (!folder?.handle) return null;
 
   return (
-    <Dialog open={true} onClose={unselectAsync}>
+    <Dialog open={true} onClose={unselect}>
       <DialogTitle>{folder.title}</DialogTitle>
       <DialogContent sx={{ width: 500, minHeight: "60vh" }}>
         <Path />
