@@ -50,16 +50,17 @@ export function SortItems() {
           onClick={() => setId(item.nodeId)}
           sx={{
             bgcolor: item.nodeId === id ? "grey.300" : undefined,
+            height: 32,
             ":hover": { bgcolor: "grey.100", cursor: "pointer" },
           }}
           secondaryAction={
             item.nodeId === id && (
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row">
                 <IconButton size="small" onClick={() => move(i, i + 1)}>
-                  <KeyboardArrowDown />
+                  <KeyboardArrowDown fontSize="small" />
                 </IconButton>
                 <IconButton size="small" onClick={() => move(i, i - 1)}>
-                  <KeyboardArrowUp />
+                  <KeyboardArrowUp fontSize="small" />
                 </IconButton>
                 <IconButton
                   disabled={
@@ -69,7 +70,7 @@ export function SortItems() {
                   color="error"
                   onClick={() => move(i, null)}
                 >
-                  <Delete />
+                  <Delete fontSize="small" />
                 </IconButton>
               </Stack>
             )

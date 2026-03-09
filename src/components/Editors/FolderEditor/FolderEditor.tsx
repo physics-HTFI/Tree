@@ -25,7 +25,7 @@ export function FolderEditor() {
   return (
     <Dialog open={true} onClose={unselectAsync}>
       <DialogTitle>{folder.title}</DialogTitle>
-      <DialogContent sx={{ width: 400, minHeight: "60vh" }}>
+      <DialogContent sx={{ width: 500, minHeight: "60vh" }}>
         <Path />
         <Box sx={{ borderBottom: 1, borderColor: "divider", mt: 3 }}>
           <Tabs
