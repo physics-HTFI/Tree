@@ -1,12 +1,12 @@
 import { useAtomValue } from "jotai";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { isUrl } from "@/generics/utils/isUrl";
-import { fileName } from "@/utils/fileName";
+import { fileName } from "@/models/utils/fileName";
 import { Audio } from "./ui/Audio";
 import { Frame } from "./ui/Frame";
 import { Window } from "./ui/Window";
-import { atomConsts } from "@/jotai/atomConsts";
-import { atomOptions } from "@/jotai/atomOptions";
+import { atomConsts } from "@/models/hooks/atomConsts";
+import { atomOptions } from "@/models/hooks/atomOptions";
 
 export function ModelView() {
   const { pop, frame, is_id } =

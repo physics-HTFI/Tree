@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { ItemForm } from "../ui/ItemForm/ItemForm";
 import { useDebounce } from "@/generics/hooks/useDebounce";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
-import { modifierItemNode } from "@/modifiers/modifierItemNode";
-import { atomReferenceJsonValue } from "@/jotai/atomReferenceJson";
+import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { atomReferenceJsonValue } from "@/models/hooks/atomReferenceJson";
 
 export function ItemEditor() {
   // フック

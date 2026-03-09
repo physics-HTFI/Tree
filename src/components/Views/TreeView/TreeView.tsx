@@ -1,10 +1,10 @@
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { CustomTreeViewItem } from "./ui/TreeViewItem";
 import { useState } from "react";
-import { atomFilteredTreeValue } from "@/jotai/atomFilteredTree";
+import { atomFilteredTreeValue } from "@/models/hooks/atomFilteredTree";
 import { useAtom, useAtomValue } from "jotai";
-import { atomsSelected } from "@/jotai/atomSelected";
-import { atomOptions } from "@/jotai/atomOptions";
+import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomOptions } from "@/models/hooks/atomOptions";
 
 export function TreeView() {
   // フック

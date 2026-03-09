@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { ButtonBase } from "../ui/ButtonBase";
 
 export function UnselectButton() {

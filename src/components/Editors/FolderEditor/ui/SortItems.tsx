@@ -1,6 +1,6 @@
 import { useDebounce } from "@/generics/hooks/useDebounce";
-import { atomsSelected } from "@/jotai/atomSelected";
-import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
+import { atomsSelected } from "@/models/hooks/atomSelected";
+import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
 import {
   Delete,
   Folder,

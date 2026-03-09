@@ -3,7 +3,7 @@ import { Popper } from "@mui/material";
 import { TickPanel } from "./Tick";
 import { ButtonBase } from "../ui/ButtonBase";
 import { useAtomValue } from "jotai";
-import { atomConsts } from "@/jotai/atomConsts";
+import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function ShowTickButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>(undefined);

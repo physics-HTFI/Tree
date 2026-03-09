@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ItemForm } from "../../ui/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
-import { modifierItemNode } from "@/modifiers/modifierItemNode";
+import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 
 const defaultItem: ItemEntry = { type: "item" };
 

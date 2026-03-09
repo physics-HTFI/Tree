@@ -13,7 +13,7 @@ import { AddItem } from "./ui/AddItem";
 import { AddFolder } from "./ui/AddFolder";
 import { SortItems } from "./ui/SortItems";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 
 export function FolderEditor() {
   const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;

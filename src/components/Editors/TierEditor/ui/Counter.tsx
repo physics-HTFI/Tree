@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { atomFilteredTreeValue } from "@/jotai/atomFilteredTree";
+import { atomFilteredTreeValue } from "@/models/hooks/atomFilteredTree";
 import { useAtomValue } from "jotai";
 
 export function Counter() {

@@ -1,8 +1,8 @@
 import { ButtonBase } from "../ui/ButtonBase";
 import { useEffect, useRef, useState } from "react";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { useAtom, useAtomValue } from "jotai";
-import { atomConsts } from "@/jotai/atomConsts";
+import { atomConsts } from "@/models/hooks/atomConsts";
 
 // ref
 // [Embed mode](https://www.drawio.com/doc/faq/embed-mode)

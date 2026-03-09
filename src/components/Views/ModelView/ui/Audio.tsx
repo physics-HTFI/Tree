@@ -1,6 +1,6 @@
-import { atomConsts } from "@/jotai/atomConsts";
-import { useAudioSource } from "@/jotai/useAudioSource";
-import { fileName } from "@/utils/fileName";
+import { atomConsts } from "@/models/hooks/atomConsts";
+import { useAudioSource } from "@/models/hooks/useAudioSource";
+import { fileName } from "@/models/utils/fileName";
 import { useAtomValue } from "jotai";
 import { useEffect, useRef, useState } from "react";
 

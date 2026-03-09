@@ -7,7 +7,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useLastUsedFolderHandle } from "@/generics/hooks/useLastUsedFolderHandle/useLastUsedFolderHandle";
-import { atomsFolders } from "@/jotai/atomFolders";
+import { atomsFolders } from "@/models/hooks/atomFolders";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 

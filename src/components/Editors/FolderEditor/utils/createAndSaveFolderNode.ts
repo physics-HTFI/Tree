@@ -1,6 +1,6 @@
-import { appFileSystem } from "@/jotai/utils/appFileSystem";
-import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
-import { createId } from "@/utils/createId";
+import { appFileSystem } from "@/models/hooks/utils/appFileSystem";
+import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
+import { createId } from "@/models/utils/createId";
 
 export async function createAndSaveFolderNode(
   folder: NewFolderNode,

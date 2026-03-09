@@ -1,4 +1,4 @@
-import { atomConsts } from "@/jotai/atomConsts";
+import { atomConsts } from "@/models/hooks/atomConsts";
 import { useAtomValue } from "jotai";
 
 export function Frame({ src }: { src: string }) {

@@ -1,11 +1,11 @@
 import { OpenInNew } from "@mui/icons-material";
 import { IconButton, Stack, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { useState } from "react";
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { TextField } from "@/components/share/TextField";
-import { atomConsts } from "@/jotai/atomConsts";
+import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function Path() {
   const settings = useAtomValue(atomConsts.settingsJsonValue);

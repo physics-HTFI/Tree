@@ -1,6 +1,6 @@
 import { Chip, Stack } from "@mui/material";
 import { useScroll } from "./hooks/useScroll";
-import { atomsSelected } from "@/jotai/atomSelected";
+import { atomsSelected } from "@/models/hooks/atomSelected";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 

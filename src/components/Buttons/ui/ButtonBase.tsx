@@ -1,4 +1,4 @@
-import { atomConsts } from "@/jotai/atomConsts";
+import { atomConsts } from "@/models/hooks/atomConsts";
 import { Button } from "@mui/material";
 import { useAtomValue } from "jotai";
 

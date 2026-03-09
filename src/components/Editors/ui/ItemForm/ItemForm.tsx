@@ -12,8 +12,8 @@ import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
-import { modifierItemNode } from "@/modifiers/modifierItemNode";
-import { atomConsts } from "@/jotai/atomConsts";
+import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function ItemForm({
   item,

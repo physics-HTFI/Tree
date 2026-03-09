@@ -21,9 +21,9 @@ import {
   type SxProps,
 } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
-import { atomsSelected } from "@/jotai/atomSelected";
-import { atomReferenceJsonValue } from "@/jotai/atomReferenceJson";
-import { atomConsts } from "@/jotai/atomConsts";
+import { atomsSelected } from "@/models/hooks/atomSelected";
+import { atomReferenceJsonValue } from "@/models/hooks/atomReferenceJson";
+import { atomConsts } from "@/models/hooks/atomConsts";
 
 interface CustomTreeViewItemProps
   extends
