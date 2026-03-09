@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Grid, Stack, Typography } from "@mui/material";
-import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
@@ -9,7 +9,7 @@ import { TextField } from "@/components/share/TextField";
 const defaultValues: NewFolderNode = { title: "" };
 
 export function AddFolder() {
-  const settings = useAtomValue(atomAppSettingsValue);
+  const settings = useAtomValue(atomSettingsJsonValue);
   const [folder, setFolder] = useState<NewFolderNode>(defaultValues);
   const parent = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const addFolderAsync = useSetAtom(atomsSelected.addNewFolderNodeAsync);

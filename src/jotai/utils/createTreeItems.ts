@@ -109,7 +109,7 @@ async function createTreeItemsFromDataFolder(
 }
 
 function sortChildren(
-  folderData: FolderData,
+  folderData: FolderJson,
   parentNode: FolderNode,
   childNodes: TreeNode[],
 ): TreeNode[] {
@@ -144,7 +144,7 @@ function sortChildren(
   return retval;
 }
 
-function isSameTitle(entry: EntryData, node: TreeNode) {
+function isSameTitle(entry: EntryJson, node: TreeNode) {
   if (entry.type === "folder") {
     return node.type === "folder" ? entry.title === node.title : false;
   } else {

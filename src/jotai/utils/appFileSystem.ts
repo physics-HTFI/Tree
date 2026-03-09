@@ -21,8 +21,8 @@ const FAVICON_SVG_FILE_NAME = ".favicon.svg";
 
 async function readAppSettingsAsync(
   folder?: FileSystemDirectoryHandle,
-): Promise<AppSettings | undefined> {
-  return await fileSystem.parseJsonAsync<AppSettings>(
+): Promise<SettingsJson | undefined> {
+  return await fileSystem.parseJsonAsync<SettingsJson>(
     folder,
     APP_SETTINGS_FILE_NAME,
   );
@@ -42,8 +42,8 @@ async function readFaviconSvgBase64Async(
 
 async function readReferenceDataAsync(
   folder?: FileSystemDirectoryHandle,
-): Promise<ReferenceData | undefined> {
-  return await fileSystem.parseJsonAsync<ReferenceData>(
+): Promise<ReferenceJson | undefined> {
+  return await fileSystem.parseJsonAsync<ReferenceJson>(
     folder,
     REFERENCE_DATA_FILE_NAME,
   );
@@ -51,9 +51,9 @@ async function readReferenceDataAsync(
 
 async function saveReferenceDataAsync(
   folder: FileSystemDirectoryHandle | undefined,
-  referenceData: ReferenceData,
+  referenceData: ReferenceJson,
 ): Promise<boolean> {
-  return await fileSystem.saveAsJsonAsync<ReferenceData>(
+  return await fileSystem.saveAsJsonAsync<ReferenceJson>(
     folder,
     REFERENCE_DATA_FILE_NAME,
     referenceData,
@@ -62,7 +62,7 @@ async function saveReferenceDataAsync(
 
 async function readFolderDataAsync(folder?: FileSystemDirectoryHandle) {
   return (
-    (await fileSystem.parseJsonAsync<FolderData>(
+    (await fileSystem.parseJsonAsync<FolderJson>(
       folder,
       FOLDER_DATA_FILE_NAME,
     )) ?? {}
@@ -70,7 +70,7 @@ async function readFolderDataAsync(folder?: FileSystemDirectoryHandle) {
 }
 
 async function saveFolderDataAsync(folder: FolderNode) {
-  const folderData: FolderData = {
+  const folderData: FolderJson = {
     path: folder.path,
     entries: folder.children.map((child) =>
       child.type === "folder"
@@ -83,7 +83,7 @@ async function saveFolderDataAsync(folder: FolderNode) {
   const formatFolderData = (json: string) =>
     json.replace(/\n\s{4}\s*(?!\{)/g, " ");
 
-  const isOk = await fileSystem.saveAsJsonAsync<FolderData>(
+  const isOk = await fileSystem.saveAsJsonAsync<FolderJson>(
     folder.handle,
     FOLDER_DATA_FILE_NAME,
     folderData,

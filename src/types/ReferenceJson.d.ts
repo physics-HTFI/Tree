@@ -1,3 +1,3 @@
-type ReferenceData = {
+type ReferenceJson = {
   highlighted_paths: string[];
 };

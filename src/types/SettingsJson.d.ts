@@ -1,4 +1,4 @@
-interface AppSettings {
+interface SettingsJson {
   tiers?: TierSettings[];
   keys?: { key?: number; label?: string }[];
   speeds?: { speed?: number; label?: string }[];
@@ -25,7 +25,7 @@ interface AppSettings {
     model_disabled?: string;
   };
   labels?: Record<
-    keyof ItemEntry | Exclude<keyof FolderData, "entries">,
+    keyof ItemEntry | Exclude<keyof FolderJson, "entries">,
     string
   >;
   frame?: {

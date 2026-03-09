@@ -1,6 +1,6 @@
 import { OpenInNew } from "@mui/icons-material";
 import { IconButton, Stack, Typography } from "@mui/material";
-import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import { useDebounce } from "@/generics/hooks/useDebounce";
 import { TextField } from "@/components/share/TextField";
 
 export function Path() {
-  const settings = useAtomValue(atomAppSettingsValue);
+  const settings = useAtomValue(atomSettingsJsonValue);
   const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const [path, setPath] = useState<string>(folder?.path ?? "");
   const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);

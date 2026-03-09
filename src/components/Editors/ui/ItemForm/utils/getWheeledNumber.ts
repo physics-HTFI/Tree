@@ -1,7 +1,7 @@
 export function getWheeledNumber(
   type: "start" | "ticks",
   item: ItemEntry,
-  settings: AppSettings,
+  settings: SettingsJson,
   event: React.WheelEvent,
 ): number | undefined {
   if (event.target !== document.activeElement) return item[type]; // 未フォーカス時は無視する（誤変更を防ぐため）

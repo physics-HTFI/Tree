@@ -2,10 +2,10 @@ import { atom } from "jotai";
 import { appFileSystem } from "./utils/appFileSystem";
 import { _atomTree } from "./backings/_atomTree";
 import { createTreeItems } from "./utils/createTreeItems";
-import { _atomReferenceData } from "./backings/_atomReferenceData";
+import { _atomReferenceJson } from "./backings/_atomReferenceJson";
 import { _atomFolders } from "./backings/_atomFolders";
 import { setFaviconSvg } from "./utils/setFaviconSvg";
-import { atomAppSettingsValue } from "./atomAppSettings";
+import { atomSettingsJsonValue } from "./atomSettingsJson";
 
 const setFoldersAsync = atom(
   null,
@@ -25,10 +25,10 @@ const setFoldersAsync = atom(
     const referenceData = await appFileSystem.readReferenceDataAsync(
       folders.data,
     );
-    if (referenceData) set(_atomReferenceData, referenceData);
+    if (referenceData) set(_atomReferenceJson, referenceData);
 
     // フォルダからTreeItemsを生成してatomにセットする
-    const settings = await get(atomAppSettingsValue);
+    const settings = await get(atomSettingsJsonValue);
     set(
       _atomTree.dataTree,
       await createTreeItems.fromDataFolder(folders.data, settings.ignore),

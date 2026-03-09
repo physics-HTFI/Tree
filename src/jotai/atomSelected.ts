@@ -9,8 +9,8 @@ import { createAndSaveFolderNode } from "@/components/Editors/FolderEditor/utils
 import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 import { modifierItemNode } from "@/modifiers/modifierItemNode";
 import { createId } from "@/utils/createId";
-import { atomReferenceDataValue } from "./atomReferenceData";
-import { _atomReferenceData } from "./backings/_atomReferenceData";
+import { atomReferenceJsonValue } from "./atomReferenceJson";
+import { _atomReferenceJson } from "./backings/_atomReferenceJson";
 import { _atomFolders } from "./backings/_atomFolders";
 
 //|
@@ -32,7 +32,7 @@ const atomTreeNode = atom((get) => {
 const atomSetReferencePathAsync = atom(
   null,
   async (get, set, path: string, type: "add" | "remove") => {
-    const data = get(atomReferenceDataValue);
+    const data = get(atomReferenceJsonValue);
     const folder = get(_atomFolders)?.data;
     if (!folder) return;
     if (type === "add") {
@@ -40,7 +40,7 @@ const atomSetReferencePathAsync = atom(
     } else if (type === "remove") {
       data.highlighted_paths = data.highlighted_paths.filter((p) => p !== path);
     }
-    set(_atomReferenceData, { ...data });
+    set(_atomReferenceJson, { ...data });
     await appFileSystem.saveReferenceDataAsync(folder, data);
   },
 );

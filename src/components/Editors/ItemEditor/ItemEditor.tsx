@@ -4,14 +4,14 @@ import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtomValue, useSetAtom } from "jotai";
 import { modifierItemNode } from "@/modifiers/modifierItemNode";
-import { atomReferenceDataValue } from "@/jotai/atomReferenceData";
+import { atomReferenceJsonValue } from "@/jotai/atomReferenceJson";
 
 export function ItemEditor() {
   // フック
   const { selectedItemNode } = useAtomValue(atomsSelected.nodeValue);
   const updateByItemDataAsync = useSetAtom(atomsSelected.setItemNodeAsync);
   const setReferencePathAsync = useSetAtom(atomsSelected.setReferencePathAsync);
-  const referenceData = useAtomValue(atomReferenceDataValue);
+  const referenceData = useAtomValue(atomReferenceJsonValue);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
   const { debounced: debouncedUpdate, cancel: cancelUpdate } = useDebounce(

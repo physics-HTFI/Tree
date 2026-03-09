@@ -1,11 +1,11 @@
 // 保存対象となるデータのインターフェース
 
-interface FolderData {
+interface FolderJson {
   path?: string;
-  entries?: EntryData[];
+  entries?: EntryJson[];
 }
 
-type EntryData = FolderEntry | ItemEntry;
+type EntryJson = FolderEntry | ItemEntry;
 
 interface FolderEntry {
   type: "folder";

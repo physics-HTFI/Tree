@@ -10,7 +10,7 @@ import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
-import { atomAppSettingsValue } from "@/jotai/atomAppSettings";
+import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
 import { modifierItemNode } from "@/modifiers/modifierItemNode";
@@ -25,7 +25,7 @@ export function ItemForm({
   onChange: (itemDiff: Partial<ItemEntry>) => void;
 }) {
   // フック
-  const settings = useAtomValue(atomAppSettingsValue);
+  const settings = useAtomValue(atomSettingsJsonValue);
   const ref = usePreventScroll();
   if (
     !settings.labels?.highlighted ||

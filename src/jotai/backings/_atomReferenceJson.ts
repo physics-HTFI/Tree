@@ -1,5 +1,5 @@
 import { atom } from "jotai";
 
-export const _atomReferenceData = atom<ReferenceData>({
+export const _atomReferenceJson = atom<ReferenceJson>({
   highlighted_paths: [],
 });
