@@ -22,7 +22,7 @@ const setFoldersAsync = atom(
     set(_atomFolders, folders);
 
     // ReferenceDataを読み込んでatomにセットする
-    const referenceData = await appFileSystem.readReferenceDataAsync(
+    const referenceData = await appFileSystem.readReferenceJsonAsync(
       folders.data,
     );
     if (referenceData) set(_atomReferenceJson, referenceData);

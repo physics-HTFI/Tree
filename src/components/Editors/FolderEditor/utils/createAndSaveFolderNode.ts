@@ -21,7 +21,7 @@ export async function createAndSaveFolderNode(
       handle: handle,
       children: [],
     };
-    await appFileSystem.saveFolderDataAsync(folderNode);
+    await appFileSystem.saveFolderJsonAsync(folderNode);
     return folderNode;
   } catch {
     alert("フォルダの作成に失敗しました"); // フォルダ名に使えない文字が含まれている場合など

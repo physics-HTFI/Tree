@@ -64,7 +64,7 @@ async function createTreeItemsFromDataFolder(
     return { type: "folder", nodeId: "---", title: "---", children: [] };
 
   // FolderNodeを作成する
-  const folderData = await appFileSystem.readFolderDataAsync(handle);
+  const folderData = await appFileSystem.readFolderJsonAsync(handle);
   const folderNode: FolderNode = {
     type: "folder",
     title: handle.name,
@@ -104,7 +104,7 @@ async function createTreeItemsFromDataFolder(
   folderNode.children = sortedChildren;
 
   const lengthChanged = folderData?.entries?.length !== sortedChildren.length;
-  if (lengthChanged) await appFileSystem.saveFolderDataAsync(folderNode);
+  if (lengthChanged) await appFileSystem.saveFolderJsonAsync(folderNode);
   return folderNode;
 }
 

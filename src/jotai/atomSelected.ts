@@ -41,7 +41,7 @@ const atomSetReferencePathAsync = atom(
       data.highlighted_paths = data.highlighted_paths.filter((p) => p !== path);
     }
     set(_atomReferenceJson, { ...data });
-    await appFileSystem.saveReferenceDataAsync(folder, data);
+    await appFileSystem.saveReferenceJsonAsync(folder, data);
   },
 );
 
@@ -112,7 +112,7 @@ const atomSetItemNodeAsync = atom(
       newItemEntry.title,
     );
     set(_atomTree.dataTree, { ...treeItems });
-    await appFileSystem.saveFolderDataAsync(parent);
+    await appFileSystem.saveFolderJsonAsync(parent);
   },
 );
 
@@ -128,7 +128,7 @@ const atomSetFolderNodeAsync = atom(
     folder.path = newFolder.path;
     folder.children = newFolder.children;
     set(_atomTree.dataTree, { ...treeItems });
-    await appFileSystem.saveFolderDataAsync(folder);
+    await appFileSystem.saveFolderJsonAsync(folder);
   },
 );
 
@@ -162,7 +162,7 @@ const atomAddNewFolderNodeAsync = atom(
     // 親フォルダの更新
     parent.children = [subFolder, ...parent.children];
     set(_atomTree.dataTree, { ...treeItems });
-    await appFileSystem.saveFolderDataAsync(parent);
+    await appFileSystem.saveFolderJsonAsync(parent);
   },
 );
 

@@ -2,15 +2,15 @@ import { fileSystem } from "@/generics/utils/fileSystem";
 import { itemBase64 } from "./itemBase64";
 
 export const appFileSystem = {
-  readAppSettingsAsync,
+  readSettingsJsonAsync,
   readDefaultSvgBase64Async,
   readFaviconSvgBase64Async,
 
-  readReferenceDataAsync,
-  saveReferenceDataAsync,
+  readReferenceJsonAsync,
+  saveReferenceJsonAsync,
 
-  readFolderDataAsync,
-  saveFolderDataAsync,
+  readFolderJsonAsync,
+  saveFolderJsonAsync,
 };
 
 const APP_SETTINGS_FILE_NAME = ".settings.json";
@@ -19,7 +19,7 @@ const DEFAULT_SVG_FILE_NAME = ".default.svg";
 const FOLDER_DATA_FILE_NAME = ".folder.json";
 const FAVICON_SVG_FILE_NAME = ".favicon.svg";
 
-async function readAppSettingsAsync(
+async function readSettingsJsonAsync(
   folder?: FileSystemDirectoryHandle,
 ): Promise<SettingsJson | undefined> {
   return await fileSystem.parseJsonAsync<SettingsJson>(
@@ -40,7 +40,7 @@ async function readFaviconSvgBase64Async(
   return await itemBase64.readSvgFromFileAsync(folder, FAVICON_SVG_FILE_NAME);
 }
 
-async function readReferenceDataAsync(
+async function readReferenceJsonAsync(
   folder?: FileSystemDirectoryHandle,
 ): Promise<ReferenceJson | undefined> {
   return await fileSystem.parseJsonAsync<ReferenceJson>(
@@ -49,7 +49,7 @@ async function readReferenceDataAsync(
   );
 }
 
-async function saveReferenceDataAsync(
+async function saveReferenceJsonAsync(
   folder: FileSystemDirectoryHandle | undefined,
   referenceData: ReferenceJson,
 ): Promise<boolean> {
@@ -60,7 +60,7 @@ async function saveReferenceDataAsync(
   );
 }
 
-async function readFolderDataAsync(folder?: FileSystemDirectoryHandle) {
+async function readFolderJsonAsync(folder?: FileSystemDirectoryHandle) {
   return (
     (await fileSystem.parseJsonAsync<FolderJson>(
       folder,
@@ -69,7 +69,7 @@ async function readFolderDataAsync(folder?: FileSystemDirectoryHandle) {
   );
 }
 
-async function saveFolderDataAsync(folder: FolderNode) {
+async function saveFolderJsonAsync(folder: FolderNode) {
   const folderData: FolderJson = {
     path: folder.path,
     entries: folder.children.map((child) =>
