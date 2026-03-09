@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
-import { getTreeNode } from "./utils/getTreeNode";
+import { findTreeNode } from "./utils/findTreeNode";
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
 import { itemBase64 } from "./utils/itemBase64";
@@ -22,7 +22,7 @@ const atomNodeId = atom<string>();
 const atomTreeNode = atom((get) => {
   const selectedId = get(atomNodeId);
   const treeItems = get(_atomTree.fullTree);
-  return getTreeNode(treeItems, selectedId);
+  return findTreeNode(treeItems, selectedId);
 });
 
 //|

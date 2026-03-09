@@ -7,7 +7,7 @@
  *   parentOrSelf: ノードがアイテムの場合その親フォルダ、フォルダの場合はノード自身、それ以外はnull
  * }
  */
-export function getTreeNode(
+export function findTreeNode(
   parent?: FolderNode,
   nodeId?: string,
 ): {
@@ -23,7 +23,7 @@ export function getTreeNode(
         : { selectedItemNode: node, parentOrSelf: parent };
     if (node.type === "folder") {
       if (!nodeId.startsWith(node.nodeId)) continue;
-      const found = getTreeNode(node, nodeId);
+      const found = findTreeNode(node, nodeId);
       if (found) return found;
     }
   }
