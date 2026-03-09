@@ -9,9 +9,6 @@ import { createAndSaveFolderNode } from "@/components/Editors/FolderEditor/utils
 import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
 import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 import { createId } from "@/models/utils/createId";
-import { atomReferenceJsonValue } from "./atomReferenceJson";
-import { _atomReferenceJson } from "./backings/_atomReferenceJson";
-import { _atomFolders } from "./backings/_atomFolders";
 
 //|
 //| 選択されたノードに関するatom
@@ -24,26 +21,6 @@ const atomTreeNode = atom(async (get) => {
   const treeItems = await get(_atomTree.fullTreeValue);
   return findTreeNode(treeItems, selectedId);
 });
-
-//|
-//| 選択された参照ノードの更新に関するatom
-//|
-
-const atomSetReferencePathAsync = atom(
-  null,
-  async (get, set, path: string, type: "add" | "remove") => {
-    const data = get(atomReferenceJsonValue);
-    const folder = get(_atomFolders)?.data;
-    if (!folder) return;
-    if (type === "add") {
-      data.highlighted_paths.push(path);
-    } else if (type === "remove") {
-      data.highlighted_paths = data.highlighted_paths.filter((p) => p !== path);
-    }
-    set(_atomReferenceJson, { ...data });
-    await appFileSystem.saveReferenceJsonAsync(folder, data);
-  },
-);
 
 //|
 //| SVGファイルの読み書きに関するatom
@@ -175,8 +152,6 @@ export const atomsSelected = {
   unselectAsync: atom(null, (_, set) => set(atomNodeId, undefined)),
 
   nodeValue: atomTreeNode,
-
-  setReferencePathAsync: atomSetReferencePathAsync,
 
   svgBase64: atomSvgBase64,
 

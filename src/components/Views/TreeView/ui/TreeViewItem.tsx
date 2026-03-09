@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/models/hooks/atomSelected";
-import { atomReferenceJsonValue } from "@/models/hooks/atomReferenceJson";
+import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
 interface CustomTreeViewItemProps
@@ -35,7 +35,7 @@ export const CustomTreeViewItem = React.forwardRef(function CustomTreeViewItem(
   ref: React.Ref<HTMLLIElement>,
 ) {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
-  const referenceData = useAtomValue(atomReferenceJsonValue);
+  const referenceData = useAtomValue(atomReferenceJson.value);
   const setSelectedTreeNodeId = useSetAtom(atomsSelected.nodeId);
   const { id, itemId, label, disabled, children, ...other } = props;
 
