@@ -10,7 +10,7 @@ export function ButtonBase({
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const settings = useAtomValue(atomSettingsJsonValue);
-  const icon = settings.buttons?.[type];
+  const icon = settings?.buttons?.[type];
 
   if (!icon) return null;
   return (

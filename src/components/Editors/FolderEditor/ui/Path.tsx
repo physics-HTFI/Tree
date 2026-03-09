@@ -14,7 +14,7 @@ export function Path() {
   const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
 
-  if (!folder) return null;
+  if (!folder || !settings?.labels) return null;
 
   const updatePathAsync = async (path: string) => {
     setPath(path);
@@ -23,7 +23,7 @@ export function Path() {
 
   return (
     <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-      <Typography variant="body1">{settings.labels?.path ?? "Path"}</Typography>
+      <Typography variant="body1">{settings.labels.path ?? "Path"}</Typography>
       <TextField value={path} onChange={(value) => updatePathAsync(value)} />
       <IconButton
         disabled={!path}

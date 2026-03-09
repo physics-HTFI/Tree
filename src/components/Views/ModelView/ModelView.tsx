@@ -10,7 +10,7 @@ import { Window } from "./ui/Window";
 
 export function ModelView() {
   const { pop, frame, is_id } =
-    useAtomValue(atomSettingsJsonValue).expressions ?? {};
+    useAtomValue(atomSettingsJsonValue)?.expressions ?? {};
   const node = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const { path, window, start } = node?.entry ?? {};
   const modelEnabled = useAtomValue(atomModelViewEnabled);

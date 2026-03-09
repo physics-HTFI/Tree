@@ -10,7 +10,7 @@ export function TierEditor() {
   const settings = useAtomValue(atomSettingsJsonValue);
   const [hiddenTiers, setHiddenTiers] = useAtom(atomHiddenTiers);
 
-  const tiers = settings.tiers;
+  const tiers = settings?.tiers;
   if (!tiers) return null;
 
   return (

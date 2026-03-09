@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 
 export function Frame({ src }: { src: string }) {
   const settings = useAtomValue(atomSettingsJsonValue);
-  if (!settings.frame?.width || !settings.frame?.height) return null;
+  if (!settings?.frame?.width || !settings.frame?.height) return null;
 
   return (
     <iframe

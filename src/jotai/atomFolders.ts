@@ -29,6 +29,7 @@ const setFoldersAsync = atom(
 
     // フォルダからTreeItemsを生成してatomにセットする
     const settings = await get(atomSettingsJsonValue);
+    if (!settings) return;
     set(
       _atomTree.dataTree,
       await createTreeItems.fromDataFolder(folders.data, settings.ignore),

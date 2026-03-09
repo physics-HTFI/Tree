@@ -9,7 +9,7 @@ export function ShowTickButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>(undefined);
 
   const settings = useAtomValue(atomSettingsJsonValue);
-  const icon = settings.buttons?.tick;
+  const icon = settings?.buttons?.tick;
   if (!icon) return null;
 
   return (

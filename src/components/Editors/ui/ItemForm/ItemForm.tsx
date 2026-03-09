@@ -28,6 +28,7 @@ export function ItemForm({
   const settings = useAtomValue(atomSettingsJsonValue);
   const ref = usePreventScroll();
   if (
+    !settings ||
     !settings.labels?.highlighted ||
     !settings.labels?.key ||
     !settings.labels?.notes ||

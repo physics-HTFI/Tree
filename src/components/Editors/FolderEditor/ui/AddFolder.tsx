@@ -14,6 +14,8 @@ export function AddFolder() {
   const parent = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const addFolderAsync = useSetAtom(atomsSelected.addNewFolderNodeAsync);
 
+  if (!settings?.labels) return null;
+
   const canAdd = modifierFolderNode.canAddFolder(folder, parent);
 
   const update = (diff: Partial<NewFolderNode>) => {
@@ -42,7 +44,7 @@ export function AddFolder() {
         {/* title */}
         <Grid size={3}>
           <Typography variant="body1">
-            {settings.labels?.title ?? "Title"}
+            {settings.labels.title ?? "Title"}
           </Typography>
         </Grid>
         <Grid size={9}>
@@ -55,7 +57,7 @@ export function AddFolder() {
         {/* path */}
         <Grid size={3}>
           <Typography variant="body1">
-            {settings.labels?.path ?? "Path"}
+            {settings.labels.path ?? "Path"}
           </Typography>
         </Grid>
         <Grid size={9}>

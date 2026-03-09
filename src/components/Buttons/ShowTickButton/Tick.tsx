@@ -14,7 +14,7 @@ import { atomsSelected } from "@/jotai/atomSelected";
 export function TickPanel({ onClose }: { onClose: () => void }) {
   const selectedItem = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const settings = useAtomValue(atomSettingsJsonValue);
-  const defaultTicks = settings.defaults?.ticks;
+  const defaultTicks = settings?.defaults?.ticks;
   const [item, setItem] = useState<ItemNode>();
   const [ticks, setTicks] = useState(defaultTicks);
   const [isPlaying, setIsPlaying] = useState(false);

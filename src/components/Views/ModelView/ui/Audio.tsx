@@ -19,7 +19,7 @@ export function Audio({ path }: { path: string }) {
     return;
   }, [curFileName]);
 
-  if (!settings.frame?.width) return null;
+  if (!settings?.frame?.width) return null;
   if (!fileName.isMp3File(path)) return null;
 
   if (path !== curFileName) {
