@@ -15,7 +15,7 @@ export function EditImageButton() {
   const selectedItem = useAtomValue(
     atomsSelectedNode.nodeValue,
   ).selectedItemNode;
-  const [svg, setSvgAsync] = useAtom(atomsSelectedNode.svgBase64);
+  const [svg, setSvgAsync] = useAtom(atomsSelectedNode.base64.svg);
   const [open, setOpen] = useState(false);
   const defaultSvg = useAtomValue(atomConsts.defaultSvgBase64Value);
   const ref = useRef<HTMLIFrameElement>(null);

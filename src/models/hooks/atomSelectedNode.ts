@@ -169,8 +169,10 @@ export const atomsSelectedNode = {
 
   nodeValue: _atomsSelectedNode.nodeValue,
 
-  svgBase64: atomSvgBase64,
-  audioBase64Value: atomAudioBase64Value,
+  base64: {
+    svg: atomSvgBase64,
+    audioValue: atomAudioBase64Value,
+  },
 
   setItemNodeAsync: atomSetItemNodeAsync,
   setFolderNodeAsync: atomSetFolderNodeAsync,

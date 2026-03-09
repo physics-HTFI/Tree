@@ -5,7 +5,7 @@ import { useAtomValue } from "jotai";
 import { useState } from "react";
 
 export function ImageView() {
-  const svg = useAtomValue(atomsSelectedNode.svgBase64);
+  const svg = useAtomValue(atomsSelectedNode.base64.svg);
   const id = useAtomValue(atomsSelectedNode.nodeId);
   const [currentId, setCurrentId] = useState<string>();
   const itemNode = useAtomValue(atomsSelectedNode.nodeValue).selectedItemNode;
