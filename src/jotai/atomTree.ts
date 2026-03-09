@@ -27,6 +27,5 @@ function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
 }
 
 export const atomTree = {
-  referenceTreeValue: atom((get) => get(_atomTree.referenceTreeValue)),
   filteredTreeValue: atomFilteredTreeValue,
 };

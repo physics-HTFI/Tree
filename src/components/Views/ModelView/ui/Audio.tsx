@@ -1,13 +1,12 @@
 import { atomConsts } from "@/jotai/atomConsts";
-import { atomTree } from "@/jotai/atomTree";
-import { itemBase64 } from "@/jotai/utils/itemBase64";
+import { useAudioSource } from "@/jotai/useAudioSource";
 import { fileName } from "@/utils/fileName";
 import { useAtomValue } from "jotai";
 import { useEffect, useRef, useState } from "react";
 
 export function Audio({ path }: { path: string }) {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
-  const referenceTree = useAtomValue(atomTree.referenceTreeValue);
+  const { readAudioSource } = useAudioSource();
   const [curFileName, setCurFileName] = useState<string>();
   const [src, setSrc] = useState<string>();
   const ref = useRef<HTMLAudioElement>(null);
@@ -24,13 +23,7 @@ export function Audio({ path }: { path: string }) {
 
   if (path !== curFileName) {
     setCurFileName(path);
-    const { handle, name } = getHandle(path, referenceTree);
-    if (!handle || !name) {
-      setSrc(undefined);
-      return null;
-    }
-    itemBase64
-      .readMp3FromFileAsync(handle, name)
+    readAudioSource(path)
       .then(setSrc)
       .catch(() => setSrc(undefined));
   }
@@ -46,21 +39,4 @@ export function Audio({ path }: { path: string }) {
       autoPlay
     />
   );
-}
-
-function getHandle(
-  path: string,
-  referenceTree?: FolderNode,
-): { handle?: FileSystemDirectoryHandle; name?: string } {
-  const split = path.split("/");
-  let current = referenceTree;
-  for (let i = 0; i < split.length - 1; i++) {
-    const name = split[i];
-    const next = current?.children.find(
-      (child) => child.type === "folder" && child.title === name,
-    );
-    if (!next || next.type !== "folder") return {};
-    current = next;
-  }
-  return { handle: current?.handle, name: split.at(-1) };
 }
