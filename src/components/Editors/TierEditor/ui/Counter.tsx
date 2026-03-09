@@ -3,7 +3,7 @@ import { atomTree } from "@/jotai/atomTree";
 import { useAtomValue } from "jotai";
 
 export function Counter() {
-  const filteredTreeItems = useAtomValue(atomTree.filterTreeValue);
+  const filteredTreeItems = useAtomValue(atomTree.filteredTreeValue);
   const count = countFiles(filteredTreeItems);
 
   return (

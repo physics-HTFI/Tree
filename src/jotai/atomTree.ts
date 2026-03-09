@@ -17,7 +17,7 @@ function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
       if (filteredChild.children.length === 0 && hiddenTiers.has(0)) continue;
       children.push(filteredChild);
     } else {
-      if (hiddenTiers.has(item.entry.tier ?? 0)) continue; // チェックが外れているティアは表示しない
+      if (hiddenTiers.has(item.entry.tier ?? 0)) continue;
       children.push(item);
     }
   }
@@ -26,5 +26,5 @@ function filterTree(folder: FolderNode, hiddenTiers: Set<number>): FolderNode {
 
 export const atomTree = {
   referenceTreeValue: atom((get) => get(_atomTree.referenceTree)),
-  filterTreeValue: atomFilteredTreeValue,
+  filteredTreeValue: atomFilteredTreeValue,
 };

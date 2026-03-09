@@ -9,7 +9,7 @@ import { atomsSelected } from "@/jotai/atomSelected";
 export function TreeView() {
   // フック
   const hiddenTiers = useAtomValue(atomHiddenTiers);
-  const tree = useAtomValue(atomTree.filterTreeValue);
+  const tree = useAtomValue(atomTree.filteredTreeValue);
   const [selectedItemId, setSelectedItemId] = useAtom(atomsSelected.nodeId);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [curHiddenTiers, setCurHiddenTiers] = useState<Set<number>>(new Set());
