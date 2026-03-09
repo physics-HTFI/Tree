@@ -1,5 +1,5 @@
+import { atomConstants } from "@/jotai/atomConstants";
 import { Button } from "@mui/material";
-import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
 import { useAtomValue } from "jotai";
 
 export function ButtonBase({
@@ -9,7 +9,7 @@ export function ButtonBase({
   type: keyof Required<SettingsJson>["buttons"];
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }) {
-  const settings = useAtomValue(atomSettingsJsonValue);
+  const settings = useAtomValue(atomConstants.settingsJsonValue);
   const icon = settings?.buttons?.[type];
 
   if (!icon) return null;

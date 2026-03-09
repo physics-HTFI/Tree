@@ -1,8 +1,8 @@
-import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
+import { atomConstants } from "@/jotai/atomConstants";
 import { useAtomValue } from "jotai";
 
 export function Frame({ src }: { src: string }) {
-  const settings = useAtomValue(atomSettingsJsonValue);
+  const settings = useAtomValue(atomConstants.settingsJsonValue);
   if (!settings?.frame?.width || !settings.frame?.height) return null;
 
   return (

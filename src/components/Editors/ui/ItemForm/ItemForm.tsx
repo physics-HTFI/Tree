@@ -10,10 +10,10 @@ import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
 import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
-import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
 import { modifierItemNode } from "@/modifiers/modifierItemNode";
+import { atomConstants } from "@/jotai/atomConstants";
 
 export function ItemForm({
   item,
@@ -25,7 +25,7 @@ export function ItemForm({
   onChange: (itemDiff: Partial<ItemEntry>) => void;
 }) {
   // フック
-  const settings = useAtomValue(atomSettingsJsonValue);
+  const settings = useAtomValue(atomConstants.settingsJsonValue);
   const ref = usePreventScroll();
   if (
     !settings ||

@@ -1,9 +1,9 @@
-import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
+import { atomConstants } from "@/jotai/atomConstants";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 
 export function Window({ src }: { src: string }) {
-  const settings = useAtomValue(atomSettingsJsonValue);
+  const settings = useAtomValue(atomConstants.settingsJsonValue);
   const [prevSrc, setPrevSrc] = useState<string>();
   if (!settings?.frame?.width || !settings.frame?.height) return null;
 

@@ -2,7 +2,7 @@ import { ButtonBase } from "../ui/ButtonBase";
 import { useEffect, useRef, useState } from "react";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { useAtom, useAtomValue } from "jotai";
-import { atomDefaultSvgBase64Value } from "@/jotai/atomDefaultSvgBase64";
+import { atomConstants } from "@/jotai/atomConstants";
 
 // ref
 // [Embed mode](https://www.drawio.com/doc/faq/embed-mode)
@@ -15,7 +15,7 @@ export function EditImageButton() {
   const selectedItem = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const [svg, setSvgAsync] = useAtom(atomsSelected.svgBase64);
   const [open, setOpen] = useState(false);
-  const defaultSvg = useAtomValue(atomDefaultSvgBase64Value);
+  const defaultSvg = useAtomValue(atomConstants.defaultSvgBase64Value);
   const ref = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {

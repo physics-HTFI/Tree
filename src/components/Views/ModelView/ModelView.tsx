@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai";
-import { atomSettingsJsonValue } from "@/jotai/atomSettingsJson";
 import { atomModelViewEnabled } from "@/jotai/atomModelViewEnabled";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { isUrl } from "@/generics/utils/isUrl";
@@ -7,10 +6,11 @@ import { fileName } from "@/utils/fileName";
 import { Audio } from "./ui/Audio";
 import { Frame } from "./ui/Frame";
 import { Window } from "./ui/Window";
+import { atomConstants } from "@/jotai/atomConstants";
 
 export function ModelView() {
   const { pop, frame, is_id } =
-    useAtomValue(atomSettingsJsonValue)?.expressions ?? {};
+    useAtomValue(atomConstants.settingsJsonValue)?.expressions ?? {};
   const node = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const { path, window, start } = node?.entry ?? {};
   const modelEnabled = useAtomValue(atomModelViewEnabled);
