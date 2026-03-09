@@ -7,31 +7,34 @@ export const itemBase64 = {
   readSvgFromFileAsync,
   readMp3FromFileAsync,
 
-  readSvgAsync: async (itemNode?: ItemNode) => {
-    const folder = itemNode?.parent?.handle;
-    const title = itemNode?.entry?.title;
-    return readSvgFromFileAsync(folder, title + ".svg");
-  },
-
-  saveSvgAsync: async (itemNode?: ItemNode, base64str?: string) => {
-    const handle = itemNode?.parent?.handle;
-    const title = itemNode?.entry?.title;
-    if (!handle || title === undefined || !base64str) {
-      alert("SVGファイルを保存できません");
-      return false;
-    }
-    const isOk = await base64.saveTextAsBase64Async(
-      handle,
-      title + ".svg",
-      base64str.replace(HEADER_SVG, ""),
-    );
-    if (!isOk) {
-      alert("SVGファイルの保存に失敗しました");
-      return false;
-    }
-    return true;
-  },
+  readSvgAsync,
+  saveSvgAsync,
 };
+
+async function readSvgAsync(itemNode?: ItemNode) {
+  const folder = itemNode?.parent?.handle;
+  const title = itemNode?.entry?.title;
+  return readSvgFromFileAsync(folder, title + ".svg");
+}
+
+async function saveSvgAsync(itemNode?: ItemNode, base64str?: string) {
+  const handle = itemNode?.parent?.handle;
+  const title = itemNode?.entry?.title;
+  if (!handle || title === undefined || !base64str) {
+    alert("SVGファイルを保存できません");
+    return false;
+  }
+  const isOk = await base64.saveTextAsBase64Async(
+    handle,
+    title + ".svg",
+    base64str.replace(HEADER_SVG, ""),
+  );
+  if (!isOk) {
+    alert("SVGファイルの保存に失敗しました");
+    return false;
+  }
+  return true;
+}
 
 async function readSvgFromFileAsync(
   folder?: FileSystemDirectoryHandle,
