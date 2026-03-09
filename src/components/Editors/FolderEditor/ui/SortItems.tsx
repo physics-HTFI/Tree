@@ -47,11 +47,16 @@ export function SortItems() {
       {list.map((item, i) => (
         <ListItem
           key={item.nodeId}
-          onClick={() => setId(item.nodeId)}
           sx={{
             bgcolor: item.nodeId === id ? "grey.300" : undefined,
             height: 32,
             ":hover": { bgcolor: "grey.100", cursor: "pointer" },
+          }}
+          onClick={() => setId(item.nodeId)}
+          tabIndex={i} // onKeyDownを有効にするために必要
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") move(i, i + 1);
+            if (e.key === "ArrowUp") move(i, i - 1);
           }}
           secondaryAction={
             item.nodeId === id && (
