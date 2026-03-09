@@ -5,10 +5,10 @@ import { atomsSelected } from "@/jotai/atomSelected";
 import { useState } from "react";
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { TextField } from "@/components/share/TextField";
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 
 export function Path() {
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const folder = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const [path, setPath] = useState<string>(folder?.path ?? "");
   const updateAsync = useSetAtom(atomsSelected.setFolderNodeAsync);

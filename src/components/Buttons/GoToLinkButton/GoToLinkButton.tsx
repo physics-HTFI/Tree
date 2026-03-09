@@ -1,10 +1,10 @@
 import { useAtomValue } from "jotai";
 import { ButtonBase } from "../ui/ButtonBase";
 import { atomsSelected } from "@/jotai/atomSelected";
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 
 export function GoToLinkButton() {
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const node = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
   const item = node?.entry;
 

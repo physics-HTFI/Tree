@@ -3,12 +3,12 @@ import { Popper } from "@mui/material";
 import { TickPanel } from "./Tick";
 import { ButtonBase } from "../ui/ButtonBase";
 import { useAtomValue } from "jotai";
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 
 export function ShowTickButton() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | undefined>(undefined);
 
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const icon = settings?.buttons?.tick;
   if (!icon) return null;
 

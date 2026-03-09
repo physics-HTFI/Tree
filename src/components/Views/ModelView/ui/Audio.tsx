@@ -1,4 +1,4 @@
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 import { atomTree } from "@/jotai/atomTree";
 import { itemBase64 } from "@/jotai/utils/itemBase64";
 import { fileName } from "@/utils/fileName";
@@ -6,7 +6,7 @@ import { useAtomValue } from "jotai";
 import { useEffect, useRef, useState } from "react";
 
 export function Audio({ path }: { path: string }) {
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const referenceTree = useAtomValue(atomTree.referenceTreeValue);
   const [curFileName, setCurFileName] = useState<string>();
   const [src, setSrc] = useState<string>();

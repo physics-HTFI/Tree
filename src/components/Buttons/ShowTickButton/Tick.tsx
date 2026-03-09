@@ -9,11 +9,11 @@ import { useTick } from "./useTick";
 import { Box, Card, CardContent, ClickAwayListener } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
   const selectedItem = useAtomValue(atomsSelected.nodeValue).selectedItemNode;
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const defaultTicks = settings?.defaults?.ticks;
   const [item, setItem] = useState<ItemNode>();
   const [ticks, setTicks] = useState(defaultTicks);

@@ -4,12 +4,12 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelected } from "@/jotai/atomSelected";
 import { modifierFolderNode } from "@/modifiers/modifierFolderNode";
 import { TextField } from "@/components/share/TextField";
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 
 const defaultValues: NewFolderNode = { title: "" };
 
 export function AddFolder() {
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const [folder, setFolder] = useState<NewFolderNode>(defaultValues);
   const parent = useAtomValue(atomsSelected.nodeValue).selectedFolderNode;
   const addFolderAsync = useSetAtom(atomsSelected.addNewFolderNodeAsync);

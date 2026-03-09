@@ -13,7 +13,7 @@ import { Header } from "./ui/Header";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
 import { modifierItemNode } from "@/modifiers/modifierItemNode";
-import { atomConstants } from "@/jotai/atomConstants";
+import { atomConsts } from "@/jotai/atomConsts";
 
 export function ItemForm({
   item,
@@ -25,7 +25,7 @@ export function ItemForm({
   onChange: (itemDiff: Partial<ItemEntry>) => void;
 }) {
   // フック
-  const settings = useAtomValue(atomConstants.settingsJsonValue);
+  const settings = useAtomValue(atomConsts.settingsJsonValue);
   const ref = usePreventScroll();
   if (
     !settings ||

@@ -5,7 +5,7 @@ import { createTreeItems } from "./utils/createTreeItems";
 import { _atomReferenceJson } from "./backings/_atomReferenceJson";
 import { _atomFolders } from "./backings/_atomFolders";
 import { setFaviconSvg } from "./utils/setFaviconSvg";
-import { atomConstants } from "./atomConstants";
+import { atomConsts } from "./atomConsts";
 
 const setFoldersAsync = atom(
   null,
@@ -28,7 +28,7 @@ const setFoldersAsync = atom(
     if (referenceData) set(_atomReferenceJson, referenceData);
 
     // フォルダからTreeItemsを生成してatomにセットする
-    const settings = await get(atomConstants.settingsJsonValue);
+    const settings = await get(atomConsts.settingsJsonValue);
     if (!settings) return;
     set(
       _atomTree.dataTree,

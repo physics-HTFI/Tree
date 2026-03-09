@@ -16,7 +16,7 @@ const atomSettingsJsonValue = atom(async (get) => {
   return settings;
 });
 
-export const atomConstants = {
+export const atomConsts = {
   defaultSvgBase64Value: atomDefaultSvgBase64Value,
   settingsJsonValue: atomSettingsJsonValue,
 };
