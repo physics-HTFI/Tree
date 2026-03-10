@@ -20,7 +20,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 
 export function SortItems() {
-  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
   const updateAsync = useSetAtom(atomsSelectedNode.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);
   const [list, setList] = useState(folder?.children || []);

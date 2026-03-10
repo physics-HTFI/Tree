@@ -8,7 +8,9 @@ import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 
 export function ItemEditor() {
   // フック
-  const { selectedItemNode } = useAtomValue(atomsSelectedNode.nodeValue);
+  const { itemNode: selectedItemNode } = useAtomValue(
+    atomsSelectedNode.nodeValue,
+  );
   const updateByItemDataAsync = useSetAtom(atomsSelectedNode.setItemNodeAsync);
   const setReferencePathAsync = useSetAtom(atomReferenceJson.setPathAsync);
   const referenceData = useAtomValue(atomReferenceJson.value);

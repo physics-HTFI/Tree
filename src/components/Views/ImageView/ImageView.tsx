@@ -8,7 +8,7 @@ export function ImageView() {
   const svg = useAtomValue(atomsSelectedNode.base64.svg);
   const id = useAtomValue(atomsSelectedNode.nodeId);
   const [currentId, setCurrentId] = useState<string>();
-  const itemNode = useAtomValue(atomsSelectedNode.nodeValue).selectedItemNode;
+  const itemNode = useAtomValue(atomsSelectedNode.nodeValue).itemNode;
   const { ref, scrolling, toggleScroll, timerStart, timerStop } = useScroll(
     itemNode?.entry?.speed ?? 0,
   );

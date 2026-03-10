@@ -20,11 +20,15 @@ const atomSvgUpdateTrigger = atom(0); // SVGの更新をトリガーするため
 const atomSvgBase64 = atom(
   async (get) => {
     get(atomSvgUpdateTrigger);
-    const { selectedItemNode } = await get(_atomsSelectedNode.nodeValue);
+    const { itemNode: selectedItemNode } = await get(
+      _atomsSelectedNode.nodeValue,
+    );
     return await mediaBase64.readSvgAsync(selectedItemNode);
   },
   async (get, set, base64str: string) => {
-    const { selectedItemNode } = await get(_atomsSelectedNode.nodeValue);
+    const { itemNode: selectedItemNode } = await get(
+      _atomsSelectedNode.nodeValue,
+    );
     if (!selectedItemNode) return;
     await mediaBase64.saveSvgAsync(selectedItemNode, base64str);
     set(atomSvgUpdateTrigger, (prev) => prev + 1);
@@ -37,7 +41,9 @@ const atomAudioUpdateTrigger = atom(0); // オーディオの更新をトリガ�
 const atomAudioBase64Value = atom(async (get) => {
   get(atomAudioUpdateTrigger);
   const referenceTree = await get(_atomTree.referenceTreeValue);
-  const { selectedItemNode } = await get(_atomsSelectedNode.nodeValue);
+  const { itemNode: selectedItemNode } = await get(
+    _atomsSelectedNode.nodeValue,
+  );
   const path = selectedItemNode?.entry.path;
   const { handle, name } = findAudio(referenceTree, path);
   return await mediaBase64.readMp3FromFileAsync(handle, name);
@@ -51,7 +57,7 @@ const atomSetItemNodeAsync = atom(
   null,
   async (get, set, newItemEntry: ItemEntry) => {
     const treeItems = get(_atomTree.dataTree);
-    const { parentOrSelf: parent, selectedItemNode } = await get(
+    const { parentOrSelf: parent, itemNode: selectedItemNode } = await get(
       _atomsSelectedNode.nodeValue,
     );
     if (!treeItems || !parent?.handle || !selectedItemNode) return;
@@ -107,9 +113,7 @@ const atomSetFolderNodeAsync = atom(
   null,
   async (get, set, newFolder: FolderNode) => {
     const treeItems = get(_atomTree.dataTree);
-    const { selectedFolderNode: folder } = await get(
-      _atomsSelectedNode.nodeValue,
-    );
+    const folder = (await get(_atomsSelectedNode.nodeValue)).folderNode;
     if (!treeItems || !folder?.handle) return;
     if (newFolder.nodeId !== folder.nodeId) return;
 
@@ -122,9 +126,7 @@ const atomSetFolderNodeAsync = atom(
 );
 
 const atomAddItemEntryAsync = atom(null, async (get, set, item: ItemEntry) => {
-  const { selectedFolderNode: folder } = await get(
-    _atomsSelectedNode.nodeValue,
-  );
+  const folder = (await get(_atomsSelectedNode.nodeValue)).folderNode;
   if (!folder) return;
   if (!modifierItemNode.isValidItem(item)) return;
 
@@ -143,9 +145,7 @@ const atomAddNewFolderNodeAsync = atom(
   null,
   async (get, set, folder: NewFolderNode) => {
     const treeItems = get(_atomTree.dataTree);
-    const { selectedFolderNode: parent } = await get(
-      _atomsSelectedNode.nodeValue,
-    );
+    const parent = (await get(_atomsSelectedNode.nodeValue)).folderNode;
     if (!treeItems || !parent?.handle) return;
     // フォルダの作成と保存
     if (!modifierFolderNode.canAddFolder(folder, parent)) return;

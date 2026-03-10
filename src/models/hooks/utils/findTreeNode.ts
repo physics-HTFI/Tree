@@ -11,16 +11,16 @@ export function findTreeNode(
   parent?: FolderNode,
   nodeId?: string,
 ): {
-  selectedFolderNode?: FolderNode;
-  selectedItemNode?: ItemNode;
+  folderNode?: FolderNode;
+  itemNode?: ItemNode;
   parentOrSelf?: FolderNode;
 } {
   if (!parent || !nodeId) return {};
   for (const node of parent.children) {
     if (node.nodeId === nodeId)
       return node.type === "folder"
-        ? { selectedFolderNode: node, parentOrSelf: node }
-        : { selectedItemNode: node, parentOrSelf: parent };
+        ? { folderNode: node, parentOrSelf: node }
+        : { itemNode: node, parentOrSelf: parent };
     if (node.type === "folder") {
       if (!nodeId.startsWith(node.nodeId)) continue;
       const found = findTreeNode(node, nodeId);

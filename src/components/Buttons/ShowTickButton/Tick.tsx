@@ -12,9 +12,7 @@ import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
-  const selectedItem = useAtomValue(
-    atomsSelectedNode.nodeValue,
-  ).selectedItemNode;
+  const selectedItem = useAtomValue(atomsSelectedNode.nodeValue).itemNode;
   const settings = useAtomValue(atomConsts.settingsJsonValue);
   const defaultTicks = settings?.defaults?.ticks;
   const [item, setItem] = useState<ItemNode>();

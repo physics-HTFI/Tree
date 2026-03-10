@@ -11,7 +11,7 @@ const defaultValues: NewFolderNode = { title: "" };
 export function AddFolder() {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
   const [folder, setFolder] = useState<NewFolderNode>(defaultValues);
-  const parent = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const parent = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
   const addFolderAsync = useSetAtom(atomsSelectedNode.addNewFolderNodeAsync);
 
   if (!settings?.labels) return null;

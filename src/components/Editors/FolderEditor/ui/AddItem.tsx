@@ -8,7 +8,7 @@ import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 const defaultItem: ItemEntry = { type: "item" };
 
 export function AddItem() {
-  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
   const addItemAsync = useSetAtom(atomsSelectedNode.addItemEntryAsync);
   const [item, setItem] = useState<ItemEntry>(defaultItem);
 

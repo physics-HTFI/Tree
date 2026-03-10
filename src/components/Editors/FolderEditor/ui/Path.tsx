@@ -9,7 +9,7 @@ import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function Path() {
   const settings = useAtomValue(atomConsts.settingsJsonValue);
-  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
   const [path, setPath] = useState<string>(folder?.path ?? "");
   const updateAsync = useSetAtom(atomsSelectedNode.setFolderNodeAsync);
   const { debounced: debouncedUpdate } = useDebounce(updateAsync);

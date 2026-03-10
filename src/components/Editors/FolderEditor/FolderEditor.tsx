@@ -16,7 +16,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 
 export function FolderEditor() {
-  const folder = useAtomValue(atomsSelectedNode.nodeValue).selectedFolderNode;
+  const folder = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
   const unselect = useSetAtom(atomsSelectedNode.unselect);
   const [tabValue, setTabValue] = useState(0);
 

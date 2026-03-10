@@ -12,9 +12,7 @@ const SRC =
   "https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&proto=json&noSaveBtn=1";
 
 export function EditImageButton() {
-  const selectedItem = useAtomValue(
-    atomsSelectedNode.nodeValue,
-  ).selectedItemNode;
+  const selectedItem = useAtomValue(atomsSelectedNode.nodeValue).itemNode;
   const [svg, setSvgAsync] = useAtom(atomsSelectedNode.base64.svg);
   const [open, setOpen] = useState(false);
   const defaultSvg = useAtomValue(atomConsts.defaultSvgBase64Value);

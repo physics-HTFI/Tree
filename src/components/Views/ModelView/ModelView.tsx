@@ -11,7 +11,7 @@ import { atomOptions } from "@/models/hooks/atomOptions";
 export function ModelView() {
   const { pop, frame, is_id } =
     useAtomValue(atomConsts.settingsJsonValue)?.expressions ?? {};
-  const node = useAtomValue(atomsSelectedNode.nodeValue).selectedItemNode;
+  const node = useAtomValue(atomsSelectedNode.nodeValue).itemNode;
   const { path, window, start } = node?.entry ?? {};
   const modelEnabled = useAtomValue(atomOptions.modelViewEnabled);
 
