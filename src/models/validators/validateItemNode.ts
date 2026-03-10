@@ -37,6 +37,7 @@ function canMoveItem(nodeId?: string, siblings?: TreeNode[]) {
       down: index < siblings.length - 1,
       left: false,
       right: false,
+      delete: false,
     };
   }
 
@@ -53,6 +54,7 @@ function canMoveItem(nodeId?: string, siblings?: TreeNode[]) {
     down: index < siblings.length - 1,
     left: parents?.every((c) => !isSameTitle(c, item)) ?? false,
     right: children?.every((c) => !isSameTitle(c, item)) ?? false,
+    delete: !item.hasSvg,
   };
 }
 

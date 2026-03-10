@@ -1,7 +1,6 @@
 export const validateFolderNode = {
   canAddFolder,
   modifyNewFolder,
-  canRemoveChild,
 };
 
 function canAddFolder(
@@ -29,12 +28,4 @@ function modifyNewFolder(folder: NewFolderNode) {
   folder.title = folder.title.trim();
   folder.path = folder.path?.trim();
   if (folder.path === "") folder.path = undefined;
-}
-
-function canRemoveChild(nodeId: string, children: TreeNode[]) {
-  const target = children.find((child) => child.nodeId === nodeId);
-  if (!target) return false;
-  if (target.type === "folder") return false;
-  if (target.hasSvg) return false;
-  return true;
 }

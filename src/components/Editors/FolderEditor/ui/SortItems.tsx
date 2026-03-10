@@ -1,6 +1,5 @@
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
-import { validateFolderNode } from "@/models/validators/validateFolderNode";
 import { validateItemNode } from "@/models/validators/validateItemNode";
 import {
   Delete,
@@ -36,14 +35,30 @@ export function SortItems() {
 
   const move = (
     from: number,
-    to: number | null, // nullの場合は削除
+    action: "up" | "down" | "left" | "right" | "delete",
   ) => {
-    if (to !== null && (to < 0 || to >= list.length)) return;
+    if (!canMove?.[action]) return;
+    let to: number | null = null;
+    switch (action) {
+      case "up":
+        to = from - 1;
+        break;
+      case "down":
+        to = from + 1;
+        break;
+      case "left":
+      case "right":
+        return;
+      case "delete":
+        to = null;
+        break;
+    }
     const newList = [...list];
     const [moved] = newList.splice(from, 1);
     if (to !== null) newList.splice(to, 0, moved);
     setList(newList);
-    debouncedUpdate({ children: newList }, 1000);
+    const delayed = ["up", "down"].includes(action);
+    debouncedUpdate({ children: newList }, delayed ? 1000 : 0);
   };
 
   return (
@@ -53,14 +68,14 @@ export function SortItems() {
           key={item.nodeId}
           sx={{
             bgcolor: item.nodeId === id ? "grey.300" : undefined,
-            height: 32,
+            height: 30,
             ":hover": { bgcolor: "grey.100", cursor: "pointer" },
           }}
           onClick={() => setId(item.nodeId)}
           tabIndex={i} // onKeyDownを有効にするために必要
           onKeyDown={(e) => {
-            if (e.key === "ArrowDown" && canMove?.down) move(i, i + 1);
-            if (e.key === "ArrowUp" && canMove?.up) move(i, i - 1);
+            if (e.key === "ArrowDown" && canMove?.down) move(i, "down");
+            if (e.key === "ArrowUp" && canMove?.up) move(i, "up");
             e.preventDefault(); // 矢印キーのデフォルトのスクロール動作を防止
           }}
           secondaryAction={
@@ -71,7 +86,7 @@ export function SortItems() {
                   <IconButton
                     disabled={!canMove?.left}
                     size="small"
-                    onClick={() => undefined}
+                    onClick={() => move(i, "left")}
                   >
                     <KeyboardArrowLeft fontSize="small" />
                   </IconButton>
@@ -82,7 +97,7 @@ export function SortItems() {
                   <IconButton
                     disabled={!canMove?.right}
                     size="small"
-                    onClick={() => undefined}
+                    onClick={() => move(i, "right")}
                   >
                     <KeyboardArrowRight fontSize="small" />
                   </IconButton>
@@ -90,12 +105,10 @@ export function SortItems() {
 
                 {/* Delete */}
                 <IconButton
-                  disabled={
-                    !validateFolderNode.canRemoveChild(item.nodeId, list)
-                  }
+                  disabled={!canMove?.delete}
                   size="small"
                   color="error"
-                  onClick={() => move(i, null)}
+                  onClick={() => move(i, "delete")}
                 >
                   <Delete fontSize="small" />
                 </IconButton>
@@ -105,7 +118,7 @@ export function SortItems() {
                   <IconButton
                     disabled={!canMove?.down}
                     size="small"
-                    onClick={() => move(i, i + 1)}
+                    onClick={() => move(i, "down")}
                   >
                     <KeyboardArrowDown fontSize="small" />
                   </IconButton>
@@ -116,7 +129,7 @@ export function SortItems() {
                   <IconButton
                     disabled={!canMove?.up}
                     size="small"
-                    onClick={() => move(i, i - 1)}
+                    onClick={() => move(i, "up")}
                   >
                     <KeyboardArrowUp fontSize="small" />
                   </IconButton>

@@ -55,7 +55,7 @@ export function ItemEditor() {
     const delays = ["title", "path", "start", "ticks", "notes"].some((key) =>
       Object.hasOwn(diff, key),
     );
-    debouncedUpdate(newItem, delays ? 1000 : 10);
+    debouncedUpdate(newItem, delays ? 1000 : 0);
   };
 
   return (
