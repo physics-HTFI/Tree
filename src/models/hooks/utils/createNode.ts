@@ -1,14 +1,18 @@
-import { appFileSystem } from "@/models/hooks/utils/appFileSystem";
 import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
+import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 import { createId } from "@/models/utils/createId";
+import { appFileSystem } from "./appFileSystem";
 
-export async function createAndSaveFolderNode(
-  folder: NewFolderNode,
-  parent: FolderNode,
-) {
+export const createNode = {
+  folderNode: createFolderNode,
+  itemNode: createItemNode,
+};
+
+async function createFolderNode(folder: NewFolderNode, parent?: FolderNode) {
+  if (!parent?.handle) return undefined;
   if (!modifierFolderNode.canAddFolder(folder, parent)) return undefined;
-  if (!parent.handle) return undefined;
   try {
+    modifierFolderNode.modifyNewFolder(folder);
     const { title, path } = folder;
     const handle = await parent.handle.getDirectoryHandle(title, {
       create: true,
@@ -27,4 +31,17 @@ export async function createAndSaveFolderNode(
     alert("フォルダの作成に失敗しました"); // フォルダ名に使えない文字が含まれている場合など
     return undefined;
   }
+}
+
+function createItemNode(item: ItemEntry, parent?: FolderNode) {
+  if (!parent) return undefined;
+  if (!modifierItemNode.canAddItem(item, parent)) return undefined;
+  const newItem: ItemNode = {
+    type: "item",
+    nodeId: createId({ type: "item", title: item.title }, parent.nodeId),
+    parent,
+    hasSvg: false,
+    entry: item,
+  };
+  return newItem;
 }

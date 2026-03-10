@@ -6,12 +6,13 @@ export const modifierItemNode = {
     return true;
   },
 
-  canAddItem: (title?: string, parent?: FolderNode) => {
-    if (!title || !parent) return false;
+  canAddItem: (item?: ItemEntry, parent?: FolderNode) => {
+    if (!item?.title || !parent) return false;
+    if (!modifierItemNode.isValidItem(item)) return false;
     const duplicated = parent.children?.some(
       (c) =>
         c.type === "item" &&
-        c.entry.title?.toLowerCase() === title.toLowerCase(),
+        c.entry.title?.toLowerCase() === item.title?.toLowerCase(),
     );
     if (duplicated) return false;
     return true;
