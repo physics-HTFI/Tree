@@ -1,4 +1,4 @@
-export const modifierFolderNode = {
+export const validateFolderNode = {
   canAddFolder: (
     folder: NewFolderNode,
     parent?: FolderNode,

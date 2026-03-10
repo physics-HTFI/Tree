@@ -1,6 +1,6 @@
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
-import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
+import { validateFolderNode } from "@/models/validators/validateFolderNode";
 import {
   Delete,
   Folder,
@@ -67,7 +67,7 @@ export function SortItems() {
                 </IconButton>
                 <IconButton
                   disabled={
-                    !modifierFolderNode.canRemoveChild(item.nodeId, list)
+                    !validateFolderNode.canRemoveChild(item.nodeId, list)
                   }
                   size="small"
                   color="error"

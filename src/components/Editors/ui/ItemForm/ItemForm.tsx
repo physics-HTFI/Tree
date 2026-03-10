@@ -12,7 +12,7 @@ import { usePreventScroll } from "./hooks/usePreventScroll";
 import { Header } from "./ui/Header";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
-import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { validateItemNode } from "@/models/validators/validateItemNode";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
 export function ItemForm({
@@ -45,7 +45,7 @@ export function ItemForm({
 
   const labels = settings.labels;
   if (!item) return null;
-  const isUrl = modifierItemNode.isUrl(item);
+  const isUrl = validateItemNode.isUrl(item);
   return (
     <Grid
       container

@@ -3,7 +3,7 @@ import { ItemForm } from "../../ui/ItemForm/ItemForm";
 import { Button, Stack } from "@mui/material";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtomValue, useSetAtom } from "jotai";
-import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { validateItemNode } from "@/models/validators/validateItemNode";
 
 const defaultItem: ItemEntry = { type: "item" };
 
@@ -14,11 +14,11 @@ export function AddItem() {
 
   if (!folder?.handle) return null;
 
-  const canAdd = modifierItemNode.canAddItem(item, folder);
+  const canAdd = validateItemNode.canAddItem(item, folder);
 
   const updateItem = (diff: Partial<ItemEntry>) => {
     const newItem = { ...item, ...diff };
-    modifierItemNode.modifyItemNode(newItem);
+    validateItemNode.modifyItemNode(newItem);
     setItem(newItem);
   };
 

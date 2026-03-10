@@ -1,5 +1,5 @@
-import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
-import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { validateFolderNode } from "@/models/validators/validateFolderNode";
+import { validateItemNode } from "@/models/validators/validateItemNode";
 import { createId } from "@/models/utils/createId";
 import { appFileSystem } from "./appFileSystem";
 
@@ -10,9 +10,9 @@ export const createNode = {
 
 async function createFolderNode(folder: NewFolderNode, parent?: FolderNode) {
   if (!parent?.handle) return undefined;
-  if (!modifierFolderNode.canAddFolder(folder, parent)) return undefined;
+  if (!validateFolderNode.canAddFolder(folder, parent)) return undefined;
   try {
-    modifierFolderNode.modifyNewFolder(folder);
+    validateFolderNode.modifyNewFolder(folder);
     const { title, path } = folder;
     const handle = await parent.handle.getDirectoryHandle(title, {
       create: true,
@@ -35,7 +35,7 @@ async function createFolderNode(folder: NewFolderNode, parent?: FolderNode) {
 
 function createItemNode(item: ItemEntry, parent?: FolderNode) {
   if (!parent) return undefined;
-  if (!modifierItemNode.canAddItem(item, parent)) return undefined;
+  if (!validateItemNode.canAddItem(item, parent)) return undefined;
   const newItem: ItemNode = {
     type: "item",
     nodeId: createId({ type: "item", title: item.title }, parent.nodeId),

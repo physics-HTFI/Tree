@@ -3,7 +3,7 @@ import { ItemForm } from "../ui/ItemForm/ItemForm";
 import { useDebounce } from "@/generics/hooks/useDebounce";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtomValue, useSetAtom } from "jotai";
-import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { validateItemNode } from "@/models/validators/validateItemNode";
 import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 
 export function ItemEditor() {
@@ -41,11 +41,11 @@ export function ItemEditor() {
     }
 
     const newItem = { ...item, ...diff };
-    modifierItemNode.modifyItemNode(newItem);
+    validateItemNode.modifyItemNode(newItem);
     setItem(newItem);
 
     // 更新の可否をチェック
-    const canOverwrite = modifierItemNode.canOverwrite(
+    const canOverwrite = validateItemNode.canOverwrite(
       newItem,
       selectedItemNode,
     );

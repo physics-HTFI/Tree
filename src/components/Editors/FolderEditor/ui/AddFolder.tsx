@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
-import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
+import { validateFolderNode } from "@/models/validators/validateFolderNode";
 import { TextField } from "@/components/share/TextField";
 import { atomConsts } from "@/models/hooks/atomConsts";
 
@@ -16,11 +16,11 @@ export function AddFolder() {
 
   if (!settings?.labels) return null;
 
-  const canAdd = modifierFolderNode.canAddFolder(folder, parent);
+  const canAdd = validateFolderNode.canAddFolder(folder, parent);
 
   const update = (diff: Partial<NewFolderNode>) => {
     const newFolder = { ...folder, ...diff };
-    modifierFolderNode.modifyNewFolder(newFolder);
+    validateFolderNode.modifyNewFolder(newFolder);
     setFolder(newFolder);
   };
 

@@ -2,8 +2,8 @@ import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { appFileSystem } from "./utils/appFileSystem";
 import { createNode } from "@/models/hooks/utils/createNode";
-import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
-import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
+import { validateFolderNode } from "@/models/validators/validateFolderNode";
+import { validateItemNode } from "@/models/validators/validateItemNode";
 import { _atomsSelectedNode } from "./backings/_atomSelectedNode";
 import { media } from "./utils/media";
 
@@ -50,8 +50,8 @@ const atomSetItemNodeAsync = atom(
       _atomsSelectedNode.nodeValue,
     );
     if (!treeItems || !parent?.handle || !itemNode) return;
-    modifierItemNode.modifyItemNode(newItemEntry);
-    const canOverwrite = modifierItemNode.canOverwrite(newItemEntry, itemNode);
+    validateItemNode.modifyItemNode(newItemEntry);
+    const canOverwrite = validateItemNode.canOverwrite(newItemEntry, itemNode);
     if (!canOverwrite) return;
 
     // SVGファイルの名前を変更（タイトルが変更された場合）
@@ -86,7 +86,7 @@ const atomSetFolderNodeAsync = atom(
     if (diff.path) folder.path = diff.path;
     if (diff.children) folder.children = diff.children;
     if (diff.newChild) folder.children = [diff.newChild, ...folder.children];
-    modifierFolderNode.modifyNewFolder(folder);
+    validateFolderNode.modifyNewFolder(folder);
     set(_atomTree.dataTree, { ...treeItems });
     await appFileSystem.saveFolderJsonAsync(folder);
   },

@@ -1,6 +1,6 @@
 import { isUrl } from "@/generics/utils/isUrl";
 
-export const modifierItemNode = {
+export const validateItemNode = {
   isValidItem: (item: ItemEntry) => {
     if (item.title === undefined) return false;
     return true;
@@ -8,7 +8,7 @@ export const modifierItemNode = {
 
   canAddItem: (item?: ItemEntry, parent?: FolderNode) => {
     if (!item?.title || !parent) return false;
-    if (!modifierItemNode.isValidItem(item)) return false;
+    if (!validateItemNode.isValidItem(item)) return false;
     const duplicated = parent.children?.some(
       (c) =>
         c.type === "item" &&
