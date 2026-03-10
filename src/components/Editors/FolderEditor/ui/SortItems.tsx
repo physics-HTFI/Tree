@@ -37,9 +37,7 @@ export function SortItems() {
     const [moved] = newList.splice(from, 1);
     if (to !== null) newList.splice(to, 0, moved);
     setList(newList);
-
-    const newFolder = { ...folder, children: newList };
-    debouncedUpdate(newFolder, 1000);
+    debouncedUpdate({ children: newList }, 1000);
   };
 
   return (

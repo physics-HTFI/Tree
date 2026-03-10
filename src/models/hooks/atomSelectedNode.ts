@@ -95,14 +95,18 @@ const atomSetItemNodeAsync = atom(
 
 const atomSetFolderNodeAsync = atom(
   null,
-  async (get, set, newFolder: FolderNode) => {
+  async (
+    get,
+    set,
+    diff: { path?: string; children?: TreeNode[]; newChild?: TreeNode },
+  ) => {
     const treeItems = get(_atomTree.dataTree);
     const folder = (await get(_atomsSelectedNode.nodeValue)).folderNode;
     if (!treeItems || !folder) return;
-    if (newFolder.nodeId !== folder.nodeId) return;
 
-    folder.path = newFolder.path;
-    folder.children = newFolder.children;
+    if (diff.path) folder.path = diff.path;
+    if (diff.children) folder.children = diff.children;
+    if (diff.newChild) folder.children = [diff.newChild, ...folder.children];
     modifierFolderNode.modifyNewFolder(folder);
     set(_atomTree.dataTree, { ...treeItems });
     await appFileSystem.saveFolderJsonAsync(folder);
@@ -112,9 +116,7 @@ const atomSetFolderNodeAsync = atom(
 const atomAddItemEntryAsync = atom(null, async (get, set, item: ItemEntry) => {
   const parent = (await get(_atomsSelectedNode.nodeValue)).folderNode;
   const newItem = createNode.itemNode(item, parent);
-  if (!parent || !newItem) return;
-  parent.children = [newItem, ...parent.children];
-  await set(atomSetFolderNodeAsync, parent);
+  await set(atomSetFolderNodeAsync, { newChild: newItem });
 });
 
 const atomAddNewFolderNodeAsync = atom(
@@ -122,9 +124,7 @@ const atomAddNewFolderNodeAsync = atom(
   async (get, set, folder: NewFolderNode) => {
     const parent = (await get(_atomsSelectedNode.nodeValue)).folderNode;
     const newFolder = await createNode.folderNode(folder, parent);
-    if (!parent || !newFolder) return;
-    parent.children = [newFolder, ...parent.children];
-    await set(atomSetFolderNodeAsync, parent);
+    await set(atomSetFolderNodeAsync, { newChild: newFolder });
   },
 );
 
