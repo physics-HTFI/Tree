@@ -1,7 +1,9 @@
 import { isUrl as _isUrl } from "@/generics/utils/isUrl";
+import { isSameTitle } from "../utils/isSameTitle";
 
 export const validateItemNode = {
   canAddItem,
+  canMoveItem,
   canOverwrite,
   isUrl,
   modifyItemNode,
@@ -22,6 +24,36 @@ function canAddItem(item?: ItemEntry, parent?: FolderNode) {
   );
   if (duplicated) return false;
   return true;
+}
+
+function canMoveItem(nodeId?: string, siblings?: TreeNode[]) {
+  if (!nodeId || !siblings) return undefined;
+  const item = siblings.find((c) => c.nodeId === nodeId);
+  const index = siblings.findIndex((c) => isSameTitle(c, item));
+
+  if (item?.type === "folder") {
+    return {
+      up: index > 0,
+      down: index < siblings.length - 1,
+      left: false,
+      right: false,
+    };
+  }
+
+  const title = item?.entry?.title;
+  if (!title) return undefined;
+
+  const folder = item?.parent;
+  const parents = folder?.parent?.children;
+  const next = siblings?.at(index + 1);
+  const children = next?.type === "folder" ? next.children : undefined;
+
+  return {
+    up: index > 0,
+    down: index < siblings.length - 1,
+    left: parents?.every((c) => !isSameTitle(c, item)) ?? false,
+    right: children?.every((c) => !isSameTitle(c, item)) ?? false,
+  };
 }
 
 function canOverwrite(item: ItemEntry, node: ItemNode) {

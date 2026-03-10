@@ -5,6 +5,7 @@ type TreeNode = FolderNode | ItemNode;
 type FolderNode = {
   type: "folder";
   nodeId: string;
+  parent?: FolderNode;
   title: string;
   handle?: FileSystemDirectoryHandle;
   path?: string;

@@ -61,7 +61,7 @@ async function createTreeItemsFromReferenceFolder(
 async function createTreeItemsFromDataFolder(
   handle?: FileSystemDirectoryHandle,
   ignoreList?: string[],
-  parentId: string = "data/",
+  parent: FolderNode | undefined = undefined,
 ): Promise<FolderNode> {
   if (!handle)
     return { type: "folder", nodeId: "---", title: "---", children: [] };
@@ -71,10 +71,14 @@ async function createTreeItemsFromDataFolder(
   const folderNode: FolderNode = {
     type: "folder",
     title: handle.name,
-    nodeId: createId({ type: "folder", title: handle.name }, parentId),
+    nodeId: createId(
+      { type: "folder", title: handle.name },
+      parent?.nodeId ?? "data/",
+    ),
     handle,
     path: folderData?.path,
     children: [],
+    parent,
   };
 
   // フォルダ内のエントリを取得し、TreeNodeの配列を作成する
@@ -85,7 +89,7 @@ async function createTreeItemsFromDataFolder(
       const node = await createTreeItemsFromDataFolder(
         entry as FileSystemDirectoryHandle,
         ignoreList,
-        folderNode.nodeId,
+        folderNode,
       );
       children.push(node);
     } else {
