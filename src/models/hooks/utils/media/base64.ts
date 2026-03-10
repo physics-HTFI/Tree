@@ -39,7 +39,7 @@ export async function saveSvgAsync(itemNode?: ItemNode, base64str?: string) {
 }
 
 export async function readMp3Async(referenceTree?: FolderNode, path?: string) {
-  if (!path || !referenceTree) return {};
+  if (!path || !referenceTree) return undefined;
 
   const split = path.split("/");
   let current = referenceTree;
@@ -48,7 +48,7 @@ export async function readMp3Async(referenceTree?: FolderNode, path?: string) {
     const next = current?.children.find(
       (child) => child.type === "folder" && child.title === name,
     );
-    if (!next || next.type !== "folder") return {};
+    if (!next || next.type !== "folder") return undefined;
     current = next;
   }
 

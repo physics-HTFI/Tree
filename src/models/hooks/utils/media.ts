@@ -4,7 +4,7 @@ import {
   readSvgFromFileAsync,
   saveSvgAsync,
 } from "./media/base64";
-import { renameSvgFileAsync } from "./media/moveSvg";
+import { moveSvgFileAsync, renameSvgFileAsync } from "./media/moveSvg";
 
 export const media = {
   base64: {
@@ -16,4 +16,5 @@ export const media = {
   },
 
   renameSvgFileAsync,
+  moveSvgFileAsync,
 };

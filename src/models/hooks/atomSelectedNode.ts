@@ -55,11 +55,7 @@ const atomSetItemNodeAsync = atom(
     if (!canOverwrite) return;
 
     // SVGファイルの名前を変更（タイトルが変更された場合）
-    const isOk = await media.renameSvgFileAsync(
-      parent.handle,
-      itemNode,
-      newItemEntry,
-    );
+    const isOk = await media.renameSvgFileAsync(itemNode, newItemEntry);
     if (!isOk) return;
 
     // オーディオの再取得をトリガー

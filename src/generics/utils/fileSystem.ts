@@ -2,6 +2,7 @@ export const fileSystem = {
   readTextAsync,
   saveTextAsync,
   renameAsync,
+  moveAsync,
   existsAsync,
 
   readBinaryAsync,
@@ -92,12 +93,22 @@ async function renameAsync(
   oldName: string,
   newName: string,
 ) {
-  if (!folder) return false;
+  return await moveAsync(folder, oldName, folder, newName);
+}
+
+async function moveAsync(
+  oldFolder: FileSystemDirectoryHandle | undefined,
+  oldName: string,
+  newFolder: FileSystemDirectoryHandle | undefined,
+  newName: string,
+) {
+  if (!oldFolder || !newFolder) return false;
+  if (await existsAsync(newFolder, newName)) return false;
   try {
-    const text = await readTextAsync(folder, oldName);
+    const text = await readTextAsync(oldFolder, oldName);
     if (text === undefined) return false;
-    await saveTextAsync(folder, newName, text);
-    await folder.removeEntry(oldName);
+    await saveTextAsync(newFolder, newName, text);
+    await oldFolder.removeEntry(oldName);
     return true;
   } catch {
     return false;

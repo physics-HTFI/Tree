@@ -1,10 +1,11 @@
 import { fileSystem } from "@/generics/utils/fileSystem";
 
 export async function renameSvgFileAsync(
-  parentHandle: FileSystemDirectoryHandle,
   oldItem: ItemNode,
   newItem: ItemEntry,
 ) {
+  const handle = oldItem.parent.handle;
+  if (!handle) return false;
   if (!oldItem.hasSvg) return true;
   const titleChanged =
     oldItem.entry.title !== undefined &&
@@ -12,13 +13,26 @@ export async function renameSvgFileAsync(
     oldItem.entry.title !== newItem.title;
   if (!titleChanged) return true;
 
-  const oldFileName = oldItem.entry.title + ".svg";
-  const newFileName = newItem.title + ".svg";
   const isOk = await fileSystem.renameAsync(
-    parentHandle,
-    oldFileName,
-    newFileName,
+    handle,
+    oldItem.entry.title + ".svg",
+    newItem.title + ".svg",
   );
+
   if (!isOk) alert("SVGファイルの名前変更に失敗しました");
+  return isOk;
+}
+
+export async function moveSvgFileAsync(item: ItemNode, folder: FolderNode) {
+  if (!item.hasSvg) return true;
+  if (!item.entry.title) return false;
+  const title = item.entry.title + ".svg";
+  const isOk = await fileSystem.moveAsync(
+    item.parent.handle,
+    title,
+    folder.handle,
+    title,
+  );
+  if (!isOk) alert("SVGファイルの移動に失敗しました");
   return isOk;
 }
