@@ -1,12 +1,11 @@
 import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
-import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
 import { createNode } from "@/models/hooks/utils/createNode";
 import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
 import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 import { _atomsSelectedNode } from "./backings/_atomSelectedNode";
-import { mediaBase64 } from "./utils/mediaBase64";
+import { media } from "./utils/media";
 import { findAudio } from "./utils/findAudio";
 
 //|
@@ -19,12 +18,12 @@ const atomSvgBase64 = atom(
   async (get) => {
     get(atomSvgUpdateTrigger);
     const { itemNode } = await get(_atomsSelectedNode.nodeValue);
-    return await mediaBase64.readSvgAsync(itemNode);
+    return await media.base64.readSvgAsync(itemNode);
   },
   async (get, set, base64str: string) => {
     const { itemNode } = await get(_atomsSelectedNode.nodeValue);
     if (!itemNode) return;
-    await mediaBase64.saveSvgAsync(itemNode, base64str);
+    await media.base64.saveSvgAsync(itemNode, base64str);
     set(atomSvgUpdateTrigger, (prev) => prev + 1);
     await set(atomSetItemNodeAsync, itemNode.entry); // hasSvgフラグの更新
   },
@@ -38,35 +37,12 @@ const atomAudioBase64Value = atom(async (get) => {
   const { itemNode } = await get(_atomsSelectedNode.nodeValue);
   const path = itemNode?.entry.path;
   const { handle, name } = findAudio(referenceTree, path);
-  return await mediaBase64.readMp3FromFileAsync(handle, name);
+  return await media.base64.readMp3Async(handle, name);
 });
 
 //|
 //| 選択されたノードの更新に関するatom
 //|
-
-async function moveSvgFileAsync(
-  parentHandle: FileSystemDirectoryHandle,
-  oldItem: ItemNode,
-  newItem: ItemEntry,
-) {
-  if (!oldItem.hasSvg) return true;
-  const titleChanged =
-    oldItem.entry.title !== undefined &&
-    newItem.title !== undefined &&
-    oldItem.entry.title !== newItem.title;
-  if (!titleChanged) return true;
-
-  const oldFileName = oldItem.entry.title + ".svg";
-  const newFileName = newItem.title + ".svg";
-  const isOk = await fileSystem.renameAsync(
-    parentHandle,
-    oldFileName,
-    newFileName,
-  );
-  if (!isOk) alert("SVGファイルの名前変更に失敗しました");
-  return isOk;
-}
 
 const atomSetItemNodeAsync = atom(
   null,
@@ -81,7 +57,11 @@ const atomSetItemNodeAsync = atom(
     if (!canOverwrite) return;
 
     // SVGファイルの名前を変更（タイトルが変更された場合）
-    const isOk = await moveSvgFileAsync(parent.handle, itemNode, newItemEntry);
+    const isOk = await media.moveSvgFileAsync(
+      parent.handle,
+      itemNode,
+      newItemEntry,
+    );
     if (!isOk) return;
 
     // オーディオの再取得をトリガー
