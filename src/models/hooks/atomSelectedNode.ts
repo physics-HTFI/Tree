@@ -2,7 +2,6 @@ import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { appFileSystem } from "./utils/appFileSystem";
-import { existsSvg } from "@/models/utils/existsSvg";
 import { createNode } from "@/models/hooks/utils/createNode";
 import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
 import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
@@ -46,6 +45,29 @@ const atomAudioBase64Value = atom(async (get) => {
 //| 選択されたノードの更新に関するatom
 //|
 
+async function moveSvgFileAsync(
+  parentHandle: FileSystemDirectoryHandle,
+  oldItem: ItemNode,
+  newItem: ItemEntry,
+) {
+  if (!oldItem.hasSvg) return true;
+  const titleChanged =
+    oldItem.entry.title !== undefined &&
+    newItem.title !== undefined &&
+    oldItem.entry.title !== newItem.title;
+  if (!titleChanged) return true;
+
+  const oldFileName = oldItem.entry.title + ".svg";
+  const newFileName = newItem.title + ".svg";
+  const isOk = await fileSystem.renameAsync(
+    parentHandle,
+    oldFileName,
+    newFileName,
+  );
+  if (!isOk) alert("SVGファイルの名前変更に失敗しました");
+  return isOk;
+}
+
 const atomSetItemNodeAsync = atom(
   null,
   async (get, set, newItemEntry: ItemEntry) => {
@@ -54,40 +76,23 @@ const atomSetItemNodeAsync = atom(
       _atomsSelectedNode.nodeValue,
     );
     if (!treeItems || !parent?.handle || !itemNode) return;
-
     modifierItemNode.modifyItemNode(newItemEntry);
     const canOverwrite = modifierItemNode.canOverwrite(newItemEntry, itemNode);
     if (!canOverwrite) return;
 
     // SVGファイルの名前を変更（タイトルが変更された場合）
-    const titleChanged =
-      itemNode.entry.title !== undefined &&
-      newItemEntry.title !== undefined &&
-      itemNode.entry.title !== newItemEntry.title;
-    if (titleChanged && itemNode.hasSvg) {
-      const oldFileName = itemNode.entry.title + ".svg";
-      const newFileName = newItemEntry.title + ".svg";
-      const isOk = await fileSystem.renameAsync(
-        parent.handle,
-        oldFileName,
-        newFileName,
-      );
-      if (!isOk) alert("SVGファイルの名前変更に失敗しました");
-    }
+    const isOk = await moveSvgFileAsync(parent.handle, itemNode, newItemEntry);
+    if (!isOk) return;
 
-    // オーディオパスの更新をトリガー
-    if (newItemEntry.path && itemNode.entry.path !== newItemEntry.path) {
-      set(atomAudioUpdateTrigger, (prev) => prev + 1);
-    }
-
-    // 同じタイトルのSVGを持つアイテムがある場合、画像のリンク切れを防ぐため、一緒に改名する
+    // オーディオの再取得をトリガー
+    const pathChanged = itemNode.entry.path !== newItemEntry.path;
+    if (pathChanged) set(atomAudioUpdateTrigger, (prev) => prev + 1);
 
     // selectedItemNode を更新
     itemNode.entry = {
       ...itemNode.entry,
       ...newItemEntry,
     };
-    itemNode.hasSvg = await existsSvg(parent.handle, newItemEntry.title);
     set(_atomTree.dataTree, { ...treeItems });
     await appFileSystem.saveFolderJsonAsync(parent);
   },
