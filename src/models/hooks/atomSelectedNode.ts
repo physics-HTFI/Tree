@@ -6,7 +6,6 @@ import { modifierFolderNode } from "@/models/modifiers/modifierFolderNode";
 import { modifierItemNode } from "@/models/modifiers/modifierItemNode";
 import { _atomsSelectedNode } from "./backings/_atomSelectedNode";
 import { media } from "./utils/media";
-import { findAudio } from "./utils/findAudio";
 
 //|
 //| 選択されたノードのメディアに関するatom
@@ -36,8 +35,7 @@ const atomAudioBase64Value = atom(async (get) => {
   const referenceTree = await get(_atomTree.referenceTreeValue);
   const { itemNode } = await get(_atomsSelectedNode.nodeValue);
   const path = itemNode?.entry.path;
-  const { handle, name } = findAudio(referenceTree, path);
-  return await media.base64.readMp3Async(handle, name);
+  return await media.base64.readMp3Async(referenceTree, path);
 });
 
 //|
@@ -57,7 +55,7 @@ const atomSetItemNodeAsync = atom(
     if (!canOverwrite) return;
 
     // SVGファイルの名前を変更（タイトルが変更された場合）
-    const isOk = await media.moveSvgFileAsync(
+    const isOk = await media.renameSvgFileAsync(
       parent.handle,
       itemNode,
       newItemEntry,
