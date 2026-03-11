@@ -10,6 +10,7 @@ import { Box, Card, CardContent, ClickAwayListener } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomConsts } from "@/models/hooks/atomConsts";
+import { usePreventScroll } from "@/generics/hooks/usePreventScroll";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
   const selectedItem = useAtomValue(atomsSelectedNode.nodeValue).itemNode;
@@ -19,6 +20,7 @@ export function TickPanel({ onClose }: { onClose: () => void }) {
   const [ticks, setTicks] = useState(defaultTicks);
   const [isPlaying, setIsPlaying] = useState(false);
   const { tick } = useTick();
+  const ref = usePreventScroll();
 
   if (item !== selectedItem) {
     setItem(selectedItem);
@@ -44,6 +46,7 @@ export function TickPanel({ onClose }: { onClose: () => void }) {
   return (
     <ClickAwayListener onClickAway={onClose}>
       <Card
+        ref={ref}
         sx={{ width: 400 }}
         onWheel={(e) => setTicks(Math.max(1, ticks + (e.deltaY < 0 ? -1 : 1)))}
       >

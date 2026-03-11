@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { getWheeledNumber } from "./utils/getWheeledNumber";
 import { CloseButton } from "./ui/CloseButton";
-import { usePreventScroll } from "./hooks/usePreventScroll";
+import { usePreventScroll } from "@/generics/hooks/usePreventScroll";
 import { Header } from "./ui/Header";
 import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
