@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { appFileSystem } from "./utils/appFileSystem";
-import { createNode } from "@/models/hooks/utils/createNode";
+import { addNode } from "@/models/hooks/utils/addNode";
 import { validateFolderNode } from "@/models/validators/validateFolderNode";
 import { validateItemNode } from "@/models/validators/validateItemNode";
 import { _atomsSelectedNode } from "./backings/_atomSelectedNode";
@@ -65,23 +65,22 @@ const atomUpdateFolderNodeAsync = atom(
       children?: TreeNode[];
       newItem?: ItemEntry;
       newFolder?: NewFolderNode;
+      move?: {
+        item: TreeNode;
+        to?: TreeNode;
+      };
     },
     folder: FolderNode,
   ) => {
     // 引数でfolderを渡すようにしている理由：
     // 選択ノードを関数内で取得すると、デバウンス後に別のノードが入っている可能性があってまずい。
 
-    if (diff.path !== undefined) folder.path = diff.path;
-
-    const newChildren: (TreeNode | undefined)[] = [];
-    if (diff.newItem)
-      newChildren.push(createNode.itemNode(diff.newItem, folder));
-    if (diff.newFolder)
-      newChildren.push(await createNode.folderNode(diff.newFolder, folder));
-    folder.children = [
-      ...newChildren.filter((c) => c !== undefined),
-      ...(diff.children || folder.children),
-    ];
+    const { path, children, newItem, newFolder, move } = diff;
+    if (path !== undefined) folder.path = path;
+    if (children) folder.children = children;
+    if (newItem) addNode.itemNode(newItem, folder);
+    if (newFolder) await addNode.folderNodeAsync(newFolder, folder);
+    if (move) await addNode.moveItemNodeAsync(move.item, move.to);
 
     validateFolderNode.modifyNewFolder(folder);
     set(_atomTree.updateTree);

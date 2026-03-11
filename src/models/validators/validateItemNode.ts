@@ -44,9 +44,9 @@ function canMoveItem(nodeId?: string, siblings?: TreeNode[]) {
   const title = item?.entry?.title;
   if (!title) return undefined;
 
-  const folder = item?.parent;
-  const parents = folder?.parent?.children;
-  const next = siblings?.at(index + 1);
+  const folder = item.parent;
+  const parents = folder.parent?.children;
+  const next = siblings.at(index + 1);
   const children = next?.type === "folder" ? next.children : undefined;
 
   return {

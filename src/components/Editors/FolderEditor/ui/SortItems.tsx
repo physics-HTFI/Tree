@@ -39,16 +39,18 @@ export function SortItems() {
   ) => {
     if (!canMove?.[action]) return;
 
-    if (action === "left") return;
-    if (action === "right") return;
-
+    const diff: Parameters<typeof updateAsync>[0] = {};
     const newList = [...list];
     const [moved] = newList.splice(from, 1);
     if (action === "up") newList.splice(from - 1, 0, moved);
     if (action === "down") newList.splice(from + 1, 0, moved);
+    if (action === "left") diff.move = { item: moved, to: folder.parent };
+    if (action === "right") diff.move = { item: moved, to: newList[from] };
+    diff.children = newList;
+
     setList(newList);
     const delayed = ["up", "down"].includes(action);
-    debouncedUpdate(delayed ? 1000 : 0, { children: newList }, folder);
+    debouncedUpdate(delayed ? 1000 : 0, diff, folder);
   };
 
   return (
@@ -73,24 +75,28 @@ export function SortItems() {
               <Stack direction="row">
                 {/* ← */}
                 <Tooltip title="上の階層に移動">
-                  <IconButton
-                    disabled={!canMove?.left}
-                    size="small"
-                    onClick={() => move(i, "left")}
-                  >
-                    <KeyboardArrowLeft fontSize="small" />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      disabled={!canMove?.left}
+                      size="small"
+                      onClick={() => move(i, "left")}
+                    >
+                      <KeyboardArrowLeft fontSize="small" />
+                    </IconButton>
+                  </span>
                 </Tooltip>
 
                 {/* → */}
-                <Tooltip title="下の階層に移動">
-                  <IconButton
-                    disabled={!canMove?.right}
-                    size="small"
-                    onClick={() => move(i, "right")}
-                  >
-                    <KeyboardArrowRight fontSize="small" />
-                  </IconButton>
+                <Tooltip title="👇のフォルダに移動">
+                  <span>
+                    <IconButton
+                      disabled={!canMove?.right}
+                      size="small"
+                      onClick={() => move(i, "right")}
+                    >
+                      <KeyboardArrowRight fontSize="small" />
+                    </IconButton>
+                  </span>
                 </Tooltip>
 
                 {/* Delete */}
@@ -105,24 +111,28 @@ export function SortItems() {
 
                 {/* ↓ */}
                 <Tooltip title="下に移動 (↓)">
-                  <IconButton
-                    disabled={!canMove?.down}
-                    size="small"
-                    onClick={() => move(i, "down")}
-                  >
-                    <KeyboardArrowDown fontSize="small" />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      disabled={!canMove?.down}
+                      size="small"
+                      onClick={() => move(i, "down")}
+                    >
+                      <KeyboardArrowDown fontSize="small" />
+                    </IconButton>
+                  </span>
                 </Tooltip>
 
                 {/* ↑ */}
                 <Tooltip title="上に移動 (↑)">
-                  <IconButton
-                    disabled={!canMove?.up}
-                    size="small"
-                    onClick={() => move(i, "up")}
-                  >
-                    <KeyboardArrowUp fontSize="small" />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      disabled={!canMove?.up}
+                      size="small"
+                      onClick={() => move(i, "up")}
+                    >
+                      <KeyboardArrowUp fontSize="small" />
+                    </IconButton>
+                  </span>
                 </Tooltip>
               </Stack>
             )
