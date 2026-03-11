@@ -9,12 +9,14 @@ import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 export function ItemEditor() {
   // フック
   const { itemNode } = useAtomValue(atomsSelectedNode.nodeValue);
-  const updateByItemDataAsync = useSetAtom(atomsSelectedNode.setItemNodeAsync);
+  const updateByItemDataAsync = useSetAtom(
+    atomsSelectedNode.updateItemNodeAsync,
+  );
   const setReferencePathAsync = useSetAtom(atomReferenceJson.setPathAsync);
   const referenceData = useAtomValue(atomReferenceJson.value);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
-  const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);
+  const debouncedUpdate = useDebounce(updateByItemDataAsync).debounced;
 
   if (itemNode?.nodeId !== nodeId) {
     setNodeId(itemNode?.nodeId);

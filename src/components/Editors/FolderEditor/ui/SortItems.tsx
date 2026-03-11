@@ -24,8 +24,8 @@ import { useState } from "react";
 
 export function SortItems() {
   const folder = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
-  const updateAsync = useSetAtom(atomsSelectedNode.setFolderNodeAsync);
-  const { debounced: debouncedUpdate } = useDebounce(updateAsync);
+  const updateAsync = useSetAtom(atomsSelectedNode.updateFolderNodeAsync);
+  const debouncedUpdate = useDebounce(updateAsync).debounced;
   const [list, setList] = useState(folder?.children || []);
   const [id, setId] = useState<string>();
 

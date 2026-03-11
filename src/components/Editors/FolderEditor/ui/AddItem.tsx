@@ -9,7 +9,7 @@ const defaultItem: ItemEntry = { type: "item" };
 
 export function AddItem() {
   const folder = useAtomValue(atomsSelectedNode.nodeValue).folderNode;
-  const addItemAsync = useSetAtom(atomsSelectedNode.addItemEntryAsync);
+  const addItemAsync = useSetAtom(atomsSelectedNode.updateFolderNodeAsync);
   const [item, setItem] = useState<ItemEntry>(defaultItem);
 
   if (!folder) return null;
@@ -26,7 +26,7 @@ export function AddItem() {
 
   const addItem = async () => {
     if (!canAdd) return;
-    await addItemAsync(item, folder);
+    await addItemAsync({ newItem: item }, folder);
     reset();
   };
 

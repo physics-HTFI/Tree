@@ -34,7 +34,7 @@ const atomAudioBase64Value = atom(async (get) => {
 //| 選択されたノードの更新に関するatom
 //|
 
-const atomSetItemNodeAsync = atom(
+const atomUpdateItemNodeAsync = atom(
   null,
   async (_get, set, newItemEntry: ItemEntry, itemNode: ItemNode) => {
     validateItemNode.modifyItemNode(newItemEntry);
@@ -55,38 +55,37 @@ const atomSetItemNodeAsync = atom(
   },
 );
 
-const atomSetFolderNodeAsync = atom(
+const atomUpdateFolderNodeAsync = atom(
   null,
   async (
     _get,
     set,
-    diff: { path?: string; children?: TreeNode[]; newChild?: TreeNode },
+    diff: {
+      path?: string;
+      children?: TreeNode[];
+      newItem?: ItemEntry;
+      newFolder?: NewFolderNode;
+    },
     folder: FolderNode,
   ) => {
-    // 引数でfolderを渡すようにしている。（選択ノードを使うと、デバウンス後に別のノードが入っている可能性があってまずい。）
+    // 引数でfolderを渡すようにしている理由：
+    // 選択ノードを関数内で取得すると、デバウンス後に別のノードが入っている可能性があってまずい。
 
     if (diff.path !== undefined) folder.path = diff.path;
-    if (diff.children) folder.children = diff.children;
-    if (diff.newChild) folder.children = [diff.newChild, ...folder.children];
+
+    const newChildren: (TreeNode | undefined)[] = [];
+    if (diff.newItem)
+      newChildren.push(createNode.itemNode(diff.newItem, folder));
+    if (diff.newFolder)
+      newChildren.push(await createNode.folderNode(diff.newFolder, folder));
+    folder.children = [
+      ...newChildren.filter((c) => c !== undefined),
+      ...(diff.children || folder.children),
+    ];
+
     validateFolderNode.modifyNewFolder(folder);
     set(_atomTree.updateTree);
     await appFileSystem.saveFolderJsonAsync(folder);
-  },
-);
-
-const atomAddItemEntryAsync = atom(
-  null,
-  async (_get, set, item: ItemEntry, parent: FolderNode) => {
-    const newItem = createNode.itemNode(item, parent);
-    await set(atomSetFolderNodeAsync, { newChild: newItem }, parent);
-  },
-);
-
-const atomAddNewFolderNodeAsync = atom(
-  null,
-  async (_get, set, folder: NewFolderNode, parent: FolderNode) => {
-    const newFolder = await createNode.folderNode(folder, parent);
-    await set(atomSetFolderNodeAsync, { newChild: newFolder }, parent);
   },
 );
 
@@ -105,8 +104,6 @@ export const atomsSelectedNode = {
     audioValue: atomAudioBase64Value,
   },
 
-  setItemNodeAsync: atomSetItemNodeAsync,
-  setFolderNodeAsync: atomSetFolderNodeAsync,
-  addItemEntryAsync: atomAddItemEntryAsync,
-  addNewFolderNodeAsync: atomAddNewFolderNodeAsync,
+  updateItemNodeAsync: atomUpdateItemNodeAsync,
+  updateFolderNodeAsync: atomUpdateFolderNodeAsync,
 };
