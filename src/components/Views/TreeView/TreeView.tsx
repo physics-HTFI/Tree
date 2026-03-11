@@ -29,7 +29,6 @@ export function TreeView() {
         }
         return ids;
       };
-      console.log(getIds(tree, []));
       setExpandedIds(getIds(tree, []));
     } else {
       setExpandedIds([]);
