@@ -8,33 +8,28 @@ import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 
 export function ItemEditor() {
   // フック
-  const { itemNode: selectedItemNode } = useAtomValue(
-    atomsSelectedNode.nodeValue,
-  );
+  const { itemNode } = useAtomValue(atomsSelectedNode.nodeValue);
   const updateByItemDataAsync = useSetAtom(atomsSelectedNode.setItemNodeAsync);
   const setReferencePathAsync = useSetAtom(atomReferenceJson.setPathAsync);
   const referenceData = useAtomValue(atomReferenceJson.value);
   const [nodeId, setNodeId] = useState<string>();
   const [item, setItem] = useState<ItemEntry>();
-  const { debounced: debouncedUpdate, cancel: cancelUpdate } = useDebounce(
-    updateByItemDataAsync,
-  );
+  const { debounced: debouncedUpdate } = useDebounce(updateByItemDataAsync);
 
-  if (selectedItemNode?.nodeId !== nodeId) {
-    setNodeId(selectedItemNode?.nodeId);
-    setItem(selectedItemNode?.entry);
-    cancelUpdate(); // ノード切替時に更新をキャンセル（古いアイテムの変更が新しいアイテムに反映されるのを防ぐ）
+  if (itemNode?.nodeId !== nodeId) {
+    setNodeId(itemNode?.nodeId);
+    setItem(itemNode?.entry);
   }
-  if (!selectedItemNode || !item || !referenceData) return null;
+  if (!itemNode || !item || !referenceData) return null;
 
   const referenceSelected =
-    selectedItemNode.isReference &&
-    referenceData.highlighted_paths.includes(selectedItemNode.entry.path ?? "");
+    itemNode.isReference &&
+    referenceData.highlighted_paths.includes(itemNode.entry.path ?? "");
 
   const update = async (diff: Partial<ItemEntry>) => {
-    if (selectedItemNode.isReference) {
+    if (itemNode.isReference) {
       await setReferencePathAsync(
-        selectedItemNode.entry.path ?? "",
+        itemNode.entry.path ?? "",
         diff.highlighted ? "add" : "remove",
       );
       return;
@@ -45,17 +40,14 @@ export function ItemEditor() {
     setItem(newItem);
 
     // 更新の可否をチェック
-    const canOverwrite = validateItemNode.canOverwrite(
-      newItem,
-      selectedItemNode,
-    );
+    const canOverwrite = validateItemNode.canOverwrite(newItem, itemNode);
     if (!canOverwrite) return;
 
     // 更新
     const delays = ["title", "path", "start", "ticks", "notes"].some((key) =>
       Object.hasOwn(diff, key),
     );
-    debouncedUpdate(newItem, delays ? 1000 : 0);
+    debouncedUpdate(delays ? 1000 : 0, newItem, itemNode);
   };
 
   return (

@@ -38,27 +38,17 @@ export function SortItems() {
     action: "up" | "down" | "left" | "right" | "delete",
   ) => {
     if (!canMove?.[action]) return;
-    let to: number | null = null;
-    switch (action) {
-      case "up":
-        to = from - 1;
-        break;
-      case "down":
-        to = from + 1;
-        break;
-      case "left":
-      case "right":
-        return;
-      case "delete":
-        to = null;
-        break;
-    }
+
+    if (action === "left") return;
+    if (action === "right") return;
+
     const newList = [...list];
     const [moved] = newList.splice(from, 1);
-    if (to !== null) newList.splice(to, 0, moved);
+    if (action === "up") newList.splice(from - 1, 0, moved);
+    if (action === "down") newList.splice(from + 1, 0, moved);
     setList(newList);
     const delayed = ["up", "down"].includes(action);
-    debouncedUpdate({ children: newList }, delayed ? 1000 : 0);
+    debouncedUpdate(delayed ? 1000 : 0, { children: newList }, folder);
   };
 
   return (

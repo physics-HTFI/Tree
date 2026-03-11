@@ -22,8 +22,15 @@ const atomFullTreeValue = atom<Promise<FolderNode | undefined>>(async (get) => {
   };
 });
 
+const atomUpdateTree = atom(null, (get, set) => {
+  const tree = get(atomDataTree);
+  if (!tree) return;
+  set(atomDataTree, { ...tree });
+});
+
 export const _atomTree = {
   dataTree: atomDataTree,
   referenceTreeValue: atomReferenceTreeValue,
   fullTreeValue: atomFullTreeValue,
+  updateTree: atomUpdateTree,
 };

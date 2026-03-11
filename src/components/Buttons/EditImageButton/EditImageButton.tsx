@@ -20,7 +20,7 @@ export function EditImageButton() {
 
   useEffect(() => {
     const contentWindow = ref.current?.contentWindow;
-    if (!open || !contentWindow) return;
+    if (!open || !contentWindow || !selectedItem) return;
     const receive = async (evt: MessageEvent) => {
       if (evt.data.length === 0) return;
       const msg = JSON.parse(evt.data);
@@ -30,7 +30,7 @@ export function EditImageButton() {
           "*",
         );
       } else if (msg.event == "export") {
-        await setSvgAsync(msg.data);
+        await setSvgAsync(msg.data, selectedItem);
         setOpen(false);
       } else if (msg.event == "save") {
         contentWindow.postMessage(
@@ -48,7 +48,7 @@ export function EditImageButton() {
     };
     window.addEventListener("message", receive);
     return () => window.removeEventListener("message", receive);
-  }, [open, svg, setSvgAsync, defaultSvg]);
+  }, [open, svg, setSvgAsync, defaultSvg, selectedItem]);
 
   if (!selectedItem || selectedItem.isReference) return null;
   return (

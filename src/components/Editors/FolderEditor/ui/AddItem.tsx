@@ -12,7 +12,7 @@ export function AddItem() {
   const addItemAsync = useSetAtom(atomsSelectedNode.addItemEntryAsync);
   const [item, setItem] = useState<ItemEntry>(defaultItem);
 
-  if (!folder?.handle) return null;
+  if (!folder) return null;
 
   const canAdd = validateItemNode.canAddItem(item, folder);
 
@@ -26,7 +26,7 @@ export function AddItem() {
 
   const addItem = async () => {
     if (!canAdd) return;
-    await addItemAsync(item);
+    await addItemAsync(item, folder);
     reset();
   };
 

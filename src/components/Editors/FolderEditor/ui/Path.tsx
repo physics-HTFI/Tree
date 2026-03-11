@@ -18,7 +18,7 @@ export function Path() {
 
   const updatePathAsync = async (path: string) => {
     setPath(path);
-    debouncedUpdate({ path }, 100);
+    debouncedUpdate(1000, { path }, folder);
   };
 
   return (
