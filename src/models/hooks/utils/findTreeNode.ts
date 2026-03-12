@@ -1,3 +1,5 @@
+import type { FolderNode, ItemNode } from "@/types/TreeNode";
+
 /**
  * ツリーノードをIDで再帰的に検索して、見つかったノードを返す
  *

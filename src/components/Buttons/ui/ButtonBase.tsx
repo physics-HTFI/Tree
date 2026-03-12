@@ -1,4 +1,5 @@
 import { atomConsts } from "@/models/hooks/atomConsts";
+import type { SettingsJson } from "@/types/SettingsJson";
 import { Button } from "@mui/material";
 import { useAtomValue } from "jotai";
 

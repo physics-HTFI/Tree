@@ -1,6 +1,8 @@
 import { createId } from "@/models/utils/createId";
 import { appFileSystem } from "./appFileSystem";
 import { fileName } from "../../utils/fileName";
+import type { FolderNode, TreeNode } from "@/types/TreeNode";
+import type { EntryJson, FolderJson } from "@/types/FolderJson";
 
 export const createTreeItems = {
   fromDataFolder: createTreeItemsFromDataFolder,

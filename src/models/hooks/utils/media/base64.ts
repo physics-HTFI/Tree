@@ -1,4 +1,5 @@
 import { base64 } from "@/generics/utils/base64";
+import type { FolderNode, ItemNode } from "@/types/TreeNode";
 
 const HEADER_SVG = "data:image/svg+xml;base64,";
 const HEADER_MP3 = "data:audio/mpeg;base64,"; // audio/mp3 も使えるが正式なMIMEタイプは audio/mpeg

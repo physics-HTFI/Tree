@@ -1,3 +1,6 @@
+import type { ItemEntry } from "@/types/FolderJson";
+import type { SettingsJson } from "@/types/SettingsJson";
+
 export function getWheeledNumber(
   type: "start" | "ticks",
   item: ItemEntry,

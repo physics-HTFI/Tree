@@ -5,6 +5,7 @@ import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { validateFolderNode } from "@/models/validators/validateFolderNode";
 import { TextField } from "@/components/share/TextField";
 import { atomConsts } from "@/models/hooks/atomConsts";
+import type { NewFolderNode } from "@/types/TreeNode";
 
 const defaultValues: NewFolderNode = { title: "" };
 

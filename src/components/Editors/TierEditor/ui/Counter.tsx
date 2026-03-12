@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { atomFilteredTreeValue } from "@/models/hooks/atomFilteredTree";
 import { useAtomValue } from "jotai";
+import type { FolderNode } from "@/types/TreeNode";
 
 export function Counter() {
   const filteredTreeItems = useAtomValue(atomFilteredTreeValue);

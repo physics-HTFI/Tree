@@ -3,6 +3,13 @@ import { validateItemNode } from "@/models/validators/validateItemNode";
 import { createId } from "@/models/utils/createId";
 import { appFileSystem } from "./appFileSystem";
 import { media } from "./media";
+import type { ItemEntry } from "@/types/FolderJson";
+import type {
+  FolderNode,
+  ItemNode,
+  NewFolderNode,
+  TreeNode,
+} from "@/types/TreeNode";
 
 export const addNode = {
   folderNodeAsync: addFolderNodeAsync,

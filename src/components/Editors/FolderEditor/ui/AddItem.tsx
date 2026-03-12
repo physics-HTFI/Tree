@@ -4,6 +4,7 @@ import { Button, Stack } from "@mui/material";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtomValue, useSetAtom } from "jotai";
 import { validateItemNode } from "@/models/validators/validateItemNode";
+import type { ItemEntry } from "@/types/FolderJson";
 
 const defaultItem: ItemEntry = { type: "item" };
 

@@ -11,6 +11,7 @@ import { useAtomValue } from "jotai";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomConsts } from "@/models/hooks/atomConsts";
 import { usePreventScroll } from "@/generics/hooks/usePreventScroll";
+import type { ItemNode } from "@/types/TreeNode";
 
 export function TickPanel({ onClose }: { onClose: () => void }) {
   const selectedItem = useAtomValue(atomsSelectedNode.nodeValue).itemNode;

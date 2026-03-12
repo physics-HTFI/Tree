@@ -6,6 +6,13 @@ import { validateFolderNode } from "@/models/validators/validateFolderNode";
 import { validateItemNode } from "@/models/validators/validateItemNode";
 import { _atomsSelectedNode } from "./backings/_atomSelectedNode";
 import { media } from "./utils/media";
+import type {
+  FolderNode,
+  ItemNode,
+  NewFolderNode,
+  TreeNode,
+} from "@/types/TreeNode";
+import type { ItemEntry } from "@/types/FolderJson";
 
 //|
 //| 選択されたノードのメディアに関するatom

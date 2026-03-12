@@ -1,5 +1,7 @@
 import { isUrl as _isUrl } from "@/generics/utils/isUrl";
 import { isSameTitle } from "../utils/isSameTitle";
+import type { ItemEntry } from "@/types/FolderJson";
+import type { FolderNode, ItemNode, TreeNode } from "@/types/TreeNode";
 
 export const validateItemNode = {
   canAddItem,

@@ -5,6 +5,7 @@ import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { useAtomValue, useSetAtom } from "jotai";
 import { validateItemNode } from "@/models/validators/validateItemNode";
 import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
+import type { ItemEntry } from "@/types/FolderJson";
 
 export function ItemEditor() {
   // フック

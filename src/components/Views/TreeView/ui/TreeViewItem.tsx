@@ -24,6 +24,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomReferenceJson } from "@/models/hooks/atomReferenceJson";
 import { atomConsts } from "@/models/hooks/atomConsts";
+import type { TreeNode } from "@/types/TreeNode";
 
 interface CustomTreeViewItemProps
   extends

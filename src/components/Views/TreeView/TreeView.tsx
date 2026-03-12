@@ -5,6 +5,7 @@ import { atomFilteredTreeValue } from "@/models/hooks/atomFilteredTree";
 import { useAtom, useAtomValue } from "jotai";
 import { atomsSelectedNode } from "@/models/hooks/atomSelectedNode";
 import { atomOptions } from "@/models/hooks/atomOptions";
+import type { TreeNode } from "@/types/TreeNode";
 
 export function TreeView() {
   // フック

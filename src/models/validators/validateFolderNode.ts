@@ -1,3 +1,5 @@
+import type { FolderNode, NewFolderNode } from "@/types/TreeNode";
+
 export const validateFolderNode = {
   canAddFolder,
   modifyNewFolder,

@@ -1,3 +1,5 @@
+import type { TreeNode } from "@/types/TreeNode";
+
 export function isSameTitle(node1?: TreeNode, node2?: TreeNode) {
   if (!node1 || !node2) return false;
   if (node1.type !== node2.type) return false;

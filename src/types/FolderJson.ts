@@ -1,18 +1,18 @@
 // 保存対象となるデータのインターフェース
 
-interface FolderJson {
+export interface FolderJson {
   path?: string;
   entries?: EntryJson[];
 }
 
-type EntryJson = FolderEntry | ItemEntry;
+export type EntryJson = FolderEntry | ItemEntry;
 
-interface FolderEntry {
+export interface FolderEntry {
   type: "folder";
   title: string;
 }
 
-interface ItemEntry {
+export interface ItemEntry {
   type: "item";
   title?: string;
   path?: string;

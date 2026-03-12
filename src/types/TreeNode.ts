@@ -1,8 +1,10 @@
 // ツリーの構築に必要なデータのインターフェース
 
-type TreeNode = FolderNode | ItemNode;
+import type { ItemEntry } from "./FolderJson";
 
-type FolderNode = {
+export type TreeNode = FolderNode | ItemNode;
+
+export interface FolderNode {
   type: "folder";
   nodeId: string;
   parent?: FolderNode;
@@ -11,18 +13,18 @@ type FolderNode = {
   path?: string;
   isReference?: boolean;
   children: TreeNode[];
-};
+}
 
-type ItemNode = {
+export interface ItemNode {
   type: "item";
   nodeId: string;
   parent: FolderNode;
   hasSvg: boolean;
   isReference?: boolean;
   entry: ItemEntry;
-};
+}
 
-type NewFolderNode = {
+export interface NewFolderNode {
   title: string;
   path?: string;
-};
+}

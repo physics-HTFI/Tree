@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 import { _atomTree } from "./backings/_atomTree";
 import { atomOptions } from "./atomOptions";
+import type { FolderNode, TreeNode } from "@/types/TreeNode";
 
 export const atomFilteredTreeValue = atom<Promise<FolderNode | undefined>>(
   async (get) => {

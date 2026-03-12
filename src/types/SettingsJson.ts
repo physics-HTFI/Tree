@@ -1,4 +1,7 @@
-interface SettingsJson {
+import type { HTMLAttributeReferrerPolicy } from "react";
+import type { FolderJson, ItemEntry } from "./FolderJson";
+
+export interface SettingsJson {
   tiers?: TierSettings[];
   keys?: { key?: number; label?: string }[];
   speeds?: { speed?: number; label?: string }[];
@@ -36,7 +39,7 @@ interface SettingsJson {
   };
 }
 
-interface TierSettings {
+export interface TierSettings {
   label?: string;
   color?: string;
   underline?: boolean;

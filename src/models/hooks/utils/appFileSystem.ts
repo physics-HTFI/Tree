@@ -1,5 +1,9 @@
 import { fileSystem } from "@/generics/utils/fileSystem";
 import { media } from "./media";
+import type { SettingsJson } from "@/types/SettingsJson";
+import type { ReferenceJson } from "@/types/ReferenceJson";
+import type { FolderJson } from "@/types/FolderJson";
+import type { FolderNode } from "@/types/TreeNode";
 
 export const appFileSystem = {
   readSettingsJsonAsync,

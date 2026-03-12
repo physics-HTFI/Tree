@@ -1,4 +1,6 @@
 import { fileSystem } from "@/generics/utils/fileSystem";
+import type { ItemEntry } from "@/types/FolderJson";
+import type { FolderNode, ItemNode } from "@/types/TreeNode";
 
 export async function renameSvgFileAsync(
   oldItem: ItemNode,

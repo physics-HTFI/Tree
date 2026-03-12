@@ -1,3 +1,4 @@
+import type { TierSettings } from "@/types/SettingsJson";
 import { Checkbox, FormControlLabel, Typography } from "@mui/material";
 
 export function CheckboxTier({

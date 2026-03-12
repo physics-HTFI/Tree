@@ -14,6 +14,7 @@ import { useAtomValue } from "jotai";
 import { TextField } from "@/components/share/TextField";
 import { validateItemNode } from "@/models/validators/validateItemNode";
 import { atomConsts } from "@/models/hooks/atomConsts";
+import type { ItemEntry } from "@/types/FolderJson";
 
 export function ItemForm({
   item,

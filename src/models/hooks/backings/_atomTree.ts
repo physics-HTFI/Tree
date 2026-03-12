@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { _atomFolders } from "./_atomFolders";
 import { createTreeItems } from "../utils/createTreeItems";
 import { atomConsts } from "../atomConsts";
+import type { FolderNode } from "@/types/TreeNode";
 
 const atomDataTree = atom<FolderNode>();
 
