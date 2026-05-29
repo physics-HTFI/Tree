@@ -16,6 +16,6 @@ export function getWheeledNumber(
   if (item[type] === undefined) return defaultValue ?? constants.min;
   return Math.max(
     constants.min,
-    item[type] + (event.deltaY > 0 ? 1 : -1) * constants.delta,
+    item[type] + (event.deltaY > 0 ? -1 : 1) * constants.delta,
   );
 }
