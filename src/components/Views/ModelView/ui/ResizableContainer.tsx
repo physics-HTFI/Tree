@@ -1,32 +1,32 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 
 export const ResizableContainer = ({
-  initialWidth = 300,
-  initialHeight = 300,
+  initialWidth,
+  initialHeight,
   children,
 }: {
-  initialWidth?: number;
-  initialHeight?: number;
+  initialWidth: number;
+  initialHeight: number;
   children: React.ReactNode;
 }) => {
   const [width, setWidth] = useState(initialWidth);
   const [height, setHeight] = useState(initialHeight);
   const [isDragging, setIsDragging] = useState(false);
+  const [isResized, setIsResized] = useState(false);
   const startXRef = useRef(0);
   const startYRef = useRef(0);
   const startWidthRef = useRef(width);
   const startHeightRef = useRef(height);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const onMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      setIsDragging(true);
-      startXRef.current = e.clientX;
-      startYRef.current = e.clientY;
-      startWidthRef.current = width;
-      startHeightRef.current = height;
-    },
-    [width, height],
-  );
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    setIsDragging(true);
+    startXRef.current = e.clientX;
+    startYRef.current = e.clientY;
+    startWidthRef.current = ref.current.offsetWidth;
+    startHeightRef.current = ref.current.offsetHeight; // この値が実際に表示されている高さ（≠ height）
+  }, []);
 
   const onMouseMove = useCallback(
     (e: MouseEvent) => {
@@ -40,6 +40,7 @@ export const ResizableContainer = ({
       if (newHeight < minHeight) newHeight = minHeight;
       setWidth(newWidth);
       setHeight(newHeight);
+      setIsResized(true);
     },
     [isDragging],
   );
@@ -65,10 +66,11 @@ export const ResizableContainer = ({
 
   return (
     <div
+      ref={ref}
       style={{
         width,
         height,
-        minHeight: height === initialHeight ? undefined : height, // 初期状態では height は親コンテナ側から決める
+        minHeight: isResized ? height : undefined, // 初期状態では height は親コンテナ側から決める
         position: "relative",
       }}
     >

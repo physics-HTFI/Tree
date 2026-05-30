@@ -41,5 +41,5 @@ export function ModelView() {
           .replace("{{ID}}", path)
           .replace("{{START}}", (start ?? 0).toString());
 
-  return isFrame ? <Frame src={src} /> : <Window src={src} />;
+  return isFrame ? <Frame src={src} key={src} /> : <Window src={src} />;
 }
